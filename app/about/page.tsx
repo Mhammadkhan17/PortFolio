@@ -1,99 +1,164 @@
+import Link from "next/link";
+
 export default function About() {
   return (
-    <div className="mx-auto max-w-[65ch] px-6 py-16 md:py-32">
-      <section className="mb-16">
-        <p className="mb-2 type-mono-eyebrow text-ash">About</p>
-        <h1 className="mb-8 type-display-sm text-on-primary">
-          About
-        </h1>
-        <div className="space-y-4 type-body text-ash">
-          <p>
-            I build things for the web. Most of my work involves frontend
-            development with React and TypeScript, though I enjoy working across
-            the full stack when a project demands it.
-          </p>
-          <p>
-            I care about writing code that other people can read. Clean
-            abstractions, clear naming, and documentation that explains the why
-            rather than the what. I think the best software is built
-            incrementally, with frequent feedback and honest conversation about
-            tradeoffs.
-          </p>
-          <p>
-            When I&apos;m not coding, I&apos;m usually reading about design
-            systems, exploring new tools, or writing about what I&apos;ve
-            learned.
-          </p>
-        </div>
-      </section>
-
-      <section className="mb-16 border-t border-hairline-soft pt-16">
-        <p className="mb-6 type-mono-eyebrow text-mute">Skills</p>
-        <div className="space-y-4">
-          <div>
-            <h3 className="mb-2 type-body-sm font-medium text-on-primary">Frontend</h3>
-            <p className="type-body-sm text-ash">
-              React, Next.js, TypeScript, Tailwind CSS, HTML/CSS
+    <div>
+      {/* Opening */}
+      <section
+        className="bg-canvas text-on-primary px-6"
+        style={{ paddingTop: "clamp(4rem, 8vw, 8rem)", paddingBottom: "var(--spacing-section-lg)" }}
+      >
+        <div className="mx-auto max-w-3xl">
+          <p className="mb-2 type-mono-eyebrow text-ash">About</p>
+          <h1 className="mb-8 type-display-md text-on-primary">
+            I build things that work.
+          </h1>
+          <div className="space-y-4 type-body text-ash">
+            <p>
+              I&apos;ve seen too many projects stall in the &ldquo;almost done&rdquo;
+              phase. The backend works but the frontend is broken. The demo
+              works but production doesn&apos;t. The code works but nobody can
+              maintain it.
             </p>
-          </div>
-          <div>
-            <h3 className="mb-2 type-body-sm font-medium text-on-primary">Backend</h3>
-            <p className="type-body-sm text-ash">
-              Node.js, PostgreSQL, Prisma, REST APIs
-            </p>
-          </div>
-          <div>
-            <h3 className="mb-2 type-body-sm font-medium text-on-primary">Tools</h3>
-            <p className="type-body-sm text-ash">
-              Git, VS Code, Figma, Linux, Docker
-            </p>
-          </div>
-          <div>
-            <h3 className="mb-2 type-body-sm font-medium text-on-primary">Cloud</h3>
-            <p className="type-body-sm text-ash">
-              Vercel, AWS, Cloudflare
+            <p>
+              My job is to get you from &ldquo;almost done&rdquo; to
+              &ldquo;shipped&rdquo; — with code that won&apos;t haunt you at 3 AM.
+              I take early-stage products and turn them into deployable,
+              scalable applications.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-hairline-soft pt-16">
-        <p className="mb-6 type-mono-eyebrow text-mute">Experience</p>
-        <div className="space-y-8">
-          <div>
-            <div className="mb-2 flex items-baseline justify-between gap-4">
-              <h3 className="type-body-sm font-medium text-on-primary">Frontend Developer</h3>
-              <span className="type-meta text-mute">2023 — Present</span>
-            </div>
-            <p className="mb-2 type-body-sm text-ash">Company Name</p>
-            <ul className="list-inside list-disc space-y-1 type-body-sm text-ash">
-              <li>
-                Led migration from legacy React to Next.js App Router, improving
-                page load performance by 40%
-              </li>
-              <li>
-                Built a component library used across 3 product teams, reducing
-                duplicated UI code by 60%
-              </li>
-            </ul>
+      {/* Philosophy */}
+      <section
+        className="bg-canvas-light text-ink px-6"
+        style={{ paddingTop: "var(--spacing-section-lg)", paddingBottom: "var(--spacing-section-lg)" }}
+      >
+        <div className="mx-auto max-w-3xl">
+          <h2 className="mb-8 type-display-sm text-ink">
+            How I think about software
+          </h2>
+          <div className="space-y-6 type-body text-ink-soft">
+            <p>
+              <strong className="text-ink">I believe most MVPs are over-built.</strong>{" "}
+              The best version of your product is version 1.1, not version 1.0.
+              Ship the smallest thing that solves the real problem, then iterate
+              based on what users actually do — not what you think they&apos;ll do.
+            </p>
+            <p>
+              <strong className="text-ink">I optimize for the person who inherits my code,</strong>{" "}
+              not for the person who writes it. That means clear naming, simple
+              abstractions, and documentation that explains the why — not just the
+              what. Your future self (or your next developer) will thank me.
+            </p>
+            <p>
+              <strong className="text-ink">I think the best technical decision is usually the boring one.</strong>{" "}
+              The shiny new framework won&apos;t save a project, but a well-chosen
+              database index will. I reach for proven tools and patterns, not
+              whatever is trending on Hacker News.
+            </p>
+            <p>
+              <strong className="text-ink">I believe in honest conversation about tradeoffs.</strong>{" "}
+              Every technical decision is a tradeoff. I&apos;ll tell you what I
+              recommend, why I recommend it, and what we&apos;re giving up. You
+              make the final call — it&apos;s your product.
+            </p>
           </div>
-          <div>
-            <div className="mb-2 flex items-baseline justify-between gap-4">
-              <h3 className="type-body-sm font-medium text-on-primary">Junior Developer</h3>
-              <span className="type-meta text-mute">2021 — 2023</span>
+        </div>
+      </section>
+
+      {/* Tools */}
+      <section
+        className="bg-canvas text-on-primary px-6"
+        style={{ paddingTop: "var(--spacing-section-lg)", paddingBottom: "var(--spacing-section-lg)" }}
+      >
+        <div className="mx-auto max-w-3xl">
+          <h2 className="mb-8 type-display-sm text-on-primary">
+            Tools I use
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <p className="mb-2 type-mono-eyebrow text-mute">Frontend</p>
+              <p className="type-body text-ash">
+                React, Next.js, TypeScript, Tailwind CSS
+              </p>
             </div>
-            <p className="mb-2 type-body-sm text-ash">Company Name</p>
-            <ul className="list-inside list-disc space-y-1 type-body-sm text-ash">
-              <li>
-                Developed and maintained customer-facing dashboard serving 10k+
-                daily active users
-              </li>
-              <li>
+            <div>
+              <p className="mb-2 type-mono-eyebrow text-mute">Backend</p>
+              <p className="type-body text-ash">
+                Node.js, PostgreSQL, Prisma, REST APIs
+              </p>
+            </div>
+            <div>
+              <p className="mb-2 type-mono-eyebrow text-mute">Infrastructure</p>
+              <p className="type-body text-ash">
+                Vercel, Docker, AWS, Cloudflare
+              </p>
+            </div>
+            <div>
+              <p className="mb-2 type-mono-eyebrow text-mute">Tools</p>
+              <p className="type-body text-ash">
+                Git, Figma, Linux, VS Code
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience */}
+      <section
+        className="bg-canvas-light text-ink px-6"
+        style={{ paddingTop: "var(--spacing-section-lg)", paddingBottom: "var(--spacing-section-lg)" }}
+      >
+        <div className="mx-auto max-w-3xl">
+          <h2 className="mb-8 type-display-sm text-ink">
+            Where I&apos;ve been
+          </h2>
+          <div className="space-y-8">
+            <div>
+              <div className="mb-2 flex items-baseline justify-between gap-4">
+                <h3 className="type-heading-sm text-ink">Frontend Developer</h3>
+                <span className="type-caption text-mute">2023 — Present</span>
+              </div>
+              <p className="mb-2 type-body-sm text-ink-soft">Company Name</p>
+              <p className="type-body text-ink-soft">
+                Rebuilt the frontend from legacy React to Next.js App Router,
+                cutting page load from 4 seconds to 1.2 seconds. Built a
+                component library used across 3 product teams.
+              </p>
+            </div>
+            <div>
+              <div className="mb-2 flex items-baseline justify-between gap-4">
+                <h3 className="type-heading-sm text-ink">Junior Developer</h3>
+                <span className="type-caption text-mute">2021 — 2023</span>
+              </div>
+              <p className="mb-2 type-body-sm text-ink-soft">Company Name</p>
+              <p className="type-body text-ink-soft">
+                Developed a customer-facing dashboard serving 10k+ daily users.
                 Reduced API response times by 35% through query optimization
-                and caching strategies
-              </li>
-            </ul>
+                and caching.
+              </p>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section
+        className="bg-canvas text-on-primary px-6"
+        style={{ paddingTop: "var(--spacing-section-lg)", paddingBottom: "var(--spacing-section-lg)" }}
+      >
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="mb-4 type-display-sm text-on-primary">
+            Think we&apos;d work well together?
+          </h2>
+          <p className="mb-8 type-body text-ash">
+            I&apos;m always interested in projects that need to ship.
+          </p>
+          <Link href="/contact" className="btn-primary min-h-[48px]">
+            Let&apos;s Talk
+          </Link>
         </div>
       </section>
     </div>

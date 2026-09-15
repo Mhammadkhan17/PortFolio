@@ -1,0 +1,44 @@
+---
+title: "E-Commerce Checkout"
+description: "Reduced checkout drop-off by 23% by redesigning a 12-field form into 3 steps"
+tech: ["React", "Node.js", "Stripe", "PostgreSQL"]
+category: "fullstack"
+demo: "#"
+github: "#"
+outcomeHeadline: "Reduced checkout drop-off by 23% for an online retailer"
+industry: "E-Commerce"
+context: "The client's checkout flow had a 68% drop-off rate. Users were adding items to cart but abandoning before payment. The existing checkout was a single monolithic page with 12 form fields."
+approach:
+  - "Broke checkout into 3 steps with progress indicator"
+  - "Added guest checkout option (previously required signup)"
+  - "Implemented Stripe Checkout for PCI compliance without complexity"
+metric: "23%"
+metricLabel: "fewer checkout abandonments"
+clientQuote: "The new checkout paid for itself in the first week. We went from losing 7 out of 10 customers to losing 5."
+clientName: "Marcus Rodriguez"
+clientRole: "Head of Product, ShopLayer"
+date: "2026-03"
+duration: "4 weeks"
+---
+
+## The Problem
+
+The client's e-commerce checkout had a 68% drop-off rate. Users were adding items to cart but abandoning before completing payment. The existing checkout was a single page with 12 form fields — shipping, billing, payment, account creation — all visible at once.
+
+User research showed that the wall of fields was overwhelming. Many users didn't want to create an account just to buy something. And the manual credit card entry was a friction point for mobile users.
+
+## The Approach
+
+I broke the checkout into 3 steps with a progress indicator: (1) shipping info, (2) payment, (3) review. Each step showed only the relevant fields, reducing cognitive load.
+
+I added a guest checkout option — previously, account creation was required. This alone removed a major friction point. For users who did want accounts, I added an optional "Save this info for next time" checkbox after payment.
+
+For payment, I replaced the custom credit card form with Stripe Checkout. This handled PCI compliance automatically and added Apple Pay / Google Pay support for mobile users. The integration took 2 days instead of the 2 weeks a custom solution would have required.
+
+## The Result
+
+Checkout drop-off fell from 68% to 45% — a 23% improvement. Mobile conversions increased by 31% (Apple Pay / Google Pay effect). The client reported that the new checkout "paid for itself in the first week."
+
+## Tech Stack
+
+React, Node.js, Stripe, PostgreSQL

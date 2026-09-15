@@ -1,0 +1,44 @@
+---
+title: "Fintech MVP"
+description: "Shipped a production MVP in 6 weeks — optimized API from 800ms to 320ms"
+tech: ["Next.js", "Node.js", "PostgreSQL", "Redis"]
+category: "fullstack"
+demo: "#"
+github: "#"
+outcomeHeadline: "Shipped a production MVP in 6 weeks for a fintech startup"
+industry: "SaaS"
+context: "The client had a React frontend hitting a Node.js API that was taking 800ms per request. Users were dropping off during onboarding because the experience felt slow and unreliable."
+approach:
+  - "Migrated to connection pooling and added Redis caching"
+  - "Optimized N+1 queries and added database indexes"
+  - "Implemented optimistic UI updates for instant feedback"
+metric: "60%"
+metricLabel: "faster API response time"
+clientQuote: "Working with them was exactly what we needed. They took a messy codebase and turned it into something we could actually build on."
+clientName: "Sarah Chen"
+clientRole: "CTO, TechFlow Inc."
+date: "2026-06"
+duration: "6 weeks"
+---
+
+## The Problem
+
+The client came to me with a working prototype that was falling apart under real usage. Their React frontend was hitting a Node.js API that took 800ms per request. Users were abandoning onboarding because the experience felt sluggish and unreliable.
+
+The codebase had grown organically — no connection pooling, N+1 queries everywhere, and no caching layer. The database was doing more work than it needed to.
+
+## The Approach
+
+I started by profiling the API. The 800ms response time was coming from three sources: connection overhead (each request opened a new database connection), N+1 queries (the user endpoint was making 15 separate queries for related data), and no caching (every request hit the database).
+
+I migrated to connection pooling, which cut the connection overhead from 200ms to 20ms. Then I optimized the N+1 queries using eager loading and batch operations. Finally, I added Redis caching for frequently accessed data — user profiles, permissions, and feature flags.
+
+On the frontend, I implemented optimistic UI updates. When a user toggled a setting, the UI updated immediately while the API call happened in the background. This made the app feel instant, even before the backend was fully optimized.
+
+## The Result
+
+API response time dropped from 800ms to 320ms — a 60% improvement. Onboarding completion rate increased by 40% within the first two weeks. The client reported that users stopped complaining about speed.
+
+## Tech Stack
+
+Next.js, Node.js, PostgreSQL, Redis

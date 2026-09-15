@@ -7,7 +7,6 @@ const TYPING_SPEED_MAX = 80;
 const PAUSE_AFTER_TYPING = 300;
 const PAUSE_AFTER_OUTPUT = 800;
 const PAUSE_BEFORE_PROMPT = 400;
-const LOOP_DELAY = 2000;
 const MAX_VISIBLE_LINES = 10;
 
 type Line = {
@@ -175,18 +174,12 @@ export function Terminal() {
 
       if (isCancelled) return;
 
-      // Phase 5: Next command or loop
+      // Phase 5: Next command or done
       const nextIndex = commandIndex + 1;
       if (nextIndex < COMMANDS.length) {
         runCommand(nextIndex);
       } else {
-        await wait(LOOP_DELAY);
-        if (isCancelled) return;
-        setLines([]);
-        setCurrentTyping("");
-        setShowPrompt(false);
-        await wait(500);
-        if (!isCancelled) runCommand(0);
+        setShowPrompt(true);
       }
     };
 

@@ -1,8 +1,15 @@
 import Link from "next/link";
 
+const navLinks = [
+  { href: "/#work", label: "Work" },
+  { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+];
+
 const socialLinks = [
   {
-    href: "https://github.com/yourname",
+    href: "https://github.com/dearidev",
     label: "GitHub",
     icon: (
       <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -15,7 +22,7 @@ const socialLinks = [
     ),
   },
   {
-    href: "https://linkedin.com/in/yourname",
+    href: "https://linkedin.com/in/dearidev",
     label: "LinkedIn",
     icon: (
       <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -24,16 +31,7 @@ const socialLinks = [
     ),
   },
   {
-    href: "https://twitter.com/yourname",
-    label: "Twitter",
-    icon: (
-      <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-      </svg>
-    ),
-  },
-  {
-    href: "mailto:hello@yourname.dev",
+    href: "mailto:hello@dearidev.dev",
     label: "Email",
     icon: (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,32 +46,11 @@ const socialLinks = [
   },
 ];
 
-const footerColumns = [
-  {
-    eyebrow: "Product",
-    links: [
-      { href: "#features", label: "Features" },
-      { href: "#pricing", label: "Pricing" },
-      { href: "/projects", label: "Projects" },
-      { href: "/blog", label: "Blog" },
-    ],
-  },
-  {
-    eyebrow: "Company",
-    links: [
-      { href: "/about", label: "About" },
-      { href: "/contact", label: "Contact" },
-      { href: "/privacy", label: "Privacy" },
-      { href: "/terms", label: "Terms" },
-    ],
-  },
-];
-
 export function Footer() {
   return (
-    <footer className="bg-canvas text-on-primary px-6 py-12 md:py-16 lg:py-24">
+    <footer className="bg-canvas text-on-primary px-6 py-12 md:py-16">
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 text-on-primary">
@@ -84,30 +61,31 @@ export function Footer() {
               <span className="type-heading-sm text-on-primary">DE<span className="text-brand">AI</span>DEV</span>
             </Link>
             <p className="mt-4 type-caption text-ash">
-              Building modern web applications with clean code and thoughtful design.
+              Full-stack developer specializing in MVPs and production apps.
+            </p>
+            <p className="mt-2 type-caption text-brand">
+              Currently accepting Q3 2026 projects
             </p>
           </div>
 
-          {/* Link columns */}
-          {footerColumns.map((column) => (
-            <div key={column.eyebrow}>
-              <h4 className="mb-4 type-mono-caps text-mute">{column.eyebrow}</h4>
-              <ul className="space-y-1 md:space-y-2">
-                {column.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="type-caption text-on-primary transition-colors hover:text-brand min-h-[44px] inline-flex items-center"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Navigation */}
+          <div>
+            <h4 className="mb-4 type-mono-caps text-mute">Navigation</h4>
+            <ul className="space-y-1 md:space-y-2">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="type-caption text-on-primary transition-colors hover:text-brand min-h-[44px] inline-flex items-center"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          {/* Connect column with icons */}
+          {/* Connect */}
           <div>
             <h4 className="mb-4 type-mono-caps text-mute">Connect</h4>
             <ul className="space-y-1 md:space-y-2">
@@ -128,17 +106,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-hairline-soft pt-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
-          <p className="type-meta text-mute">
+        <div className="mt-8 border-t border-hairline-soft pt-8">
+          <p className="type-meta text-mute text-center md:text-left">
             &copy; {new Date().getFullYear()} DEAIDEV. All rights reserved.
           </p>
-          <div className="flex items-center gap-2">
-            <span
-              className="inline-block rounded-full bg-brand"
-              style={{ width: "8px", height: "8px" }}
-            />
-            <span className="type-meta text-mute">DEAIDEV</span>
-          </div>
         </div>
       </div>
     </footer>

@@ -12,6 +12,17 @@ export interface Project {
   category: string;
   demo: string;
   github: string;
+  outcomeHeadline?: string;
+  industry?: string;
+  context?: string;
+  approach?: string[];
+  metric?: string;
+  metricLabel?: string;
+  clientQuote?: string;
+  clientName?: string;
+  clientRole?: string;
+  date?: string;
+  duration?: string;
 }
 
 export function getAllProjects(): Project[] {
@@ -47,6 +58,17 @@ export function getProjectBySlug(slug: string) {
     category: data.category,
     demo: data.demo,
     github: data.github,
+    outcomeHeadline: data.outcomeHeadline,
+    industry: data.industry,
+    context: data.context,
+    approach: data.approach,
+    metric: data.metric,
+    metricLabel: data.metricLabel,
+    clientQuote: data.clientQuote,
+    clientName: data.clientName,
+    clientRole: data.clientRole,
+    date: data.date,
+    duration: data.duration,
     body,
   };
 }

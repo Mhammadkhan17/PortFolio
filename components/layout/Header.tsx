@@ -4,10 +4,9 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 
 const navLinks = [
-  { href: "#features", label: "Features" },
-  { href: "#projects", label: "Projects" },
-  { href: "#testimonials", label: "Testimonials" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/#work", label: "Work" },
+  { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export function Header() {
@@ -72,17 +71,17 @@ export function Header() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="type-button-lg text-on-primary transition-colors hover:text-ash"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a href="#contact" className="btn-primary">
-            Get Started Free
-          </a>
+          <Link href="/contact" className="btn-primary">
+            Let&apos;s Talk
+          </Link>
         </nav>
 
         {/* Mobile hamburger */}
@@ -127,22 +126,22 @@ export function Header() {
       >
         <nav className="bg-canvas px-6 py-4 border-t border-hairline-soft">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
               className="block py-3 min-h-[44px] flex items-center type-button-lg text-on-primary transition-colors hover:text-ash"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contact"
+          <Link
+            href="/contact"
             onClick={() => setMenuOpen(false)}
             className="btn-primary mt-4 block w-full text-center min-h-[48px]"
           >
-            Get Started Free
-          </a>
+            Let&apos;s Talk
+          </Link>
         </nav>
       </div>
     </header>

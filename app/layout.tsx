@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | DEAIDEV",
   },
   description:
-    "Full-stack developer portfolio showcasing projects in frontend, backend, and cloud infrastructure. Building modern web applications with cutting-edge technologies.",
+    "Full-stack developer specializing in MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL.",
   keywords: [
     "full-stack developer",
     "web developer",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "DEAIDEV — Full-Stack Developer",
     description:
-      "Full-stack developer portfolio showcasing projects in frontend, backend, and cloud infrastructure.",
+      "Full-stack developer specializing in MVPs and production apps for early-stage startups.",
     type: "website",
     locale: "en_US",
     siteName: "DEAIDEV Portfolio",
@@ -59,8 +59,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "DEAIDEV — Full-Stack Developer",
     description:
-      "Full-stack developer portfolio showcasing projects in frontend, backend, and cloud infrastructure.",
-    images: ["/og.png"],
+      "Full-stack developer specializing in MVPs and production apps for early-stage startups.",
   },
   robots: {
     index: true,
@@ -80,10 +79,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     url: "https://dearidev.dev",
     sameAs: ["https://github.com/dearidev", "https://linkedin.com/in/dearidev"],
     knowsAbout: [
-      "Web Development",
-      "Frontend Engineering",
-      "Backend Development",
-      "Cloud Infrastructure",
+      "React",
+      "Next.js",
+      "Node.js",
+      "PostgreSQL",
+      "TypeScript",
     ],
   };
 
@@ -100,8 +100,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="dark">
           <Scripts />
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-marketing focus:bg-brand focus:px-4 focus:py-2 focus:text-sm focus:text-on-primary focus:outline-none"
+          >
+            Skip to content
+          </a>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer />
           <div id="offline-banner" className="offline-banner">
             You are currently offline
