@@ -2,10 +2,11 @@ export default function About() {
   return (
     <div className="mx-auto max-w-[65ch] px-6 py-16 md:py-32">
       <section className="mb-16">
-        <h1 className="mb-8 text-[clamp(2rem,5vw,3rem)] font-bold tracking-tight">
+        <p className="mb-2 type-mono-eyebrow text-ash">About</p>
+        <h1 className="mb-8 type-display-sm text-on-primary">
           About
         </h1>
-        <div className="space-y-4 text-base leading-relaxed">
+        <div className="space-y-4 type-body text-ash">
           <p>
             I build things for the web. Most of my work involves frontend
             development with React and TypeScript, though I enjoy working across
@@ -26,46 +27,46 @@ export default function About() {
         </div>
       </section>
 
-      <section className="mb-16 border-t border-border pt-16">
-        <h2 className="mb-6 text-sm text-grey">Skills</h2>
+      <section className="mb-16 border-t border-hairline-soft pt-16">
+        <p className="mb-6 type-mono-eyebrow text-mute">Skills</p>
         <div className="space-y-4">
           <div>
-            <h3 className="mb-2 text-sm font-medium">Frontend</h3>
-            <p className="text-sm text-grey">
+            <h3 className="mb-2 type-body-sm font-medium text-on-primary">Frontend</h3>
+            <p className="type-body-sm text-ash">
               React, Next.js, TypeScript, Tailwind CSS, HTML/CSS
             </p>
           </div>
           <div>
-            <h3 className="mb-2 text-sm font-medium">Backend</h3>
-            <p className="text-sm text-grey">
+            <h3 className="mb-2 type-body-sm font-medium text-on-primary">Backend</h3>
+            <p className="type-body-sm text-ash">
               Node.js, PostgreSQL, Prisma, REST APIs
             </p>
           </div>
           <div>
-            <h3 className="mb-2 text-sm font-medium">Tools</h3>
-            <p className="text-sm text-grey">
+            <h3 className="mb-2 type-body-sm font-medium text-on-primary">Tools</h3>
+            <p className="type-body-sm text-ash">
               Git, VS Code, Figma, Linux, Docker
             </p>
           </div>
           <div>
-            <h3 className="mb-2 text-sm font-medium">Cloud</h3>
-            <p className="text-sm text-grey">
+            <h3 className="mb-2 type-body-sm font-medium text-on-primary">Cloud</h3>
+            <p className="type-body-sm text-ash">
               Vercel, AWS, Cloudflare
             </p>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-border pt-16">
-        <h2 className="mb-6 text-sm text-grey">Experience</h2>
+      <section className="border-t border-hairline-soft pt-16">
+        <p className="mb-6 type-mono-eyebrow text-mute">Experience</p>
         <div className="space-y-8">
           <div>
             <div className="mb-2 flex items-baseline justify-between gap-4">
-              <h3 className="font-medium">Frontend Developer</h3>
-              <span className="text-xs text-grey">2023 — Present</span>
+              <h3 className="type-body-sm font-medium text-on-primary">Frontend Developer</h3>
+              <span className="type-meta text-mute">2023 — Present</span>
             </div>
-            <p className="mb-2 text-sm text-grey">Company Name</p>
-            <ul className="list-inside list-disc space-y-1 text-sm text-grey">
+            <p className="mb-2 type-body-sm text-ash">Company Name</p>
+            <ul className="list-inside list-disc space-y-1 type-body-sm text-ash">
               <li>
                 Led migration from legacy React to Next.js App Router, improving
                 page load performance by 40%
@@ -78,11 +79,11 @@ export default function About() {
           </div>
           <div>
             <div className="mb-2 flex items-baseline justify-between gap-4">
-              <h3 className="font-medium">Junior Developer</h3>
-              <span className="text-xs text-grey">2021 — 2023</span>
+              <h3 className="type-body-sm font-medium text-on-primary">Junior Developer</h3>
+              <span className="type-meta text-mute">2021 — 2023</span>
             </div>
-            <p className="mb-2 text-sm text-grey">Company Name</p>
-            <ul className="list-inside list-disc space-y-1 text-sm text-grey">
+            <p className="mb-2 type-body-sm text-ash">Company Name</p>
+            <ul className="list-inside list-disc space-y-1 type-body-sm text-ash">
               <li>
                 Developed and maintained customer-facing dashboard serving 10k+
                 daily active users

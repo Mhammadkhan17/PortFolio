@@ -1,5 +1,81 @@
 # Changelog
 
+## 2026-09-15 (Design-01 Branch)
+
+### Design System Implementation — applied DESIGN.md across entire project
+
+#### Foundation (globals.css)
+- Replaced cyan/developer aesthetic with editorial dark design system
+- Added complete color token system: canvas (#0b0b0b), canvas-soft (#212121), canvas-light (#ffffff), brand (#f36458)
+- Added typography scale: display-mega (112px) through mono-micro (10px) with aggressive negative tracking
+- Added spacing tokens: xxs (4px) through section-lg (96px)
+- Added border-radius tokens: app-xs (3px) through full (99999px)
+- Added utility classes: .type-display-mega, .type-mono-eyebrow, .type-mono-caps, etc.
+- Added responsive type scaling at 768px breakpoint
+- Fixed tech-badge font-size (was 0px, now 10px)
+
+#### Typography (layout.tsx)
+- Replaced JetBrains Mono with Inter (waldenburgNormal substitute) as display/body font
+- Added IBM Plex Mono for eyebrows/captions only
+- Both fonts loaded via next/font/google with CSS variable references
+
+#### Navigation (Header.tsx)
+- Applied nav-bar-dark pattern: sticky, canvas bg, 64px height
+- Added brand-dot (12px coral-red) + "DEAI" + "DEV" wordmark
+- Nav links: type-button-lg, text-on-primary
+- CTA: btn-primary (white pill on dark)
+- Mobile: hamburger with slide animation, 44px touch targets
+
+#### Home Page (page.tsx)
+- Hero: display-mega headline with mono-eyebrow, editorial layout
+- Features: canvas-soft cards with rounded.marketing, mono-eyebrows
+- Projects: canvas-soft cards with rounded.marketing
+- Testimonials: canvas-soft cards with rounded.marketing
+- Pricing: polarity flip (dark→light section), featured tier uses bg-ink inversion
+- CTA: dark section with mono-eyebrow
+
+#### Footer (Footer.tsx)
+- Applied footer pattern: canvas bg, mono-caps column headings
+- Brand-dot + wordmark with "AI" bold emphasis
+- Links: text-on-primary with hover:text-brand accent
+- Social icons inline with text labels (visible on all viewports)
+- Mobile: 2-col grid, dedicated social icons row
+- Responsive padding: py-12 → py-16 → py-24
+
+#### Content Pages
+- About: type-display-sm heading, type-mono-eyebrow labels
+- Contact: type-display-sm heading, text-link-blue-soft email
+- Blog: type-display-sm heading, text-brand hover on titles
+- Projects: type-display-sm heading, type-mono-micro tech tags
+- Blog/Project detail: type-mono-eyebrow labels, text-link-blue-soft links
+- Error/NotFound: type-heading-md, text-link-blue-soft actions
+
+#### Terminal Component (Terminal.tsx)
+- Redesigned flow with proper state machine: prompt → typing → entering → output
+- Shows blinking prompt ($ _) before each command
+- Types command character by character
+- Brief pause after typing (Enter press feel)
+- Output appears after command finalized
+- Simplified ls -la output for mobile (shorter lines)
+- Responsive sizing: smaller text/padding/height on mobile
+- Replaced old color classes with DESIGN.md tokens
+
+#### Brand Updates
+- Renamed "Saniti" → "DEAIDEV" across all files
+- Logo: "DE" + "AI" (bold) + "DEV" for visual distinction
+- Updated metadata, JSON-LD, og.svg
+
+#### Bug Fixes
+- Removed global `footer a` CSS selector that forced blue color on all footer links
+- Fixed Terminal duplicate command display (command was shown before typing started)
+- Fixed tech-badge font-size using radius token instead of font size
+
+#### Verification
+- Build: pass (Turbopack)
+- TypeScript: pass (no errors)
+- ESLint: pass (no warnings)
+- All old color classes removed (text-grey, text-accent, border-border, text-cyan, etc.)
+
 ## 2026-09-15
 
 - Mobile Responsive Implementation — complete mobile-first redesign

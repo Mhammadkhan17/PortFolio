@@ -1,22 +1,29 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Scripts } from "@/components/layout/Scripts";
 import "./globals.css";
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-dev",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yourname.dev"),
+  metadataBase: new URL("https://dearidev.dev"),
   title: {
-    default: "Your Name — Full-Stack Developer",
-    template: "%s | Your Name",
+    default: "DEAIDEV — Full-Stack Developer",
+    template: "%s | DEAIDEV",
   },
   description:
     "Full-stack developer portfolio showcasing projects in frontend, backend, and cloud infrastructure. Building modern web applications with cutting-edge technologies.",
@@ -33,24 +40,24 @@ export const metadata: Metadata = {
     "cloud",
   ],
   openGraph: {
-    title: "Your Name — Full-Stack Developer",
+    title: "DEAIDEV — Full-Stack Developer",
     description:
       "Full-stack developer portfolio showcasing projects in frontend, backend, and cloud infrastructure.",
     type: "website",
     locale: "en_US",
-    siteName: "Your Name Portfolio",
+    siteName: "DEAIDEV Portfolio",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Your Name — Full-Stack Developer",
+        alt: "DEAIDEV — Full-Stack Developer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your Name — Full-Stack Developer",
+    title: "DEAIDEV — Full-Stack Developer",
     description:
       "Full-stack developer portfolio showcasing projects in frontend, backend, and cloud infrastructure.",
     images: ["/og.png"],
@@ -60,7 +67,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: "https://yourname.dev",
+    canonical: "https://dearidev.dev",
   },
 };
 
@@ -68,10 +75,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Your Name",
+    name: "DEAIDEV",
     jobTitle: "Full-Stack Developer",
-    url: "https://yourname.dev",
-    sameAs: ["https://github.com/yourname", "https://linkedin.com/in/yourname"],
+    url: "https://dearidev.dev",
+    sameAs: ["https://github.com/dearidev", "https://linkedin.com/in/dearidev"],
     knowsAbout: [
       "Web Development",
       "Frontend Engineering",
@@ -81,7 +88,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   };
 
   return (
-    <html lang="en" className={`${jetbrainsMono.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

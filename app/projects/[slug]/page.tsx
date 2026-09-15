@@ -25,27 +25,28 @@ export default async function ProjectPage({
     <div className="mx-auto max-w-[65ch] px-6 py-32">
       <Link
         href="/projects"
-        className="mb-8 inline-block text-sm text-grey transition-colors hover:text-black dark:hover:text-white"
+        className="mb-8 inline-block type-body-sm text-ash transition-colors hover:text-on-primary"
       >
         ← All Projects
       </Link>
 
       <article>
-        <h1 className="mb-2 text-[clamp(2rem,5vw,3rem)] font-bold tracking-tight">
+        <p className="mb-2 type-mono-eyebrow text-mute">Project</p>
+        <h1 className="mb-2 type-display-sm text-on-primary">
           {project.title}
         </h1>
-        <p className="mb-4 text-grey">{project.description}</p>
+        <p className="mb-4 type-body text-ash">{project.description}</p>
 
         <div className="mb-8 flex gap-3">
           <Link
             href={project.demo}
-            className="text-sm text-accent transition-opacity hover:opacity-80"
+            className="type-body-sm text-link-blue-soft transition-opacity hover:opacity-80"
           >
             Live Demo
           </Link>
           <Link
             href={project.github}
-            className="text-sm text-accent transition-opacity hover:opacity-80"
+            className="type-body-sm text-link-blue-soft transition-opacity hover:opacity-80"
           >
             Source Code
           </Link>
@@ -53,7 +54,7 @@ export default async function ProjectPage({
 
         <div className="mb-8 flex gap-2">
           {project.tech.map((t: string) => (
-            <span key={t} className="text-xs text-grey/60">
+            <span key={t} className="type-mono-micro text-mute">
               {t}
             </span>
           ))}

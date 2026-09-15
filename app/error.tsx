@@ -9,11 +9,11 @@ export default function Error({
 }) {
   return (
     <div className="mx-auto max-w-[65ch] px-6 py-32">
-      <h1 className="mb-4 text-2xl font-bold">Something went wrong</h1>
-      <p className="mb-8 text-grey">{error.message}</p>
+      <h1 className="mb-4 type-heading-md text-on-primary">Something went wrong</h1>
+      <p className="mb-8 type-body text-ash">{error.message}</p>
       <button
         onClick={() => reset()}
-        className="text-sm text-accent transition-opacity hover:opacity-80"
+        className="type-body-sm text-link-blue-soft transition-opacity hover:opacity-80"
       >
         Try again
       </button>

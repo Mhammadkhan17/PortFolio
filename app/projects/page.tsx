@@ -19,7 +19,8 @@ export default async function ProjectsPage({
 
   return (
     <div className="mx-auto max-w-[65ch] px-6 py-16 md:py-32">
-      <h1 className="mb-8 text-[clamp(2rem,5vw,3rem)] font-bold tracking-tight">
+      <p className="mb-2 type-mono-eyebrow text-ash">Projects</p>
+      <h1 className="mb-8 type-display-sm text-on-primary">
         Projects
       </h1>
 
@@ -28,10 +29,10 @@ export default async function ProjectsPage({
           <Link
             key={cat}
             href={cat === "all" ? "/projects" : `/projects?category=${cat}`}
-            className={`text-sm transition-colors ${
+            className={`type-body-sm transition-colors ${
               category === cat
-                ? "text-black dark:text-white"
-                : "text-grey hover:text-black dark:hover:text-white"
+                ? "text-on-primary"
+                : "text-mute hover:text-on-primary"
             }`}
           >
             {cat}
@@ -45,29 +46,29 @@ export default async function ProjectsPage({
             <div className="flex items-baseline justify-between gap-4">
               <Link
                 href={`/projects/${project.slug}`}
-                className="font-medium transition-colors hover:text-accent"
+                className="type-body-sm font-medium text-on-primary transition-colors hover:text-brand"
               >
                 {project.title}
               </Link>
               <div className="flex gap-3">
                 <Link
                   href={project.demo}
-                  className="text-xs text-grey transition-colors hover:text-accent"
+                  className="type-meta text-mute transition-colors hover:text-on-primary"
                 >
                   demo
                 </Link>
                 <Link
                   href={project.github}
-                  className="text-xs text-grey transition-colors hover:text-accent"
+                  className="type-meta text-mute transition-colors hover:text-on-primary"
                 >
                   code
                 </Link>
               </div>
             </div>
-            <p className="mt-1 text-sm text-grey">{project.description}</p>
+            <p className="mt-1 type-body-sm text-ash">{project.description}</p>
             <div className="mt-2 flex gap-2">
               {project.tech.map((t: string) => (
-                <span key={t} className="text-xs text-grey/60">
+                <span key={t} className="type-mono-micro text-mute">
                   {t}
                 </span>
               ))}

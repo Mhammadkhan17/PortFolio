@@ -25,17 +25,18 @@ export default async function BlogPostPage({
     <div className="mx-auto max-w-[65ch] px-6 py-32">
       <Link
         href="/blog"
-        className="mb-8 inline-block text-sm text-grey transition-colors hover:text-black dark:hover:text-white"
+        className="mb-8 inline-block type-body-sm text-ash transition-colors hover:text-on-primary"
       >
         ← All Posts
       </Link>
 
       <article>
         <header className="mb-8">
-          <h1 className="text-[clamp(2rem,5vw,3rem)] font-bold tracking-tight">
+          <p className="mb-2 type-mono-eyebrow text-mute">Blog Post</p>
+          <h1 className="type-display-sm text-on-primary">
             {post.title}
           </h1>
-          <div className="mt-4 flex items-center gap-4 text-sm text-grey">
+          <div className="mt-4 flex items-center gap-4 type-body-sm text-mute">
             <time>{new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time>
             <span>{post.readingTime}</span>
           </div>
