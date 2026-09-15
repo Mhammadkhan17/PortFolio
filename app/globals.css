@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+:root {
+  --black: #000000;
+  --dark-bg: #1A1A1A;
+  --cyan: #00BCD4;
+  --cyan-light: #00E5FF;
+  --white: #FFFFFF;
+  --light-grey: #E0E0E0;
+  --charcoal: #333333;
+  --grey: #71717a;
+  --border: #333333;
+  --accent: #00BCD4;
+}
+
+@theme inline {
+  --color-black: var(--black);
+  --color-dark-bg: var(--dark-bg);
+  --color-cyan: var(--cyan);
+  --color-cyan-light: var(--cyan-light);
+  --color-white: var(--white);
+  --color-light-grey: var(--light-grey);
+  --color-charcoal: var(--charcoal);
+  --color-grey: var(--grey);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --font-stack: var(--font-dev), 'JetBrains Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-stack);
+  line-height: 1.6;
+}
+
+* {
+  border-color: var(--border);
+}
+
+/* Links - non-button anchors get cyan */
+p a,
+article a,
+footer a:not(.btn-primary):not(.btn-secondary) {
+  color: var(--cyan);
+}
+
+p a:hover,
+article a:hover,
+footer a:not(.btn-primary):not(.btn-secondary):hover {
+  opacity: 0.8;
+}
+
+/* Button base */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--black);
+  color: var(--white);
+  border: 1px solid var(--charcoal);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 200ms ease-out;
+}
+
+.btn-primary:hover {
+  background: var(--cyan);
+  color: var(--black);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid var(--charcoal);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 200ms ease-out;
+}
+
+.btn-secondary:hover {
+  background: rgba(51, 51, 51, 0.3);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* Animated underline effect — uses transform, not width */
+.underline-animated {
+  position: relative;
+  display: inline-block;
+}
+
+.underline-animated::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.underline-animated:hover::after {
+  transform: scaleX(1);
+}
+
+/* Tech badge styling */
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border: 1px solid var(--cyan);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--cyan);
+  background: rgba(0, 188, 212, 0.1);
+  transition: background 200ms ease-out, transform 200ms ease-out;
+}
+
+.tech-badge:hover {
+  background: rgba(0, 188, 212, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Card hover effect — spec: 200ms, max 8px shadow */
+.card-hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s infinite;
+}
+
+/* Typing animation */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typing-animation {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 2s steps(40) forwards;
+}
+
+/* Fade in animation — spec: 420ms, 16px translate */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.42s ease-out forwards;
+}
+
+/* Slide in from left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.42s ease-out forwards;
+}
+
+/* Grid pattern background */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 188, 212, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 188, 212, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Focus-visible ring for all interactive elements */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-slide-in-left,
+  .typing-animation,
+  .cursor-blink {
+    animation: none;
+    opacity: 1;
+  }
+}

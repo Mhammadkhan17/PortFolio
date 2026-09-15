@@ -1,0 +1,106 @@
+# Changelog
+
+## 2026-09-14
+
+- Initialized .git repository
+- Added grill-me skill for plan sharpening
+- Defined project architecture and tech stack
+- Created plan.md with implementation phases
+- Created todo.md with task checkboxes
+- Created changelog.md
+- Stress tested plan using sequential-thinking (6 issues found)
+- Researched Next.js 16.3 release notes and migration guide
+- Updated plan.md: Next.js 16.3, Turbopack, proxy.ts, CSS animations, accessibility
+- Updated todo.md: Added Phase 0, expanded Phase 7 with a11y tasks
+- Researched portfolio best practices (2026 guidelines)
+- Updated plan.md: CASE project format, skills by category, Person schema, Lighthouse 95+
+- Updated todo.md: Project CASE structure, experience section, 3-5 curated projects
+- Verified create-next-app flags via Context7 docs (default: typescript, tailwind, app)
+- Confirmed proxy.ts not needed for portfolio (no auth/redirects)
+- Simplified Phase 0: explicit --eslint flag, strict mode manual
+- Updated Phase 1: client vs server component split
+- Updated Phase 6: GitHub + LinkedIn only
+- Loaded frontend-design skill, created design plan
+- Revised design plan: true black/white, violet accent, Geist font, left-aligned
+- Phase 0 Complete:
+  - Initialized Next.js 16.3.5 project (portfolio-app/)
+  - TypeScript strict mode enabled by default
+  - Installed dependencies: next-themes, next-mdx-remote, rehype-pretty-code
+  - Created folder structure: components/, content/, lib/, public/images/
+  - Moved plan.md, todo.md, changelog.md, AGENTS.md into project
+- Phase 1 Complete:
+  - Updated globals.css with design tokens (true black/white, violet accent, dark mode)
+  - Updated layout.tsx with ThemeProvider, Header, Footer
+  - Created Header component with nav links, mobile menu, theme toggle
+  - Created Footer component with GitHub + LinkedIn links
+  - Created minimal Hero section in page.tsx
+  - Build successful (Turbopack)
+- Phase 2 Complete:
+  - Updated globals.css with fade-in animations and reduced-motion support
+  - Updated page.tsx with hero section (name + role + CTAs)
+  - Added featured projects preview section (3 placeholder projects)
+  - Added CSS entrance animations with staggered delays
+  - Build successful (Turbopack)
+- Phase 3 Complete:
+  - Created About page (app/about/page.tsx)
+  - Added bio section (3 paragraphs, placeholder content)
+  - Added Skills section grouped by category (Frontend, Backend, Tools, Cloud)
+  - Added Experience section (2 roles with impact-focused bullets)
+  - Build successful (Turbopack)
+- Phase 4 Complete:
+  - Created projects listing page with category filter (URL search params)
+  - Created lib/projects.ts utility for reading MDX files
+  - Created project detail page with MDX rendering and CASE format
+  - Added 3 sample projects (frontend, full-stack, tool)
+  - Installed gray-matter for frontmatter parsing
+  - Build successful (Turbopack)
+- Phase 5 Complete:
+  - Created blog listing page
+  - Created blog post detail page with MDX rendering
+  - Created lib/blog.ts utility for reading MDX files
+  - Added reading time estimation (200 words/min)
+  - Added 1 sample blog post (building-this-portfolio.mdx)
+  - Build successful (Turbopack)
+- Phase 6 Complete:
+  - Created contact page (app/contact/page.tsx)
+  - Added mailto link with pre-filled subject/body
+  - Added social links: GitHub, LinkedIn
+  - Build successful (Turbopack)
+- Phase 7 Complete:
+  - Updated layout.tsx with SEO metadata (title, description, OG, Twitter)
+  - Added Person schema (JSON-LD) for SEO
+  - Created sitemap.ts and robots.ts (Next.js Metadata API)
+  - Created error.tsx and not-found.tsx (error boundaries)
+  - Build successful (Turbopack)
+- Critical Fixes:
+  - Configured rehype-pretty-code syntax highlighting in MDXRemote
+  - Added OG image to metadata (public/og.svg)
+  - Featured projects now import from shared lib/projects.ts
+  - Dates formatted to human-readable (Sep 14, 2026)
+  - Added metadataBase to fix OG image warning
+  - Removed template arrow from "All Projects" link
+  - Build successful (Turbopack, no warnings)
+
+## 2026-09-15
+
+- Phase 8: Landing Page — complete rewrite of page.tsx per DESIGN.md
+  - Replaced minimal hero with split-screen terminal aesthetic
+  - Added Features (zig-zag), Projects (grid), Testimonials, Pricing, CTA sections
+  - Built button system: .btn-primary (black bg/cyan hover), .btn-secondary (outline)
+  - Header: sticky nav with mobile hamburger and "Let's Talk" CTA
+  - Footer: SVG social icons, navigation links, copyright 2026
+  - Typography: JetBrains Mono via next/font, clamp() hero scale, 1.5rem H2
+  - Spacing: fluid clamp(4rem, 8vw, 8rem) for section vertical gaps
+  - Colors: black/dark-grey/cyan palette, design tokens in CSS variables
+  - Cards: default shadow 0 2px 12px rgba(0,0,0,0.06), 200ms hover transition
+  - Animations: 420ms entry (16px translate), 200ms hover, scaleX underline
+  - Accessibility: focus-visible rings, aria-labels, reduced-motion support
+  - SEO: full meta tags, Open Graph, Twitter card, JSON-LD, sitemap, robots
+  - Responsive: all layouts collapse below 768px, no horizontal overflow
+  - Removed redundant Tech Stack section (project cards show tech badges)
+  - Removed pulse-glow infinite animation
+  - Fixed button active state (translateY(0) for tactile press)
+  - Fixed transition restricted to transform/box-shadow (performance)
+  - Fixed entry animation translate distance (20px → 16px per spec)
+  - Added smooth scroll with scroll-padding-top for sticky header offset
+  - Build successful (Turbopack, lint clean)

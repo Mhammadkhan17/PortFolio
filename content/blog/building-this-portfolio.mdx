@@ -1,0 +1,36 @@
+---
+title: "How I Built This Portfolio"
+date: "2026-09-14"
+description: "A walkthrough of the design and technical decisions behind this portfolio site."
+tags: ["portfolio", "next.js", "design"]
+---
+
+Building a portfolio sounds simple. Pick a template, add your projects, deploy. But I wanted something that felt intentional — not another template clone that recruiters scroll past.
+
+## Why Next.js
+
+I chose Next.js 16.3 for the App Router and Turbopack. The server-first model means most of this site ships as static HTML, which is fast by default. No client-side JavaScript hydration for pages that don't need interactivity.
+
+The blog you're reading right now is rendered with MDX. Each post is a file in `content/blog/`, parsed at build time, and served as static HTML. No database, no CMS, no API calls.
+
+## Design decisions
+
+The design follows three principles:
+
+1. **True black and white** — no warm tints, no cream backgrounds. Just `#000` and `#fff`.
+2. **Violet accent** — used only for links and interactive elements. `#8b5cf6` in light mode, `#a78bfa` in dark.
+3. **No decoration** — no gradients, no shadows, no border-radius over 4px.
+
+Typography is Geist, the default Next.js font. It's designed for developer interfaces and it's free. No reason to reach for something fancier.
+
+## What I'd do differently
+
+If I rebuild this, I'd start with the content first. I spent too long on the layout before writing a single project case study. The content is what matters — the design is just the container.
+
+I'd also add analytics earlier. I have no idea if anyone visits this site, and by the time I add tracking, the data from the first few weeks will be gone.
+
+## Deploy
+
+The site deploys automatically on Vercel. Every push to `main` triggers a build. The whole thing takes about 30 seconds.
+
+If you're building a portfolio, my advice is: ship something ugly first, then iterate. A broken link on a live site teaches you more than a perfect wireframe.
