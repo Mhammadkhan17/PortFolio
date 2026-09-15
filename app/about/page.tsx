@@ -22,9 +22,9 @@ export default function About() {
             </p>
             <p>
               My job is to get you from &ldquo;almost done&rdquo; to
-              &ldquo;shipped&rdquo; — with code that won&apos;t haunt you at 3 AM.
-              I take early-stage products and turn them into deployable,
-              scalable applications.
+              &ldquo;shipped&rdquo; — with code that won&apos;t break in ways
+              you didn&apos;t see coming. I take early-stage products and turn
+              them into deployable, scalable applications.
             </p>
           </div>
         </div>
@@ -41,25 +41,27 @@ export default function About() {
           </h2>
           <div className="space-y-6 type-body text-ink-soft">
             <p>
-              <strong className="text-ink">I believe most MVPs are over-built.</strong>{" "}
+              <strong className="text-ink">Most MVPs are over-built.</strong>{" "}
               The best version of your product is version 1.1, not version 1.0.
               Ship the smallest thing that solves the real problem, then iterate
               based on what users actually do — not what you think they&apos;ll do.
             </p>
             <p>
-              <strong className="text-ink">I optimize for the person who inherits my code,</strong>{" "}
+              <strong className="text-ink">Every line of code I write is for the person who inherits it,</strong>{" "}
               not for the person who writes it. That means clear naming, simple
               abstractions, and documentation that explains the why — not just the
-              what. Your future self (or your next developer) will thank me.
+              what. I think about the developer who joins six months from now, picks
+              up the file, and needs to understand it without asking me. Your future
+              self (or your next developer) will thank me.
             </p>
             <p>
-              <strong className="text-ink">I think the best technical decision is usually the boring one.</strong>{" "}
+              <strong className="text-ink">The best technical decision is usually the boring one.</strong>{" "}
               The shiny new framework won&apos;t save a project, but a well-chosen
               database index will. I reach for proven tools and patterns, not
               whatever is trending on Hacker News.
             </p>
             <p>
-              <strong className="text-ink">I believe in honest conversation about tradeoffs.</strong>{" "}
+              <strong className="text-ink">I&apos;m honest about tradeoffs.</strong>{" "}
               Every technical decision is a tradeoff. I&apos;ll tell you what I
               recommend, why I recommend it, and what we&apos;re giving up. You
               make the final call — it&apos;s your product.
