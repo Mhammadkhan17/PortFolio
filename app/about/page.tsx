@@ -1,6 +1,6 @@
 export default function About() {
   return (
-    <div className="mx-auto max-w-[65ch] px-6 py-32">
+    <div className="mx-auto max-w-[65ch] px-6 py-16 md:py-32">
       <section className="mb-16">
         <h1 className="mb-8 text-[clamp(2rem,5vw,3rem)] font-bold tracking-tight">
           About

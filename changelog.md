@@ -1,5 +1,89 @@
 # Changelog
 
+## 2026-09-15
+
+- Mobile Responsive Implementation — complete mobile-first redesign
+  - Phase 1: Foundation & Global Mobile Styles
+    - Added mobile CSS utilities (.mobile-section, .mobile-touch-target, .mobile-carousel)
+    - Added z-index scale CSS variables for proper layering
+    - Added Safari 100vh bug fix (--vh custom property)
+    - Added print media query styles
+    - Added line-clamp utilities for content truncation
+    - Added skeleton loading animation styles
+    - Added offline banner styles
+  - Phase 2: Content Pages Optimization
+    - Reduced padding from py-32 to py-16 on mobile for all content pages
+    - Updated about, blog, projects, contact pages
+  - Phase 3: Hero Section
+    - Redesigned hero for mobile-first layout
+    - Terminal now visible on mobile (was hidden before)
+    - Stats section responsive (3-column grid)
+    - CTA buttons optimized for touch (min-height: 48px)
+  - Phase 4: Features Section
+    - Reduced icon sizes on mobile (80x80 → 48x48)
+    - Adjusted spacing for mobile
+  - Phase 5: Projects Grid
+    - Optimized cards for mobile display
+    - Touch-friendly tap areas
+  - Phase 6 & 7: Testimonials & Pricing
+    - Implemented single responsive section (not duplicate sections)
+    - Mobile: horizontal scroll carousel with CSS scroll-snap
+    - Desktop: 3-column grid layout
+    - Fixed duplicate content issue (was showing carousel AND grid)
+  - Phase 8: CTA Section
+    - Responsive spacing and typography
+    - Touch-friendly buttons
+  - Phase 9: Header & Navigation
+    - Enhanced mobile menu with smooth slide/fade animation
+    - Swipe-to-close gesture for mobile menu
+    - 44px touch targets for all interactive elements
+    - Z-index scale applied
+  - Phase 10: Footer
+    - Reduced padding on mobile
+    - Touch-friendly link targets (44px)
+  - Terminal Component (components/layout/Terminal.tsx)
+    - Interactive typing animation (50-80ms per character)
+    - 5 sequential commands: git status, npm run dev, ls -la, curl, echo
+    - Dynamic file dates and real-time clock
+    - Auto-scrolling with fixed height (280px)
+    - Fixed dimensions (max-w-[500px]) to prevent expansion
+    - Text truncation for overflow
+    - Loops continuously with 2-second delay
+  - Scripts Component (components/layout/Scripts.tsx)
+    - Safari 100vh bug fix
+    - Offline indicator functionality
+    - Proper cleanup of event listeners
+  - Hydration Fix
+    - Fixed script tag error (moved to client component)
+    - Fixed hydration mismatch in Terminal (lazy time initialization)
+    - Fixed lint error (setState in effect)
+  - Build & Lint
+    - All changes pass ESLint
+    - All changes pass TypeScript compilation
+    - Build successful with Turbopack
+
+- Phase 8: Landing Page — complete rewrite of page.tsx per DESIGN.md
+  - Replaced minimal hero with split-screen terminal aesthetic
+  - Added Features (zig-zag), Projects (grid), Testimonials, Pricing, CTA sections
+  - Built button system: .btn-primary (black bg/cyan hover), .btn-secondary (outline)
+  - Header: sticky nav with mobile hamburger and "Let's Talk" CTA
+  - Footer: SVG social icons, navigation links, copyright 2026
+  - Typography: JetBrains Mono via next/font, clamp() hero scale, 1.5rem H2
+  - Spacing: fluid clamp(4rem, 8vw, 8rem) for section vertical gaps
+  - Colors: black/dark-grey/cyan palette, design tokens in CSS variables
+  - Cards: default shadow 0 2px 12px rgba(0,0,0,0.06), 200ms hover transition
+  - Animations: 420ms entry (16px translate), 200ms hover, scaleX underline
+  - Accessibility: focus-visible rings, aria-labels, reduced-motion support
+  - SEO: full meta tags, Open Graph, Twitter card, JSON-LD, sitemap, robots
+  - Responsive: all layouts collapse below 768px, no horizontal overflow
+  - Removed redundant Tech Stack section (project cards show tech badges)
+  - Removed pulse-glow infinite animation
+  - Fixed button active state (translateY(0) for tactile press)
+  - Fixed transition restricted to transform/box-shadow (performance)
+  - Fixed entry animation translate distance (20px → 16px per spec)
+  - Added smooth scroll with scroll-padding-top for sticky header offset
+  - Build successful (Turbopack, lint clean)
+
 ## 2026-09-14
 
 - Initialized .git repository
@@ -80,27 +164,3 @@
   - Added metadataBase to fix OG image warning
   - Removed template arrow from "All Projects" link
   - Build successful (Turbopack, no warnings)
-
-## 2026-09-15
-
-- Phase 8: Landing Page — complete rewrite of page.tsx per DESIGN.md
-  - Replaced minimal hero with split-screen terminal aesthetic
-  - Added Features (zig-zag), Projects (grid), Testimonials, Pricing, CTA sections
-  - Built button system: .btn-primary (black bg/cyan hover), .btn-secondary (outline)
-  - Header: sticky nav with mobile hamburger and "Let's Talk" CTA
-  - Footer: SVG social icons, navigation links, copyright 2026
-  - Typography: JetBrains Mono via next/font, clamp() hero scale, 1.5rem H2
-  - Spacing: fluid clamp(4rem, 8vw, 8rem) for section vertical gaps
-  - Colors: black/dark-grey/cyan palette, design tokens in CSS variables
-  - Cards: default shadow 0 2px 12px rgba(0,0,0,0.06), 200ms hover transition
-  - Animations: 420ms entry (16px translate), 200ms hover, scaleX underline
-  - Accessibility: focus-visible rings, aria-labels, reduced-motion support
-  - SEO: full meta tags, Open Graph, Twitter card, JSON-LD, sitemap, robots
-  - Responsive: all layouts collapse below 768px, no horizontal overflow
-  - Removed redundant Tech Stack section (project cards show tech badges)
-  - Removed pulse-glow infinite animation
-  - Fixed button active state (translateY(0) for tactile press)
-  - Fixed transition restricted to transform/box-shadow (performance)
-  - Fixed entry animation translate distance (20px → 16px per spec)
-  - Added smooth scroll with scroll-padding-top for sticky header offset
-  - Build successful (Turbopack, lint clean)

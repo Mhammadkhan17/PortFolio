@@ -57,7 +57,7 @@ const footerLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-black py-12">
+    <footer className="border-t border-border bg-black py-8 md:py-12">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}
@@ -91,7 +91,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-grey transition-colors hover:text-cyan"
+                    className="text-sm text-grey transition-colors hover:text-cyan min-h-[44px] inline-flex items-center"
                   >
                     {link.label}
                   </Link>
@@ -110,7 +110,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-grey transition-all hover:text-cyan hover:scale-110"
+                  className="text-grey transition-all hover:text-cyan hover:scale-110 min-h-[44px] min-w-[44px] flex items-center justify-center"
                   aria-label={social.label}
                 >
                   {social.icon}
@@ -120,7 +120,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-8 text-center text-sm text-grey">
+        <div className="mt-8 md:mt-12 border-t border-border pt-8 text-center text-sm text-grey">
           <p>&copy; {new Date().getFullYear()} Your Name. All rights reserved.</p>
           <p className="mt-2">
             Built with Next.js &amp; Tailwind CSS

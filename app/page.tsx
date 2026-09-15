@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllProjects } from "@/lib/projects";
+import { Terminal } from "@/components/layout/Terminal";
 
 const features = [
   {
@@ -119,79 +120,45 @@ export default function Home() {
                 Available for new projects
               </div>
 
-              <h1 className="font-bold leading-tight text-white" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
+              <h1 className="font-bold leading-tight text-white" style={{ fontSize: 'clamp(2rem, 6vw, 4rem)' }}>
                 Building digital
                 <span className="block text-cyan">experiences</span> that matter
               </h1>
 
-              <p className="mt-6 max-w-lg text-lg text-light-grey">
+              <p className="mt-6 max-w-lg text-base md:text-lg text-light-grey">
                 Full-stack developer specializing in modern web applications.
                 From concept to deployment, I craft solutions that are fast,
                 scalable, and beautifully engineered.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a href="#projects" className="btn-primary">
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <a href="#projects" className="btn-primary min-h-[48px]">
                   View My Work
                 </a>
-                <a href="#contact" className="btn-secondary">
+                <a href="#contact" className="btn-secondary min-h-[48px]">
                   Let&apos;s Talk
                 </a>
               </div>
 
-              <div className="mt-12 flex gap-8">
+              <div className="mt-12 grid grid-cols-3 gap-4 sm:gap-8">
                 <div>
-                  <p className="text-3xl font-bold text-cyan">5+</p>
-                  <p className="text-sm text-grey">Years Experience</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-cyan">5+</p>
+                  <p className="text-xs sm:text-sm text-grey">Years Experience</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-cyan">50+</p>
-                  <p className="text-sm text-grey">Projects Delivered</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-cyan">50+</p>
+                  <p className="text-xs sm:text-sm text-grey">Projects Delivered</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-cyan">30+</p>
-                  <p className="text-sm text-grey">Happy Clients</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-cyan">30+</p>
+                  <p className="text-xs sm:text-sm text-grey">Happy Clients</p>
                 </div>
               </div>
             </div>
 
             {/* Right: Terminal Visual */}
-            <div className="hidden md:block">
-              <div className="rounded-lg border border-border bg-dark-bg p-6">
-                {/* Terminal Header */}
-                <div className="mb-4 flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full bg-red-500"></span>
-                  <span className="h-3 w-3 rounded-full bg-yellow-500"></span>
-                  <span className="h-3 w-3 rounded-full bg-green-500"></span>
-                  <span className="ml-4 text-xs text-grey">terminal</span>
-                </div>
-
-                {/* Terminal Content */}
-                <div className="font-mono text-sm">
-                  <p className="text-grey">
-                    <span className="text-cyan">$</span> whoami
-                  </p>
-                  <p className="mt-1 text-white">full-stack-developer</p>
-
-                  <p className="mt-4 text-grey">
-                    <span className="text-cyan">$</span> cat skills.json
-                  </p>
-                  <pre className="mt-1 overflow-x-auto text-light-grey">
-{`{
-  "frontend": ["React", "Next.js", "TypeScript"],
-  "backend": ["Node.js", "Python", "PostgreSQL"],
-  "devops": ["Docker", "AWS", "CI/CD"]
-}`}
-                  </pre>
-
-                  <p className="mt-4 text-grey">
-                    <span className="text-cyan">$</span> echo $STATUS
-                  </p>
-                  <p className="mt-1 text-cyan">
-                    Building something amazing...<span className="cursor-blink">_</span>
-                  </p>
-                </div>
-              </div>
+            <div className="block">
+              <Terminal />
             </div>
           </div>
         </div>
@@ -200,31 +167,31 @@ export default function Home() {
       {/* Features Section — zig-zag per DESIGN.md */}
       <section id="features" className="border-t border-border px-6" style={{ paddingTop: 'clamp(4rem, 8vw, 8rem)', paddingBottom: 'clamp(4rem, 8vw, 8rem)' }}>
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
+          <div className="mb-12 md:mb-16 text-center">
             <p className="mb-2 text-sm font-medium text-cyan">What I Do</p>
             <h2 className="text-2xl font-bold text-white">
               Services & Expertise
             </h2>
           </div>
 
-          <div className="space-y-16">
+          <div className="space-y-8 md:space-y-16">
             {features.map((feature, index) => (
               <div
                 key={feature.title}
-                className={`card-hover flex flex-col items-center gap-8 rounded-lg border border-border bg-dark-bg p-8 md:flex-row ${
+                className={`card-hover flex flex-col items-center gap-6 md:gap-8 rounded-lg border border-border bg-dark-bg p-6 md:p-8 md:flex-row ${
                   index % 2 === 1 ? "md:flex-row-reverse" : ""
                 }`}
               >
                 <div className="flex-shrink-0">
-                  <div className="flex h-20 w-20 items-center justify-center rounded border border-cyan/30 bg-cyan/10">
+                  <div className="flex h-12 w-12 md:h-20 md:w-20 items-center justify-center rounded border border-cyan/30 bg-cyan/10">
                     {feature.icon}
                   </div>
                 </div>
                 <div className="text-center md:text-left">
-                  <h3 className="mb-3 text-xl font-semibold text-white">
+                  <h3 className="mb-2 md:mb-3 text-lg md:text-xl font-semibold text-white">
                     {feature.title}
                   </h3>
-                  <p className="text-light-grey">{feature.description}</p>
+                  <p className="text-sm md:text-base text-light-grey">{feature.description}</p>
                 </div>
               </div>
             ))}
@@ -300,22 +267,23 @@ export default function Home() {
       {/* Testimonials Section */}
       <section id="testimonials" className="border-t border-border px-6" style={{ paddingTop: 'clamp(4rem, 8vw, 8rem)', paddingBottom: 'clamp(4rem, 8vw, 8rem)' }}>
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
+          <div className="mb-12 md:mb-16 text-center">
             <p className="mb-2 text-sm font-medium text-cyan">Testimonials</p>
             <h2 className="text-2xl font-bold text-white">
               What Clients Say
             </h2>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          {/* Responsive: Carousel on mobile, Grid on desktop */}
+          <div className="flex gap-4 overflow-x-auto scroll-snap-type-x mandatory pb-4 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 -mx-6 px-6 md:mx-0 md:px-0">
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.author}
-                className="card-hover rounded-lg border border-border bg-dark-bg p-8"
+                className="flex-none w-[85%] snap-start md:w-auto card-hover rounded-lg border border-border bg-dark-bg p-6 md:p-8"
               >
                 <div className="mb-4">
                   <svg
-                    className="h-8 w-8 text-cyan/30"
+                    className="h-6 w-6 md:h-8 md:w-8 text-cyan/30"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -323,17 +291,17 @@ export default function Home() {
                   </svg>
                 </div>
 
-                <p className="mb-6 text-light-grey italic">
+                <p className="mb-4 md:mb-6 text-sm md:text-base text-light-grey italic line-clamp-4 md:line-clamp-none">
                   &ldquo;{testimonial.quote}&rdquo;
                 </p>
 
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-cyan/30 bg-cyan/10 text-sm font-semibold text-cyan">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-cyan/30 bg-cyan/10 text-xs md:text-sm font-semibold text-cyan">
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <p className="font-semibold text-white">{testimonial.author}</p>
-                    <p className="text-sm text-grey">{testimonial.role}</p>
+                    <p className="font-semibold text-white text-sm md:text-base">{testimonial.author}</p>
+                    <p className="text-xs md:text-sm text-grey">{testimonial.role}</p>
                   </div>
                 </div>
               </div>
@@ -345,7 +313,7 @@ export default function Home() {
       {/* Pricing Section */}
       <section id="pricing" className="border-t border-border px-6" style={{ paddingTop: 'clamp(4rem, 8vw, 8rem)', paddingBottom: 'clamp(4rem, 8vw, 8rem)' }}>
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
+          <div className="mb-12 md:mb-16 text-center">
             <p className="mb-2 text-sm font-medium text-cyan">Pricing</p>
             <h2 className="text-2xl font-bold text-white">
               Transparent Pricing
@@ -355,34 +323,35 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          {/* Responsive: Carousel on mobile, Grid on desktop */}
+          <div className="flex gap-4 overflow-x-auto scroll-snap-type-x mandatory pb-4 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 -mx-6 px-6 md:mx-0 md:px-0">
             {pricingTiers.map((tier) => (
               <div
                 key={tier.name}
-                className={`card-hover relative flex flex-col rounded-lg border p-8 ${
+                className={`flex-none w-[85%] snap-start md:w-auto card-hover relative flex flex-col rounded-lg border p-6 md:p-8 ${
                   tier.highlighted
                     ? "border-cyan bg-dark-bg"
                     : "border-border bg-dark-bg"
                 }`}
               >
                 {tier.highlighted && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded bg-cyan px-4 py-1 text-xs font-semibold text-black">
+                  <div className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 rounded bg-cyan px-3 md:px-4 py-1 text-xs font-semibold text-black">
                     Most Popular
                   </div>
                 )}
 
-                <h3 className="mb-2 text-xl font-bold text-white">{tier.name}</h3>
-                <p className="mb-4 text-sm text-grey">{tier.description}</p>
+                <h3 className="mb-2 text-lg md:text-xl font-bold text-white">{tier.name}</h3>
+                <p className="mb-3 md:mb-4 text-xs md:text-sm text-grey">{tier.description}</p>
 
-                <div className="mb-8">
-                  <span className="text-4xl font-bold text-white">${tier.price}</span>
+                <div className="mb-6 md:mb-8">
+                  <span className="text-3xl md:text-4xl font-bold text-white">${tier.price}</span>
                 </div>
 
-                <ul className="mb-8 flex-1 space-y-3">
+                <ul className="mb-6 md:mb-8 flex-1 space-y-2 md:space-y-3">
                   {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3 text-sm text-light-grey">
+                    <li key={feature} className="flex items-start gap-2 md:gap-3 text-xs md:text-sm text-light-grey">
                       <svg
-                        className="mt-0.5 h-4 w-4 flex-shrink-0 text-cyan"
+                        className="mt-0.5 h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-cyan"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -401,7 +370,7 @@ export default function Home() {
 
                 <a
                   href="#contact"
-                  className={tier.highlighted ? "btn-primary mt-auto w-full" : "btn-secondary mt-auto w-full"}
+                  className={tier.highlighted ? "btn-primary mt-auto w-full min-h-[44px]" : "btn-secondary mt-auto w-full min-h-[44px]"}
                 >
                   {tier.cta}
                 </a>
@@ -414,17 +383,17 @@ export default function Home() {
       {/* Final CTA Section */}
       <section id="contact" className="border-t border-border px-6" style={{ paddingTop: 'clamp(4rem, 8vw, 8rem)', paddingBottom: 'clamp(4rem, 8vw, 8rem)' }}>
         <div className="mx-auto max-w-3xl text-center">
-          <div className="rounded-lg border border-border bg-dark-bg p-12 md:p-16">
-            <h2 className="mb-4 text-2xl font-bold text-white">
+          <div className="rounded-lg border border-border bg-dark-bg p-8 md:p-12 lg:p-16">
+            <h2 className="mb-4 text-xl md:text-2xl font-bold text-white">
               Let&apos;s Talk
             </h2>
-            <p className="mb-8 text-light-grey">
+            <p className="mb-6 md:mb-8 text-sm md:text-base text-light-grey">
               Have a project in mind? I&apos;d love to hear about it. Send me a message
               and let&apos;s discuss how we can bring your ideas to life.
             </p>
 
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <a href="mailto:hello@yourname.dev" className="btn-primary">
+              <a href="mailto:hello@yourname.dev" className="btn-primary min-h-[48px] w-full sm:w-auto">
                 <svg
                   className="h-5 w-5"
                   fill="none"
@@ -444,7 +413,7 @@ export default function Home() {
                 href="https://calendly.com/yourname"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-secondary"
+                className="btn-secondary min-h-[48px] w-full sm:w-auto"
               >
                 <svg
                   className="h-5 w-5"
@@ -463,7 +432,7 @@ export default function Home() {
               </a>
             </div>
 
-            <p className="mt-8 text-sm text-grey">
+            <p className="mt-6 md:mt-8 text-xs md:text-sm text-grey">
               Typical response time: within 24 hours
             </p>
           </div>

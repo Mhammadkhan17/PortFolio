@@ -18,7 +18,7 @@ export default async function ProjectsPage({
       : allProjects.filter((p) => p.category === category);
 
   return (
-    <div className="mx-auto max-w-[65ch] px-6 py-32">
+    <div className="mx-auto max-w-[65ch] px-6 py-16 md:py-32">
       <h1 className="mb-8 text-[clamp(2rem,5vw,3rem)] font-bold tracking-tight">
         Projects
       </h1>
