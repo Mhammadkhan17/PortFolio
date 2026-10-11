@@ -1,0 +1,49 @@
+---
+title: "Cloud Kitchen ERP"
+description: "Real-time ERP for cloud kitchens — live KDS, recipe-linked inventory, brand analytics, and customer tracking"
+tech: ["Vue 3", "TypeScript", "PrimeVue", "Socket.IO", "TanStack Query"]
+category: "fullstack"
+demo: "#"
+github: "#"
+outcomeHeadline: "Real-time ERP for cloud kitchens — one kitchen, many brands, shared inventory"
+industry: "Operations"
+context: "Cloud kitchens run multiple restaurant brands from a single kitchen with orders arriving from delivery marketplaces and no dine-in service. Generic tooling breaks down — orders arrive from everywhere, ingredients are shared across brands, and every brand reports into the same P&L."
+approach:
+  - "Live Kanban KDS with Socket.IO real-time order feed"
+  - "Recipe-linked inventory — every dish resolves to ingredient-level quantities"
+  - "Brand performance analytics and customer order tracking pages"
+metric: "5"
+metricLabel: "modules wired by real-time feed"
+date: "2026"
+duration: "Ongoing"
+---
+
+## The Problem
+
+A cloud kitchen is a shared production line wearing several brand costumes: one team of cooks, one set of ingredient bins, one dispatch window — but multiple menus, multiple brand identities, and several delivery channels funneling tickets into the same pass.
+
+That model breaks down on generic tooling. Orders arrive from foodpanda, careem, and direct channels — they need one place to be seen, prioritized, and moved along. Ingredients are shared across brands, so stock must be tracked at kitchen level, not per menu. Recipes are the contract between menu and inventory — every dish resolves to ingredient-level quantities so sales can be tied back to consumption. And every brand reports into the same P&L, so performance must be compared side by side.
+
+## The Approach
+
+I built a full ERP system around the cloud kitchen model: a Kitchen Display System for the pass, inventory and recipe management for the kitchen, an analytics dashboard for the operator, and public tracking pages for the customer — all wired together by a live WebSocket feed.
+
+**Kitchen Display System**: A Kanban board with columns for Pending → Preparing → Ready → Dispatched. Order cards show item breakdown, special instructions, brand, source channel, and a prep timer against a per-order target. Updates push over Socket.IO the moment an order changes anywhere in the system.
+
+**Inventory**: Kitchen-level stock control over 25 ingredients. Low-stock and critical-stock detection surfaces through a banner. Stock adjustments require a reason and show a before/after preview, clamped so stock never goes negative.
+
+**Recipes**: Every menu item resolves to ingredient-level quantities with a servings scale. An accordion-based recipe builder with a searchable ingredient picker. Saving upserts — updates the existing recipe or creates one.
+
+**Analytics**: KPI cards (revenue, order count, AOV, wastage cost), a daily revenue chart, top-selling items, brand performance side-by-side, and a wastage log feeding the wastage KPI.
+
+**Customer Tracking**: Two public pages — `/track` for order lookup by number, `/portal` for a "My Orders" view by phone or customer ID. Both fed by the same real-time feed as the kitchen.
+
+## Architecture
+
+The backend is JSON Server with Socket.IO — a `router.render` override intercepts writes to `/orders` and broadcasts `order:update` to all connected clients. On the frontend, socket handlers patch the TanStack Query cache in place (`setQueryData`) instead of refetching, so the UI updates instantly without a round-trip.
+
+The client socket is a reference-counted singleton: `useSocket()` increments a consumer count and disconnects only when the last consumer unmounts. Reconnection uses exponential backoff (1s → 30s, infinite attempts).
+
+## Scope & Constraints
+
+The system runs on a mock backend (JSON Server persisting to `db.json`) with no authentication — it's a complete working demonstration of the domain, not a production deployment. The documented production path: replace JSON Server with Express + PostgreSQL, make stock and status transitions atomic server-side, and add validation, pagination, and auth.

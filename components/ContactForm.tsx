@@ -84,7 +84,7 @@ export function ContactForm() {
             aria-describedby="email-hint"
             className="text-input w-full"
           />
-          <p id="email-hint" className="sr-only">Required. We'll use this to reply.</p>
+          <p id="email-hint" className="sr-only">Required. We&apos;ll use this to reply.</p>
         </div>
       </div>
 

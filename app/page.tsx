@@ -1,62 +1,100 @@
 import Link from "next/link";
 
-const caseStudies = [
+const caseStudies: {
+  industry: string;
+  outcomeHeadline: string;
+  context: string;
+  approach: string[];
+  metric: string;
+  metricLabel: string;
+  techStack: string[];
+  slug: string;
+  status?: string;
+  clientQuote?: string;
+  clientName?: string;
+  clientRole?: string;
+}[] = [
   {
-    industry: "SaaS",
-    outcomeHeadline: "Shipped a production MVP in 6 weeks for a fintech startup",
+    industry: "Productivity",
+    outcomeHeadline:
+      "Built an AI-native task manager with RAG document chat and MCP integration",
     context:
-      "The client had a React frontend hitting a Node.js API that was taking 800ms per request. Users were dropping off during onboarding because the experience felt slow and unreliable.",
+      "Task managers store tasks but don't help you think about them. Tasks, documents, and AI assistants live in separate tools that don't talk to each other — you end up manually copying context between systems.",
     approach: [
-      "Migrated to connection pooling and added Redis caching",
-      "Optimized N+1 queries and added database indexes",
-      "Implemented optimistic UI updates for instant feedback",
+      "RAG document chat with Qdrant vector store and ONNX embeddings",
+      "MCP server exposing tasks and documents to external AI agents",
+      "Chat interface with context on your actual task data",
     ],
-    metric: "60%",
-    metricLabel: "faster API response time",
-    clientQuote:
-      "Working with them was exactly what we needed. They took a messy codebase and turned it into something we could actually build on.",
-    clientName: "Sarah Chen",
-    clientRole: "CTO, TechFlow Inc.",
-    techStack: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
-    slug: "fintech-mvp",
+    metric: "RAG + MCP",
+    metricLabel: "AI-native architecture",
+    techStack: ["FastAPI", "Next.js", "Qdrant", "ONNX"],
+    slug: "todoflow",
   },
   {
     industry: "E-Commerce",
-    outcomeHeadline: "Reduced checkout drop-off by 23% for an online retailer",
+    outcomeHeadline:
+      "Built a zero-fee B2C + B2B liquidation platform with atomic checkout",
     context:
-      "The client's checkout flow had a 68% drop-off rate. Users were adding items to cart but abandoning before payment. The existing checkout was a single monolithic page with 12 form fields.",
+      "Computer liquidators lose 10–15% to marketplace fees per transaction. They needed a platform that facilitates sales without skimming them — with lot-based inventory that serves both bulk business buyers and individual consumers without overselling.",
     approach: [
-      "Broke checkout into 3 steps with progress indicator",
-      "Added guest checkout option (previously required signup)",
-      "Implemented Stripe Checkout for PCI compliance without complexity",
+      "Atomic checkout with reservation-based inventory to prevent overselling",
+      "Dual B2C/B2B workflows sharing one product catalog",
+      "WhatsApp Business fulfillment with zero payment-processor fees",
     ],
-    metric: "23%",
-    metricLabel: "fewer checkout abandonments",
-    clientQuote:
-      "The new checkout paid for itself in the first week. We went from losing 7 out of 10 customers to losing 5.",
-    clientName: "Marcus Rodriguez",
-    clientRole: "Head of Product, ShopLayer",
-    techStack: ["React", "Node.js", "Stripe", "PostgreSQL"],
-    slug: "ecommerce-checkout",
+    metric: "0%",
+    metricLabel: "platform transaction fees",
+    techStack: ["Next.js 15", "FastAPI", "Supabase", "PostgreSQL"],
+    slug: "computer-lot",
   },
   {
-    industry: "Analytics",
-    outcomeHeadline: "Built a real-time dashboard serving 10k daily users",
+    industry: "Operations",
+    outcomeHeadline:
+      "Real-time ERP for cloud kitchens — one kitchen, many brands, shared inventory",
     context:
-      "The client needed an analytics dashboard that could handle real-time data ingestion and display. The existing solution was a spreadsheet that took 20 minutes to refresh.",
+      "Cloud kitchens run multiple restaurant brands from a single kitchen with orders arriving from delivery marketplaces and no dine-in service. Generic tooling breaks down — orders arrive from everywhere, ingredients are shared across brands, and every brand reports into the same P&L.",
     approach: [
-      "Designed a WebSocket-based architecture for live data updates",
-      "Built reusable D3.js chart components with smooth transitions",
-      "Implemented data pagination and virtual scrolling for large datasets",
+      "Live Kanban KDS with Socket.IO real-time order feed",
+      "Recipe-linked inventory — every dish resolves to ingredient-level quantities",
+      "Brand performance analytics and customer order tracking pages",
     ],
-    metric: "20min→2s",
-    metricLabel: "data refresh time",
-    clientQuote:
-      "They turned our spreadsheet into a real product. Our team checks this dashboard every hour now.",
-    clientName: "Emily Watson",
-    clientRole: "Founder, MetricsLab",
-    techStack: ["React", "D3.js", "WebSocket", "Node.js"],
-    slug: "analytics-dashboard",
+    metric: "5",
+    metricLabel: "modules wired by real-time feed",
+    techStack: ["Vue 3", "TypeScript", "PrimeVue", "Socket.IO", "TanStack Query"],
+    slug: "cloud-kitchen-erp",
+    status: "In progress",
+  },
+  {
+    industry: "AI / Education",
+    outcomeHeadline:
+      "AI-native textbook with a selection-aware RAG tutor and streamed answers",
+    context:
+      "Physical AI and humanoid robotics is hard to learn from static text. Readers need to ask questions about what they're reading — not just skim and hope. The textbook needed a built-in tutor that answers from the book's own content, not generic LLM responses.",
+    approach: [
+      "Selection-aware RAG — highlight any passage, ask about it, get a chapter-scoped answer",
+      "Fully local retrieval with ONNX embeddings and Qdrant vector store",
+      "Streaming responses, personalization quiz, and Urdu translation",
+    ],
+    metric: "Live",
+    metricLabel: "deployed on Vercel",
+    techStack: ["Docusaurus", "React 19", "FastAPI", "Qdrant", "ONNX"],
+    slug: "physical-ai-textbook",
+    status: "Live",
+  },
+  {
+    industry: "Marketplace",
+    outcomeHeadline:
+      "Built a two-sided car rental marketplace with payments and identity verification",
+    context:
+      "P2P car rental requires trust between strangers — owners need to verify drivers, renters need secure payments, and both need a booking system that won't double-book. Existing solutions were either a Google Sheet or enterprise fleet software.",
+    approach: [
+      "Stripe Connect escrow — renter pays, owner gets paid after trip",
+      "Identity verification flow before booking",
+      "Database-level date-conflict prevention for availability",
+    ],
+    metric: "MVP",
+    metricLabel: "deployed to production on Vercel",
+    techStack: ["Next.js 14", "Prisma", "Stripe", "NextAuth"],
+    slug: "morent",
   },
 ];
 
@@ -159,9 +197,14 @@ export default function Home() {
                 className="group flex flex-col rounded-marketing bg-canvas-soft border border-hairline-soft transition-all hover:-translate-y-0.5"
                 style={{ padding: "var(--spacing-xl)" }}
               >
-                <p className="mb-3 type-mono-eyebrow text-brand">
-                  {study.industry}
-                </p>
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <p className="type-mono-eyebrow text-brand">
+                    {study.industry}
+                  </p>
+                  {study.status && (
+                    <span className="type-mono-micro text-mute">{study.status}</span>
+                  )}
+                </div>
                 <h3 className="mb-3 type-heading-sm text-on-primary group-hover:text-brand transition-colors">
                   {study.outcomeHeadline}
                 </h3>
@@ -178,14 +221,16 @@ export default function Home() {
                   ))}
                 </ul>
 
-                <blockquote className="mt-auto mb-4 border-l-2 border-graphite pl-4">
-                  <p className="type-body-sm text-ash italic line-clamp-2">
-                    &ldquo;{study.clientQuote}&rdquo;
-                  </p>
-                  <cite className="type-caption text-mute not-italic">
-                    — {study.clientName}, {study.clientRole}
-                  </cite>
-                </blockquote>
+                {study.clientQuote && (
+                  <blockquote className="mt-auto mb-4 border-l-2 border-graphite pl-4">
+                    <p className="type-body-sm text-ash italic line-clamp-2">
+                      &ldquo;{study.clientQuote}&rdquo;
+                    </p>
+                    <cite className="type-caption text-mute not-italic">
+                      — {study.clientName}, {study.clientRole}
+                    </cite>
+                  </blockquote>
+                )}
 
                 <div className="flex flex-wrap gap-2 mt-auto">
                   {study.techStack.map((t) => (

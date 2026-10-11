@@ -1,0 +1,49 @@
+---
+title: "Physical AI & Humanoid Robotics"
+description: "AI-native textbook with a selection-aware RAG tutor, streamed answers, and chapter-scoped retrieval"
+tech: ["Docusaurus", "React 19", "FastAPI", "Qdrant", "ONNX"]
+category: "fullstack"
+demo: "https://physical-ai-humanoid-robotics-cours-zeta.vercel.app"
+github: "#"
+outcomeHeadline: "AI-native textbook with a selection-aware RAG tutor and streamed answers"
+industry: "AI / Education"
+context: "Physical AI and humanoid robotics is hard to learn from static text. Readers need to ask questions about what they're reading — not just skim and hope. The textbook needed a built-in tutor that answers from the book's own content, not generic LLM responses."
+approach:
+  - "Selection-aware RAG — highlight any passage, ask about it, get a chapter-scoped answer"
+  - "Fully local retrieval with ONNX embeddings and Qdrant vector store"
+  - "Streaming responses, personalization quiz, and Urdu translation"
+metric: "Live"
+metricLabel: "deployed on Vercel"
+date: "2026"
+duration: "Ongoing"
+---
+
+## The Problem
+
+Learning physical AI and humanoid robotics means reading dense technical material — ROS 2 nodes, URDF models, Gazebo physics, Isaac Sim, Nav2 path planning. A static textbook can present the content, but it can't answer "what does this mean in context?" when a reader gets stuck on a specific passage.
+
+Existing AI tutoring tools are generic — they answer from the LLM's general knowledge, not from the textbook's own content. The answers sound authoritative but aren't grounded in what the reader is actually studying. And they don't know which chapter you're reading, so they can't scope their retrieval to the relevant material.
+
+## The Approach
+
+I built an AI-native textbook: a Docusaurus site with 12 MDX chapters across 4 modules, and a FastAPI backend that powers a selection-aware RAG tutor.
+
+**Selection-Aware RAG**: Highlight any passage in a chapter, click "Ask AI about this," and the chatbot answers using the retrieved chapter context plus your highlighted text. The retrieval is scoped to the chapter you're reading via a `chapter_id` filter — so answers come from the right material, not just any part of the book.
+
+**Fully Local Retrieval**: Embeddings run in-process via ONNX Runtime (all-MiniLM-L6-v2, 384-dim) and vectors live in a local Qdrant instance. The only remote call in the answer path is the LLM through OpenRouter. No external vector DB, no embedding API.
+
+**Streaming Answers**: `/api/chat` returns a `text/plain` stream that the chatbot appends token by token — you see the answer form in real time, not after a 5-second wait.
+
+**Offline Incremental Ingestion**: Content hashes per MDX file mean unchanged chapters are skipped, edits are re-indexed, and deleted files are cleaned up. Re-ingesting a 12-chapter book takes seconds.
+
+**Personalization & Translation**: A quiz builds a learner profile that drives chapter rewrites for your experience level. A translate action renders any chapter in Urdu (RTL) with fenced code blocks left untouched.
+
+## Architecture
+
+Two processes, one origin. The Docusaurus frontend proxies `/api` to the FastAPI backend in dev; in production, `vercel.json` routes `/api/*` to the Python backend and everything else to the static site.
+
+The answer path is a single deep module (`chain.py`): lazy process-wide singletons for the Qdrant client, ONNX embedder, and vector store — built once on first use, not per request. The RAG chain factory accepts injected dependencies, so tests pass an in-memory retriever and a fake LLM with no monkeypatching.
+
+## Testing
+
+Backend: pytest suite (7 tests) covering chain wiring, chapter-filter structure, missing-key guard, and the `/api/chat` error path. Frontend: vitest + jsdom suites for Ask-AI state transitions, capture rules, and the chatbot consumer. Both suites run without real credentials or a live Qdrant.

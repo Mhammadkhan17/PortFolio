@@ -1,0 +1,43 @@
+---
+title: "Computer-Lot"
+description: "B2C + B2B liquidation platform with atomic checkout and zero-fee WhatsApp fulfillment"
+tech: ["Next.js 15", "FastAPI", "Supabase", "PostgreSQL", "Tailwind CSS"]
+category: "fullstack"
+demo: "https://computer-lot.vercel.app"
+github: "https://github.com/Mhammadkhan17/Computer-Lot"
+outcomeHeadline: "Built a zero-fee B2C + B2B liquidation platform with atomic checkout"
+industry: "E-Commerce"
+context: "Computer liquidators need to move inventory fast — bulk lots to businesses, individual units to consumers — without paying marketplace fees. Existing platforms take 10–15% per transaction and don't handle the operational reality of lot-based inventory."
+approach:
+  - "Built atomic checkout that holds inventory across concurrent buyers without overselling"
+  - "Designed dual B2C/B2B workflows sharing one product catalog"
+  - "Integrated WhatsApp Business API for order fulfillment with zero payment-processor fees"
+metric: "0%"
+metricLabel: "platform transaction fees"
+date: "2026"
+duration: "8 weeks"
+---
+
+## The Problem
+
+Computer liquidation is a high-volume, low-margin business. Lots of returned, refurbished, or end-of-life hardware need to move quickly — sometimes to a business buying 50 units, sometimes to a consumer buying one.
+
+Existing platforms like eBay or Amazon take 10–15% per transaction. On a $2,000 lot, that's $200 gone. For liquidators operating on thin margins, that's the difference between profit and loss. They needed a platform that facilitated the transaction without skimming it.
+
+The operational challenge: inventory is sold in lots, but those lots need to be splittable. A lot of 10 units might sell as one bulk order to a business or as individual units to 10 consumers — and the system needs to prevent overselling across both channels simultaneously.
+
+## The Approach
+
+I built the platform on Next.js 15 for the frontend and FastAPI for the backend, with Supabase handling auth and real-time data. The core challenge was atomic checkout — ensuring that when multiple buyers hit "purchase" at the same time, inventory is reserved correctly without overselling.
+
+I implemented a reservation-based checkout flow: when a buyer enters checkout, inventory is soft-reserved with a timeout. The reservation is atomic at the database level, so concurrent checkouts can't collide. If the reservation expires (buyer abandoned checkout), inventory is released back.
+
+For B2B vs B2C, both flows share the same product catalog but diverge at checkout: B2B buyers get bulk pricing tiers and purchase-order options, while B2B consumers get standard single-unit checkout. The catalog doesn't duplicate — only the pricing logic branches.
+
+For fulfillment, I integrated WhatsApp Business API. Instead of paying Stripe or PayPal's fees, orders are confirmed and tracked through WhatsApp threads. The seller sends a payment link (bank transfer or alternative), and the conversation becomes the order record.
+
+## The Result
+
+The platform operates at 0% transaction fees — the entire value proposition. Atomic checkout handles concurrent purchases without overselling, and the dual B2C/B2B flow means one catalog serves both markets.
+
+The architecture is documented with ADRs (Architecture Decision Records) covering the checkout atomicity model, the dual-channel pricing strategy, and the WhatsApp fulfillment integration.

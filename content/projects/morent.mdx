@@ -1,0 +1,43 @@
+---
+title: "MoRent"
+description: "Two-sided car rental marketplace with Stripe payments, identity verification, and real-time booking"
+tech: ["Next.js 14", "Prisma", "Stripe", "NextAuth", "PostgreSQL"]
+category: "fullstack"
+demo: "https://morent-codemigos.vercel.app"
+github: "https://github.com/CODEMIGOS-6/morent"
+outcomeHeadline: "Built a two-sided car rental marketplace with payments and identity verification"
+industry: "Marketplace"
+context: "Peer-to-peer car rental requires trust between strangers — owners need to verify who's driving their car, renters need secure payments, and both sides need a booking system that handles availability without double-booking."
+approach:
+  - "Built a two-sided marketplace with owner and renter roles sharing one booking engine"
+  - "Integrated Stripe Connect for payment escrow — renter pays, owner gets paid after trip"
+  - "Implemented identity verification flow and real-time availability checking"
+metric: "Full MVP"
+metricLabel: "deployed to production on Vercel"
+date: "2026"
+duration: "6 weeks"
+---
+
+## The Problem
+
+Peer-to-peer car rental sounds simple — list your car, someone rents it — but the trust and logistics problems are significant. The owner needs to know who's driving their car. The renter needs to know their payment is protected. And both sides need a booking system that won't double-book the same car on overlapping dates.
+
+Existing solutions are either too simple (a Google Sheet and bank transfer) or too complex (enterprise fleet management software). There was no middle ground for a small marketplace that needed real payments, real verification, and real availability management.
+
+## The Approach
+
+I built MoRent as a full-stack Next.js 14 application with Prisma and PostgreSQL. The core is a two-sided marketplace: owners list vehicles, renters browse and book, and a shared booking engine manages availability.
+
+For payments, I used Stripe Connect. The renter's payment is held in escrow — charged at booking, released to the owner after the trip is confirmed complete. This protects both sides: the renter isn't charged until the booking is confirmed, and the owner doesn't release the car without payment secured.
+
+For identity verification, I built a document-upload flow where renters verify their license before booking. Owners see verified status on renter profiles. It's not a full KYC system, but it raises the trust floor significantly compared to an anonymous booking.
+
+Availability checking is done at the database level with overlapping-date queries — the booking engine checks for date conflicts atomically, so two renters can't book the same car for overlapping periods.
+
+The project was built as part of CodeMigos cohort 6, deployed to Vercel with a live database.
+
+## The Result
+
+The MVP is deployed and functional: owners can list cars, renters can browse, verify identity, book with Stripe payments, and complete trips with escrow release. The booking engine handles date-conflict prevention at the database level.
+
+The full stack runs on Next.js 14, Prisma, PostgreSQL, Stripe Connect, and NextAuth — a production-grade stack for a marketplace that needs to handle real money and real trust.

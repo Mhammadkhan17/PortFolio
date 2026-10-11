@@ -51,3 +51,10 @@ next-env.d.ts
 *.log
 tmp/
 .env.local
+
+# planning documents
+AGENTS.md
+mobile-plan.md
+philosophy-shift-plan.md
+plan.md
+todo.md

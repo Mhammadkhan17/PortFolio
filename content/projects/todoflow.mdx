@@ -1,0 +1,43 @@
+---
+title: "TodoFlow"
+description: "AI-native task manager with RAG document chat and MCP server integration"
+tech: ["FastAPI", "Next.js", "Qdrant", "ONNX", "JWT"]
+category: "fullstack"
+demo: "https://todoflow.vercel.app"
+github: "https://github.com/Mhammadkhan17/Todo_App"
+outcomeHeadline: "Built an AI-native task manager with RAG document chat and MCP integration"
+industry: "Productivity"
+context: "Task managers store tasks but don't help you think about them. TodoFlow adds an AI layer that can chat about your tasks, search your documents with context, and expose everything through an MCP server for AI agent integration."
+approach:
+  - "Built JWT-authenticated task CRUD with a FastAPI backend and Next.js frontend"
+  - "Implemented RAG document chat using Qdrant vector store and ONNX MiniLM embeddings"
+  - "Exposed tasks and documents through an MCP server for AI agent integration"
+metric: "RAG + MCP"
+metricLabel: "AI-native architecture"
+date: "2026"
+duration: "5 weeks"
+---
+
+## The Problem
+
+Most task managers are databases with a UI. You add tasks, check them off, and the tool's job is done. But the actual work of managing tasks involves thinking — prioritizing, connecting related items, pulling context from documents you've already written.
+
+The gap: your tasks live in one tool, your documents in another, and your AI assistant in a third. None of them talk to each other. You end up manually copying context between systems.
+
+## The Approach
+
+I built TodoFlow as a full-stack application: FastAPI backend, Next.js frontend, JWT authentication for secure access.
+
+The core task management is solid — CRUD operations, projects, due dates, priorities. But the differentiator is the AI layer.
+
+**RAG Document Chat**: I integrated Qdrant as a vector store with ONNX MiniLM for embeddings. You upload documents, they get chunked and embedded, and then you can chat with them — ask questions and get answers grounded in your actual documents, not generic LLM responses. The retrieval-augmented generation pipeline retrieves relevant chunks before the LLM generates, so answers cite your content.
+
+**MCP Server**: The application exposes its tasks and documents through a Model Context Protocol (MCP) server. This means any AI agent that speaks MCP — Claude Desktop, custom agents, other tools — can read your tasks, create new ones, and search your documents programmatically. The task manager becomes an API for AI agents, not just a human UI.
+
+**AI Chat**: A built-in chat interface lets you discuss your tasks directly. "What's due this week?" or "Summarize the blockers on project X" — the chat has context on your task data.
+
+## The Result
+
+TodoFlow is a task manager that's genuinely AI-native, not just a task manager with a chatbot bolted on. The RAG pipeline gives you document-grounded answers, the MCP server makes your data accessible to external AI agents, and the chat interface lets you interact with your tasks conversationally.
+
+The architecture demonstrates how traditional CRUD applications can layer AI capabilities without rewriting the core — the task database stays a task database, and the AI layer reads from it.
