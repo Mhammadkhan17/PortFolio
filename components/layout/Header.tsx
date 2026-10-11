@@ -65,7 +65,7 @@ export function Header() {
             className="inline-block rounded-full bg-brand"
             style={{ width: "12px", height: "12px" }}
           />
-          <span className="type-heading-sm text-on-primary">DE<span className="text-brand">AI</span>DEV</span>
+          <span className="type-heading-sm text-on-primary">DE&lt;<span className="text-signal">AI</span>&gt;DEV</span>
         </Link>
 
         {/* Desktop nav */}

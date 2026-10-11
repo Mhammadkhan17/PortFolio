@@ -2,17 +2,25 @@
 
 :root {
   /* === Colors: Brand & Accent === */
-  --color-brand: #f36458;
-  --color-brand-deep: #dd0000;
-  --color-primary: #0b0b0b;
+  --color-brand: #00C2B2;
+  --color-brand-deep: #009A8E;
+  --color-primary: #0A0A0F;
+
+  /* === Colors: 3D Design System === */
+  --color-void: #0A0A0F;
+  --color-paper: #F5F3EF;
+  --color-ink-dark: #1A1A1F;
+  --color-mist: #E8E6E1;
+  --color-signal: #00C2B2;
+  --color-spark: #F59E0B;
 
   /* === Colors: Surface === */
-  --color-canvas: #0b0b0b;
-  --color-canvas-soft: #212121;
-  --color-canvas-light: #ffffff;
-  --color-canvas-paper: #ededed;
-  --color-hairline-soft: #353535;
-  --color-hairline: #ededed;
+  --color-canvas: #0A0A0F;
+  --color-canvas-soft: #141419;
+  --color-canvas-light: #F5F3EF;
+  --color-canvas-paper: #EDEBE6;
+  --color-hairline-soft: #2A2A30;
+  --color-hairline: #E8E6E1;
   --color-surface-blue-bg: #afe3ff;
 
   /* === Colors: Text === */
@@ -83,6 +91,14 @@
   --color-link-blue-soft: var(--color-link-blue-soft);
   --color-success: var(--color-success);
   --color-error: var(--color-error);
+
+  /* 3D Design System */
+  --color-void: var(--color-void);
+  --color-paper: var(--color-paper);
+  --color-ink-dark: var(--color-ink-dark);
+  --color-mist: var(--color-mist);
+  --color-signal: var(--color-signal);
+  --color-spark: var(--color-spark);
 
   /* Font families */
   --font-display: var(--font-inter), 'Inter', system-ui, sans-serif;
