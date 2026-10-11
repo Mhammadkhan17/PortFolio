@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { StaticGradient } from "./StaticGradient"
 
 const SceneCanvas = dynamic(() => import("@/components/canvas/SceneCanvas"), {
@@ -10,6 +10,7 @@ const SceneCanvas = dynamic(() => import("@/components/canvas/SceneCanvas"), {
 })
 
 function canRenderScene(): boolean {
+  if (typeof window === "undefined") return false
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false
   try {
     const c = document.createElement("canvas")
@@ -20,10 +21,14 @@ function canRenderScene(): boolean {
 }
 
 export function SceneWrapper() {
-  const [showScene] = useState(() => {
-    if (typeof window === "undefined") return false
-    return canRenderScene()
-  })
+  const [showScene, setShowScene] = useState(false)
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      setShowScene(canRenderScene())
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [])
 
   if (!showScene) {
     return <StaticGradient />

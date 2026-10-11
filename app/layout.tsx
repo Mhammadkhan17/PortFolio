@@ -90,7 +90,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   };
 
   return (
-    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} h-full antialiased`} suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
