@@ -1,7 +1,20 @@
 "use client"
 
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react"
-import { type ReactNode, useRef } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
+
+function useIsTouch() {
+  const [isTouch, setIsTouch] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: coarse)")
+    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  return isTouch
+}
 
 export function TiltCard({
   children,
@@ -13,6 +26,7 @@ export function TiltCard({
   const ref = useRef<HTMLDivElement>(null)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
+  const isTouch = useIsTouch()
 
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), {
     stiffness: 150,
@@ -22,9 +36,6 @@ export function TiltCard({
     stiffness: 150,
     damping: 20,
   })
-
-  const isTouch =
-    typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
 
   const onMouseMove = (e: React.MouseEvent) => {
     if (!ref.current || isTouch) return

@@ -1,27 +1,26 @@
 "use client"
 
 import { useFrame } from "@react-three/fiber"
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import * as THREE from "three"
 import { scrollState } from "@/lib/scroll"
 
-const COUNT = 2000
+const DESKTOP_COUNT = 2000
+const MOBILE_COUNT = 800
 
-function generateSectionPositions(): Float32Array[] {
+function generateSectionPositions(count: number): Float32Array[] {
   const positions: Float32Array[] = []
 
-  // Hero: dense diagonal wave sweep
-  const hero = new Float32Array(COUNT * 3)
-  for (let i = 0; i < COUNT; i++) {
-    const t = i / COUNT
+  const hero = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
+    const t = i / count
     hero[i * 3] = (Math.random() - 0.5) * 12 + t * 4 - 2
     hero[i * 3 + 1] = (Math.random() - 0.5) * 8 + Math.sin(t * Math.PI * 4) * 1.5
     hero[i * 3 + 2] = (Math.random() - 0.5) * 6 - 1
   }
   positions.push(hero)
 
-  // Case Studies: discrete clumps
-  const cases = new Float32Array(COUNT * 3)
+  const cases = new Float32Array(count * 3)
   const clumps = [
     { x: 2, y: 1, z: 0 },
     { x: -1, y: -1, z: 1 },
@@ -29,7 +28,7 @@ function generateSectionPositions(): Float32Array[] {
     { x: 0, y: 2, z: 0.5 },
     { x: 1, y: -2, z: 0 },
   ]
-  for (let i = 0; i < COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     const clump = clumps[i % clumps.length]
     cases[i * 3] = clump.x + (Math.random() - 0.5) * 2
     cases[i * 3 + 1] = clump.y + (Math.random() - 0.5) * 2
@@ -37,9 +36,8 @@ function generateSectionPositions(): Float32Array[] {
   }
   positions.push(cases)
 
-  // Process: thin horizontal strata
-  const process = new Float32Array(COUNT * 3)
-  for (let i = 0; i < COUNT; i++) {
+  const process = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
     const band = Math.floor(Math.random() * 5)
     process[i * 3] = (Math.random() - 0.5) * 14
     process[i * 3 + 1] = (band - 2) * 1.2 + (Math.random() - 0.5) * 0.3
@@ -47,19 +45,17 @@ function generateSectionPositions(): Float32Array[] {
   }
   positions.push(process)
 
-  // Pricing: sparse distant dots
-  const pricing = new Float32Array(COUNT * 3)
-  for (let i = 0; i < COUNT; i++) {
+  const pricing = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
     pricing[i * 3] = (Math.random() - 0.5) * 20
     pricing[i * 3 + 1] = (Math.random() - 0.5) * 14
     pricing[i * 3 + 2] = -5 - Math.random() * 5
   }
   positions.push(pricing)
 
-  // CTA: converging spiral toward anchor
-  const cta = new Float32Array(COUNT * 3)
-  for (let i = 0; i < COUNT; i++) {
-    const t = i / COUNT
+  const cta = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
+    const t = i / count
     const angle = t * Math.PI * 8
     const radius = 0.5 + t * 4
     cta[i * 3] = Math.cos(angle) * radius
@@ -73,35 +69,51 @@ function generateSectionPositions(): Float32Array[] {
 
 const SECTION_ORDER = ["hero", "case-studies", "process", "pricing", "cta"]
 
-const SEEDS = Float32Array.from({ length: COUNT }, (_, i) => {
-  const x = Math.sin(i * 127.1 + 311.7) * 43758.5453
-  return x - Math.floor(x)
-})
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)")
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  return isMobile
+}
 
 export function ParticleField() {
   const pointsRef = useRef<THREE.Points>(null)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
+  const isMobile = useIsMobile()
+  const count = isMobile ? MOBILE_COUNT : DESKTOP_COUNT
 
-  const { geometry, sectionPositions } = useMemo(() => {
-    const positions = generateSectionPositions()
+  const { geometry, dataTexture, sectionCount } = useMemo(() => {
+    const positions = generateSectionPositions(count)
     const geo = new THREE.BufferGeometry()
     geo.setAttribute("position", new THREE.BufferAttribute(positions[0].slice(), 3))
 
-    const data = new Float32Array(positions.length * COUNT * 3)
+    const indices = new Float32Array(count)
+    for (let i = 0; i < count; i++) indices[i] = i
+    geo.setAttribute("aIndex", new THREE.BufferAttribute(indices, 1))
+
+    const data = new Float32Array(positions.length * count * 3)
     for (let s = 0; s < positions.length; s++) {
-      data.set(positions[s], s * COUNT * 3)
+      data.set(positions[s], s * count * 3)
     }
-    const dataTexture = new THREE.DataTexture(
+    const tex = new THREE.DataTexture(
       data,
-      COUNT,
+      count,
       positions.length,
-      THREE.RGBFormat,
+      THREE.RGBAFormat,
       THREE.FloatType
     )
-    dataTexture.needsUpdate = true
+    tex.minFilter = THREE.LinearFilter
+    tex.magFilter = THREE.LinearFilter
+    tex.needsUpdate = true
 
-    return { geometry: geo, sectionPositions: { dataTexture, count: positions.length } }
-  }, [])
+    return { geometry: geo, dataTexture: tex, sectionCount: positions.length }
+  }, [count])
 
   const uniforms = useMemo(
     () => ({
@@ -109,11 +121,13 @@ export function ParticleField() {
       uMorph: { value: 0 },
       uSectionIndex: { value: 0 },
       uNextSectionIndex: { value: 1 },
-      uSectionData: { value: sectionPositions.dataTexture },
+      uSectionData: { value: dataTexture },
       uColor: { value: new THREE.Color("#00C2B2") },
       uPixelRatio: { value: 1 },
+      uCount: { value: count },
+      uSectionCount: { value: sectionCount },
     }),
-    [sectionPositions]
+    [dataTexture, count, sectionCount]
   )
 
   useFrame((state, delta) => {
@@ -131,9 +145,7 @@ export function ParticleField() {
     u.uNextSectionIndex.value = nextIdx
     u.uMorph.value = scrollState.sectionProgress
 
-    if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.02
-    }
+    pointsRef.current.rotation.y += delta * 0.02
   })
 
   return (
@@ -151,38 +163,45 @@ export function ParticleField() {
           uniform float uNextSectionIndex;
           uniform sampler2D uSectionData;
           uniform float uPixelRatio;
+          uniform float uCount;
+          uniform float uSectionCount;
 
-          attribute float aSeed;
+          attribute float aIndex;
 
           varying float vAlpha;
+          varying float vSeed;
 
-          vec3 getSectionPos(float section, float idx) {
-            float x = (idx + 0.5) / 5.0;
-            vec2 uv = vec2(x, (aSeed + 0.5));
-            return texture2D(uSectionData, uv).rgb;
+          vec3 sampleSection(float sectionIdx, float particleIdx) {
+            float x = (particleIdx + 0.5) / uCount;
+            float y = (sectionIdx + 0.5) / uSectionCount;
+            return texture2D(uSectionData, vec2(x, y)).rgb;
           }
 
           void main() {
-            vec3 posA = getSectionPos(uSectionIndex, uSectionIndex);
-            vec3 posB = getSectionPos(uNextSectionIndex, uNextSectionIndex);
+            float seed = fract(aIndex * 0.6180339887);
+            vSeed = seed;
+
+            vec3 posA = sampleSection(uSectionIndex, aIndex);
+            vec3 posB = sampleSection(uNextSectionIndex, aIndex);
             vec3 pos = mix(posA, posB, uMorph);
 
-            float drift = sin(uTime * 0.5 + aSeed * 6.28) * 0.15;
+            float drift = sin(uTime * 0.5 + seed * 6.2831) * 0.15;
             pos.y += drift;
-            pos.x += cos(uTime * 0.3 + aSeed * 6.28) * 0.1;
+            pos.x += cos(uTime * 0.3 + seed * 6.2831) * 0.1;
 
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            float size = mix(2.0, 6.0, aSeed) * uPixelRatio;
+            float size = mix(2.0, 6.0, seed) * uPixelRatio;
             gl_PointSize = size * (1.0 / -mvPosition.z);
 
-            vAlpha = mix(0.3, 0.8, aSeed);
+            vAlpha = mix(0.3, 0.8, seed);
           }
         `}
         fragmentShader={`
           uniform vec3 uColor;
           varying float vAlpha;
+          varying float vSeed;
 
           void main() {
             float dist = length(gl_PointCoord - 0.5);
@@ -192,7 +211,6 @@ export function ParticleField() {
           }
         `}
       />
-      <bufferAttribute attach="attributes-aSeed" args={[SEEDS, 1]} />
     </points>
   )
 }

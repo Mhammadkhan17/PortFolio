@@ -6,7 +6,7 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { setScrollProgress, setActiveSection, setSectionProgress, setPointer } from "@/lib/scroll"
 
-const SECTION_IDS = ["hero", "case-studies", "process", "pricing", "cta"]
+const SECTION_IDS = ["hero", "case-studies", "process", "pricing", "cta", "about"]
 
 export function LenisProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<LenisRef>(null)
@@ -20,9 +20,10 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     gsap.ticker.add(update)
     gsap.ticker.lagSmoothing(0)
 
-    const onScroll = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      setScrollProgress(maxScroll > 0 ? window.scrollY / maxScroll : 0)
+    const lenis = lenisRef.current?.lenis
+
+    const onScroll = ({ scroll, limit }: { scroll: number; limit: number }) => {
+      setScrollProgress(limit > 0 ? scroll / limit : 0)
 
       const centerY = window.innerHeight / 2
       for (const id of SECTION_IDS) {
@@ -45,13 +46,16 @@ export function LenisProvider({ children }: { children: ReactNode }) {
       )
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true })
+    if (lenis) {
+      lenis.on("scroll", onScroll)
+    }
     window.addEventListener("pointermove", onPointerMove, { passive: true })
-    onScroll()
 
     return () => {
       gsap.ticker.remove(update)
-      window.removeEventListener("scroll", onScroll)
+      if (lenis) {
+        lenis.off("scroll", onScroll)
+      }
       window.removeEventListener("pointermove", onPointerMove)
     }
   }, [])

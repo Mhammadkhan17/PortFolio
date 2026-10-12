@@ -1,7 +1,7 @@
 "use client"
 
-import { useFrame } from "@react-three/fiber"
-import { useMemo, useRef } from "react"
+import { useFrame, type ThreeEvent } from "@react-three/fiber"
+import { useLayoutEffect, useMemo, useRef, useState } from "react"
 import * as THREE from "three"
 import { scrollState } from "@/lib/scroll"
 
@@ -29,57 +29,69 @@ const SKILLS: Skill[] = [
   { name: "Socket.IO", category: "backend", ring: 1, angle: 4.0, speed: 0.2, radius: 3.0 },
   { name: "Redis", category: "backend", ring: 1, angle: 5.0, speed: 0.2, radius: 3.0 },
   { name: "Python", category: "ai", ring: 2, angle: 0, speed: 0.15, radius: 3.8 },
-  { name: "FastAPI", category: "ai", ring: 2, angle: 1.2, speed: 0.15, radius: 3.8 },
-  { name: "Qdrant", category: "ai", ring: 2, angle: 2.4, speed: 0.15, radius: 3.8 },
-  { name: "ONNX", category: "ai", ring: 2, angle: 3.6, speed: 0.15, radius: 3.8 },
-  { name: "RAG", category: "ai", ring: 2, angle: 4.8, speed: 0.15, radius: 3.8 },
-  { name: "MCP", category: "ai", ring: 2, angle: 5.6, speed: 0.15, radius: 3.8 },
+  { name: "Qdrant", category: "ai", ring: 2, angle: 1.2, speed: 0.15, radius: 3.8 },
+  { name: "ONNX", category: "ai", ring: 2, angle: 2.4, speed: 0.15, radius: 3.8 },
+  { name: "RAG", category: "ai", ring: 2, angle: 3.6, speed: 0.15, radius: 3.8 },
+  { name: "MCP", category: "ai", ring: 2, angle: 4.8, speed: 0.15, radius: 3.8 },
   { name: "Git", category: "tools", ring: 0, angle: 5.6, speed: 0.3, radius: 2.2 },
   { name: "Docker", category: "tools", ring: 1, angle: 5.8, speed: 0.2, radius: 3.0 },
   { name: "Vercel", category: "tools", ring: 1, angle: 0.5, speed: 0.2, radius: 3.0 },
   { name: "Linux", category: "tools", ring: 2, angle: 0.6, speed: 0.15, radius: 3.8 },
 ]
 
-const CATEGORY_COLORS: Record<Skill["category"], THREE.Color> = {
-  frontend: new THREE.Color("#00C2B2"),
-  backend: new THREE.Color("#6B9FFF"),
-  ai: new THREE.Color("#F59E0B"),
-  tools: new THREE.Color("#A8A6A1"),
+const CATEGORY_COLORS: Record<Skill["category"], string> = {
+  frontend: "#00C2B2",
+  backend: "#6B9FFF",
+  ai: "#F59E0B",
+  tools: "#A8A6A1",
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+  if (typeof window !== "undefined") {
+    const mq = window.matchMedia("(max-width: 767px)")
+    setIsMobile(mq.matches)
+    mq.addEventListener("change", (e) => setIsMobile(e.matches))
+  }
+  return isMobile
 }
 
 export function SkillConstellation() {
   const groupRef = useRef<THREE.Group>(null)
-  const meshRefs = useRef<THREE.InstancedMesh>(null)
+  const meshRef = useRef<THREE.InstancedMesh>(null)
+  const [hovered, setHovered] = useState<number | null>(null)
   const dummy = useMemo(() => new THREE.Object3D(), [])
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768
+  const isMobile = useIsMobile()
 
   const visibleSkills = useMemo(
     () => (isMobile ? SKILLS.filter((_, i) => i % 2 === 0) : SKILLS),
     [isMobile]
   )
 
-  const colorArray = useMemo(() => {
-    const arr = new Float32Array(visibleSkills.length * 3)
-    visibleSkills.forEach((s, i) => {
-      const c = CATEGORY_COLORS[s.category]
-      arr[i * 3] = c.r
-      arr[i * 3 + 1] = c.g
-      arr[i * 3 + 2] = c.b
+  useLayoutEffect(() => {
+    if (!meshRef.current) return
+    const color = new THREE.Color()
+    visibleSkills.forEach((skill, i) => {
+      color.set(CATEGORY_COLORS[skill.category])
+      meshRef.current!.setColorAt(i, color)
     })
-    return arr
+    if (meshRef.current.instanceColor) {
+      meshRef.current.instanceColor.needsUpdate = true
+    }
   }, [visibleSkills])
 
   useFrame((state) => {
-    if (!meshRefs.current || !groupRef.current) return
+    if (!meshRef.current || !groupRef.current) return
 
     const t = state.clock.elapsedTime
     const isAbout = scrollState.section === "about"
 
     groupRef.current.rotation.y = t * 0.05
-    groupRef.current.scale.lerp(
-      new THREE.Vector3(isAbout ? 1 : 0, isAbout ? 1 : 0, isAbout ? 1 : 0),
-      0.05
-    )
+
+    const targetScale = isAbout ? 1 : 0
+    const currentScale = groupRef.current.scale.x
+    const newScale = currentScale + (targetScale - currentScale) * 0.05
+    groupRef.current.scale.setScalar(newScale)
 
     visibleSkills.forEach((skill, i) => {
       const angle = skill.angle + t * skill.speed
@@ -88,28 +100,48 @@ export function SkillConstellation() {
       const y = Math.sin(angle * 2 + i) * 0.3
 
       dummy.position.set(x, y, z)
-      dummy.scale.setScalar(isAbout ? 1 : 0)
+
+      const targetSize = hovered === i ? 1.5 : 1
+      const currentSize = dummy.scale.x
+      dummy.scale.setScalar(currentSize + (targetSize - currentSize) * 0.15)
+
       dummy.updateMatrix()
-      meshRefs.current!.setMatrixAt(i, dummy.matrix)
+      meshRef.current!.setMatrixAt(i, dummy.matrix)
     })
-    meshRefs.current.instanceMatrix.needsUpdate = true
+    meshRef.current.instanceMatrix.needsUpdate = true
   })
+
+  const onPointerMove = (e: ThreeEvent<PointerEvent>) => {
+    if (e.instanceId !== undefined) {
+      setHovered(e.instanceId)
+    }
+  }
+
+  const onPointerOut = () => setHovered(null)
 
   return (
     <group ref={groupRef}>
-      <instancedMesh ref={meshRefs} args={[undefined, undefined, visibleSkills.length]}>
+      <instancedMesh
+        ref={meshRef}
+        args={[undefined, undefined, visibleSkills.length]}
+        onPointerMove={onPointerMove}
+        onPointerOut={onPointerOut}
+      >
         <sphereGeometry args={[0.06, 12, 12]} />
         <meshStandardMaterial
           emissiveIntensity={0.5}
           toneMapped={false}
         />
-        <instancedBufferAttribute
-          attach="geometry-color"
-          args={[colorArray, 3]}
-          count={visibleSkills.length}
-          itemSize={3}
-        />
       </instancedMesh>
+      {hovered !== null && visibleSkills[hovered] && (
+        <Html center distanceFactor={8}>
+          <div className="pointer-events-none rounded bg-void/90 px-2 py-1 text-xs text-mist">
+            {visibleSkills[hovered].name}
+          </div>
+        </Html>
+      )}
     </group>
   )
 }
+
+import { Html } from "@react-three/drei"

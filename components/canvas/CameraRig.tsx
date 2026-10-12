@@ -25,7 +25,7 @@ export function CameraRig() {
     const section = scrollState.section
     const targets = CAMERA_TARGETS[section] ?? CAMERA_TARGETS.hero
 
-    const lerpSpeed = 2.5 * delta
+    const lerpSpeed = 3.5 * delta
     targetPos.current.lerp(targets.pos, lerpSpeed)
     targetLook.current.lerp(targets.look, lerpSpeed)
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useFrame } from "@react-three/fiber"
+import { useFrame, useThree } from "@react-three/fiber"
 import { useRef } from "react"
 import * as THREE from "three"
 import { scrollState } from "@/lib/scroll"
@@ -14,11 +14,17 @@ export function SectionLights() {
   const ambientRef = useRef<THREE.AmbientLight>(null)
   const directionalRef = useRef<THREE.DirectionalLight>(null)
   const currentBg = useRef(new THREE.Color("#0A0A0F"))
+  const { scene } = useThree()
 
   useFrame((_, delta) => {
     const isLight = LIGHT_SECTIONS.has(scrollState.section)
     const targetBg = isLight ? LIGHT_BG : DARK_BG
     currentBg.current.lerp(targetBg, delta * 2)
+
+    const fog = scene.fog as THREE.Fog | null
+    if (fog) {
+      fog.color.lerp(targetBg, delta * 2)
+    }
 
     if (directionalRef.current) {
       const targetIntensity = isLight ? 1.2 : 0.6

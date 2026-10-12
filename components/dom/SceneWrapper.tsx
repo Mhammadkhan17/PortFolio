@@ -21,18 +21,37 @@ function canRenderScene(): boolean {
 }
 
 export function SceneWrapper() {
-  const [showScene, setShowScene] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => {
-      setShowScene(canRenderScene())
+      if (canRenderScene()) {
+        setMounted(true)
+        requestAnimationFrame(() => setVisible(true))
+      }
     })
     return () => cancelAnimationFrame(raf)
   }, [])
 
-  if (!showScene) {
-    return <StaticGradient />
-  }
-
-  return <SceneCanvas />
+  return (
+    <>
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-700"
+        style={{ opacity: visible ? 0 : 1 }}
+      >
+        <StaticGradient />
+      </div>
+      {mounted && (
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-700"
+          style={{ opacity: visible ? 1 : 0 }}
+        >
+          <SceneCanvas />
+        </div>
+      )}
+    </>
+  )
 }
