@@ -55,6 +55,7 @@ export function LenisProvider({ children }: { children: ReactNode }) {
       gsap.ticker.remove(update)
       if (lenis) {
         lenis.off("scroll", onScroll)
+        lenis.destroy()
       }
       window.removeEventListener("pointermove", onPointerMove)
     }

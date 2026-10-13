@@ -22,10 +22,11 @@ export function CameraRig() {
   const desiredPos = useRef(new THREE.Vector3(0, 0, 6))
 
   useFrame((_, delta) => {
+    const clampedDelta = Math.min(delta, 0.1)
     const section = scrollState.section
     const targets = CAMERA_TARGETS[section] ?? CAMERA_TARGETS.hero
 
-    const lerpSpeed = 3.5 * delta
+    const lerpSpeed = 3.5 * clampedDelta
     targetPos.current.lerp(targets.pos, lerpSpeed)
     targetLook.current.lerp(targets.look, lerpSpeed)
 

@@ -8,6 +8,7 @@ import { AnchorGeometry } from "./AnchorGeometry"
 import { ParticleField } from "./ParticleField"
 import { SectionLights } from "./SectionLights"
 import { Effects } from "./Effects"
+import { SkillConstellation } from "./SkillConstellation"
 
 
 function useIsMobile() {
@@ -75,6 +76,7 @@ function SceneContent() {
         <SectionLights />
         <AnchorGeometry />
         <ParticleField />
+        <SkillConstellation />
         <Environment resolution={256}>
           <Lightformer intensity={2} position={[0, 0, -5]} scale={[10, 10, 1]} color="#00C2B2" />
           <Lightformer intensity={1.5} position={[4, 3, 2]} scale={[6, 6, 1]} color="#00C2B2" />

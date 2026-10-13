@@ -25,13 +25,17 @@ export function SceneWrapper() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const raf = requestAnimationFrame(() => {
+    let raf2 = 0
+    const raf1 = requestAnimationFrame(() => {
       if (canRenderScene()) {
         setMounted(true)
-        requestAnimationFrame(() => setVisible(true))
+        raf2 = requestAnimationFrame(() => setVisible(true))
       }
     })
-    return () => cancelAnimationFrame(raf)
+    return () => {
+      cancelAnimationFrame(raf1)
+      cancelAnimationFrame(raf2)
+    }
   }, [])
 
   return (

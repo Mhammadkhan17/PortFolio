@@ -1,7 +1,8 @@
 "use client"
 
 import { useFrame, type ThreeEvent } from "@react-three/fiber"
-import { useLayoutEffect, useMemo, useRef, useState } from "react"
+import { Html } from "@react-three/drei"
+import { useLayoutEffect, useEffect, useMemo, useRef, useState } from "react"
 import * as THREE from "three"
 import { scrollState } from "@/lib/scroll"
 
@@ -47,12 +48,15 @@ const CATEGORY_COLORS: Record<Skill["category"], string> = {
 }
 
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false)
-  if (typeof window !== "undefined") {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
+  )
+  useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)")
-    setIsMobile(mq.matches)
-    mq.addEventListener("change", (e) => setIsMobile(e.matches))
-  }
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
   return isMobile
 }
 
@@ -60,6 +64,7 @@ export function SkillConstellation() {
   const groupRef = useRef<THREE.Group>(null)
   const meshRef = useRef<THREE.InstancedMesh>(null)
   const [hovered, setHovered] = useState<number | null>(null)
+  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null)
   const dummy = useMemo(() => new THREE.Object3D(), [])
   const isMobile = useIsMobile()
 
@@ -109,6 +114,25 @@ export function SkillConstellation() {
       meshRef.current!.setMatrixAt(i, dummy.matrix)
     })
     meshRef.current.instanceMatrix.needsUpdate = true
+
+    if (hovered !== null && visibleSkills[hovered]) {
+      const skill = visibleSkills[hovered]
+      const angle = skill.angle + t * skill.speed
+      const x = Math.cos(angle) * skill.radius
+      const y = Math.sin(angle * 2 + hovered) * 0.3
+      const z = Math.sin(angle) * skill.radius
+
+      const vector = new THREE.Vector3(x, y, z)
+      vector.applyMatrix4(groupRef.current.matrixWorld)
+      vector.project(state.camera)
+
+      const screenX = (vector.x * 0.5 + 0.5) * state.size.width
+      const screenY = (-vector.y * 0.5 + 0.5) * state.size.height
+
+      setTooltipPos({ x: screenX, y: screenY })
+    } else {
+      setTooltipPos(null)
+    }
   })
 
   const onPointerMove = (e: ThreeEvent<PointerEvent>) => {
@@ -117,7 +141,10 @@ export function SkillConstellation() {
     }
   }
 
-  const onPointerOut = () => setHovered(null)
+  const onPointerOut = () => {
+    setHovered(null)
+    setTooltipPos(null)
+  }
 
   return (
     <group ref={groupRef}>
@@ -133,9 +160,19 @@ export function SkillConstellation() {
           toneMapped={false}
         />
       </instancedMesh>
-      {hovered !== null && visibleSkills[hovered] && (
-        <Html center distanceFactor={8}>
-          <div className="pointer-events-none rounded bg-void/90 px-2 py-1 text-xs text-mist">
+      {hovered !== null && visibleSkills[hovered] && tooltipPos && (
+        <Html
+          position={[0, 0, 0]}
+          style={{
+            position: "fixed",
+            left: tooltipPos.x,
+            top: tooltipPos.y,
+            transform: "translate(-50%, -100%)",
+            pointerEvents: "none",
+            zIndex: 50,
+          }}
+        >
+          <div className="rounded bg-void/90 px-2 py-1 text-xs text-mist whitespace-nowrap">
             {visibleSkills[hovered].name}
           </div>
         </Html>
@@ -143,5 +180,3 @@ export function SkillConstellation() {
     </group>
   )
 }
-
-import { Html } from "@react-three/drei"

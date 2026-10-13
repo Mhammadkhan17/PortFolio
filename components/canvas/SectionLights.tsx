@@ -17,23 +17,24 @@ export function SectionLights() {
   const { scene } = useThree()
 
   useFrame((_, delta) => {
+    const clampedDelta = Math.min(delta, 0.1)
     const isLight = LIGHT_SECTIONS.has(scrollState.section)
     const targetBg = isLight ? LIGHT_BG : DARK_BG
-    currentBg.current.lerp(targetBg, delta * 2)
+    currentBg.current.lerp(targetBg, clampedDelta * 2)
 
     const fog = scene.fog as THREE.Fog | null
     if (fog) {
-      fog.color.lerp(targetBg, delta * 2)
+      fog.color.lerp(targetBg, clampedDelta * 2)
     }
 
     if (directionalRef.current) {
       const targetIntensity = isLight ? 1.2 : 0.6
-      directionalRef.current.intensity += (targetIntensity - directionalRef.current.intensity) * delta * 2
+      directionalRef.current.intensity += (targetIntensity - directionalRef.current.intensity) * clampedDelta * 2
     }
 
     if (ambientRef.current) {
       const targetIntensity = isLight ? 0.8 : 0.3
-      ambientRef.current.intensity += (targetIntensity - ambientRef.current.intensity) * delta * 2
+      ambientRef.current.intensity += (targetIntensity - ambientRef.current.intensity) * clampedDelta * 2
     }
   })
 

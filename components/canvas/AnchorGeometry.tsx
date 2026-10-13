@@ -18,23 +18,25 @@ export function AnchorGeometry() {
   }, [])
 
   useFrame((state, delta) => {
+    const clampedDelta = Math.min(delta, 0.1)
+
     if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.1
-      meshRef.current.rotation.x += delta * 0.03
+      meshRef.current.rotation.y += clampedDelta * 0.1
+      meshRef.current.rotation.x += clampedDelta * 0.03
     }
 
     if (materialRef.current) {
       const targetEmissive = scrollState.section === "cta" ? AMBER : TEAL
       const intensity = scrollState.section === "cta" ? 0.4 : 0.15
-      currentEmissive.current.lerp(targetEmissive, delta * 3)
+      currentEmissive.current.lerp(targetEmissive, clampedDelta * 3)
       materialRef.current.emissive.copy(currentEmissive.current)
-      materialRef.current.emissiveIntensity += (intensity - materialRef.current.emissiveIntensity) * delta * 3
+      materialRef.current.emissiveIntensity += (intensity - materialRef.current.emissiveIntensity) * clampedDelta * 3
     }
 
     const mouse = scrollState.pointer
     if (meshRef.current) {
-      meshRef.current.position.x += (mouse.x * 0.1 - meshRef.current.position.x) * delta * 2
-      meshRef.current.position.y += (mouse.y * 0.1 - meshRef.current.position.y) * delta * 2
+      meshRef.current.position.x += (mouse.x * 0.1 - meshRef.current.position.x) * clampedDelta * 2
+      meshRef.current.position.y += (mouse.y * 0.1 - meshRef.current.position.y) * clampedDelta * 2
     }
   })
 

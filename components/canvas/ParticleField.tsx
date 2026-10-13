@@ -64,10 +64,21 @@ function generateSectionPositions(count: number): Float32Array[] {
   }
   positions.push(cta)
 
+  const about = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
+    const t = i / count
+    const angle = t * Math.PI * 6
+    const radius = 1.5 + t * 3
+    about[i * 3] = Math.cos(angle) * radius
+    about[i * 3 + 1] = Math.sin(angle) * radius * 0.5
+    about[i * 3 + 2] = Math.sin(t * Math.PI * 3) * 1.0
+  }
+  positions.push(about)
+
   return positions
 }
 
-const SECTION_ORDER = ["hero", "case-studies", "process", "pricing", "cta"]
+const SECTION_ORDER = ["hero", "case-studies", "process", "pricing", "cta", "about"]
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(
@@ -97,9 +108,15 @@ export function ParticleField() {
     for (let i = 0; i < count; i++) indices[i] = i
     geo.setAttribute("aIndex", new THREE.BufferAttribute(indices, 1))
 
-    const data = new Float32Array(positions.length * count * 3)
+    const data = new Float32Array(positions.length * count * 4)
     for (let s = 0; s < positions.length; s++) {
-      data.set(positions[s], s * count * 3)
+      for (let i = 0; i < count; i++) {
+        const dstIdx = s * count * 4 + i * 4
+        data[dstIdx] = positions[s][i * 3]
+        data[dstIdx + 1] = positions[s][i * 3 + 1]
+        data[dstIdx + 2] = positions[s][i * 3 + 2]
+        data[dstIdx + 3] = 1.0
+      }
     }
     const tex = new THREE.DataTexture(
       data,
@@ -114,6 +131,13 @@ export function ParticleField() {
 
     return { geometry: geo, dataTexture: tex, sectionCount: positions.length }
   }, [count])
+
+  useEffect(() => {
+    return () => {
+      geometry.dispose()
+      dataTexture.dispose()
+    }
+  }, [geometry, dataTexture])
 
   const uniforms = useMemo(
     () => ({
@@ -133,8 +157,9 @@ export function ParticleField() {
   useFrame((state, delta) => {
     if (!materialRef.current || !pointsRef.current) return
 
+    const clampedDelta = Math.min(delta, 0.1)
     const u = materialRef.current.uniforms
-    u.uTime.value += delta
+    u.uTime.value += clampedDelta
     u.uPixelRatio.value = state.gl.getPixelRatio()
 
     const currentSection = scrollState.section
@@ -145,7 +170,7 @@ export function ParticleField() {
     u.uNextSectionIndex.value = nextIdx
     u.uMorph.value = scrollState.sectionProgress
 
-    pointsRef.current.rotation.y += delta * 0.02
+    pointsRef.current.rotation.y += clampedDelta * 0.02
   })
 
   return (
@@ -183,7 +208,8 @@ export function ParticleField() {
 
             vec3 posA = sampleSection(uSectionIndex, aIndex);
             vec3 posB = sampleSection(uNextSectionIndex, aIndex);
-            vec3 pos = mix(posA, posB, uMorph);
+            float morph = smoothstep(0.0, 1.0, uMorph);
+            vec3 pos = mix(posA, posB, morph);
 
             float drift = sin(uTime * 0.5 + seed * 6.2831) * 0.15;
             pos.y += drift;
