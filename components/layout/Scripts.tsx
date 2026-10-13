@@ -5,11 +5,17 @@ import { useEffect } from "react";
 export function Scripts() {
   useEffect(() => {
     // Suppress R3F v9's THREE.Clock deprecation warning (internal to @react-three/fiber)
+    // and harmless GPU shader precision warnings from ANGLE/DirectX
     const originalWarn = console.warn;
+    const suppressedPatterns = [
+      "THREE.Clock: This module has been deprecated",
+      "THREE.WebGLProgram: Program Info Log",
+    ];
     console.warn = (...args: unknown[]) => {
+      const first = args[0];
       if (
-        typeof args[0] === "string" &&
-        args[0].includes("THREE.Clock: This module has been deprecated")
+        typeof first === "string" &&
+        suppressedPatterns.some((p) => first.includes(p))
       ) {
         return;
       }
