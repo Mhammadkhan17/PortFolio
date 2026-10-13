@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/dom/Reveal";
 import { TiltCard } from "@/components/dom/TiltCard";
+import { MagneticButton } from "@/components/dom/MagneticButton";
 
 const caseStudies: {
   industry: string;
@@ -365,9 +366,11 @@ export default function Home() {
 
           <Reveal delay={0.1}>
             <div className="pointer-events-auto">
-              <Link href="/contact" className="btn-primary min-h-[48px]">
-                Send Me Your Project
-              </Link>
+              <MagneticButton>
+                <Link href="/contact" className="btn-primary min-h-[48px]">
+                  Send Me Your Project
+                </Link>
+              </MagneticButton>
             </div>
           </Reveal>
 

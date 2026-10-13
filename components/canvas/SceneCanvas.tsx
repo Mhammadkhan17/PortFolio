@@ -1,14 +1,16 @@
 "use client"
 
 import { Canvas } from "@react-three/fiber"
-import { Environment, Lightformer } from "@react-three/drei"
-import { Component, Suspense, type ReactNode } from "react"
+import { Environment, Lightformer, PerformanceMonitor } from "@react-three/drei"
+import { Component, Suspense, useState, type ReactNode } from "react"
 import { CameraRig } from "./CameraRig"
 import { AnchorGeometry } from "./AnchorGeometry"
 import { ParticleField } from "./ParticleField"
 import { SectionLights } from "./SectionLights"
 import { Effects } from "./Effects"
 import { SkillConstellation } from "./SkillConstellation"
+import { PerProjectGeometry } from "./PerProjectGeometry"
+import { AmbientGeometry } from "./AmbientGeometry"
 import { useMediaQuery, usePageVisible, usePerformanceTier } from "@/lib/hooks"
 
 class CanvasErrorBoundary extends Component<
@@ -39,44 +41,54 @@ function SceneContent() {
   const pageVisible = usePageVisible()
   const perfTier = usePerformanceTier()
 
-  const dpr: [number, number] | number = isSmartwatch ? 1 : isMobile ? 1 : isTablet ? 1.5 : perfTier === "high" ? [1, 2] : perfTier === "medium" ? [1, 1.75] : 1
+  const [dpr, setDpr] = useState<number | [number, number]>(
+    isMobile ? 1 : isTablet ? 1.5 : perfTier === "high" ? [1, 2] : [1, 1.75]
+  )
+
   const cameraFov = isMobile ? 55 : isTablet ? 50 : 45
   const cameraZ = isMobile ? 7 : isTablet ? 6.5 : 6
 
   if (isSmartwatch) return null
 
   return (
-    <Canvas
-      dpr={dpr}
-      camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
-      frameloop={pageVisible ? "always" : "never"}
-      gl={{
-        powerPreference: perfTier === "low" ? "low-power" : "high-performance",
-        antialias: perfTier !== "low",
-        alpha: true,
-      }}
-      onCreated={({ gl }) => {
-        gl.domElement.addEventListener("webglcontextlost", (e) => {
-          e.preventDefault()
-        })
-      }}
+    <PerformanceMonitor
+      onIncline={() => setDpr(isMobile ? 1 : isTablet ? 1.5 : [1, 2])}
+      onDecline={() => setDpr(1)}
     >
-      <color attach="background" args={["#0A0A0F"]} />
-      <fog attach="fog" args={["#0A0A0F", 8, 20]} />
-      <Suspense fallback={null}>
-        <SectionLights />
-        <AnchorGeometry />
-        <ParticleField />
-        <SkillConstellation />
-        <Environment resolution={perfTier === "low" ? 128 : 256}>
-          <Lightformer intensity={2} position={[0, 0, -5]} scale={[10, 10, 1]} color="#00C2B2" />
-          <Lightformer intensity={1.5} position={[4, 3, 2]} scale={[6, 6, 1]} color="#00C2B2" />
-          <Lightformer intensity={1} position={[-3, -2, 3]} scale={[4, 4, 1]} color="#F5F3EF" />
-        </Environment>
-        <Effects />
-        <CameraRig />
-      </Suspense>
-    </Canvas>
+      <Canvas
+        dpr={dpr}
+        camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
+        frameloop={pageVisible ? "always" : "never"}
+        gl={{
+          powerPreference: perfTier === "low" ? "low-power" : "high-performance",
+          antialias: perfTier !== "low",
+          alpha: true,
+        }}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener("webglcontextlost", (e) => {
+            e.preventDefault()
+          })
+        }}
+      >
+        <color attach="background" args={["#0A0A0F"]} />
+        <fog attach="fog" args={["#0A0A0F", 8, 20]} />
+        <Suspense fallback={null}>
+          <SectionLights />
+          <AnchorGeometry />
+          <ParticleField />
+          <SkillConstellation />
+          <PerProjectGeometry />
+          <AmbientGeometry />
+          <Environment resolution={perfTier === "low" ? 128 : 256}>
+            <Lightformer intensity={2} position={[0, 0, -5]} scale={[10, 10, 1]} color="#00C2B2" />
+            <Lightformer intensity={1.5} position={[4, 3, 2]} scale={[6, 6, 1]} color="#00C2B2" />
+            <Lightformer intensity={1} position={[-3, -2, 3]} scale={[4, 4, 1]} color="#F5F3EF" />
+          </Environment>
+          <Effects />
+          <CameraRig />
+        </Suspense>
+      </Canvas>
+    </PerformanceMonitor>
   )
 }
 

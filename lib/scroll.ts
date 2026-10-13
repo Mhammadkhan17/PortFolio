@@ -1,12 +1,18 @@
 export const scrollState = {
   progress: 0,
+  velocity: 0,
   section: "hero" as string,
   sectionProgress: 0,
   pointer: { x: 0, y: 0 },
 }
 
+let prevScroll = 0
+
 export function setScrollProgress(p: number) {
-  scrollState.progress = Math.max(0, Math.min(1, p))
+  const clamped = Math.max(0, Math.min(1, p))
+  scrollState.velocity = clamped - prevScroll
+  prevScroll = clamped
+  scrollState.progress = clamped
 }
 
 export function setActiveSection(id: string) {
