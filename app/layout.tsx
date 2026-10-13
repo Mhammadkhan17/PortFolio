@@ -6,7 +6,6 @@ import { Footer } from "@/components/layout/Footer";
 import { Scripts } from "@/components/layout/Scripts";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { SceneWrapper } from "@/components/dom/SceneWrapper";
-import { CustomCursor } from "@/components/dom/CustomCursor";
 import { PageTransition } from "@/components/dom/PageTransition";
 import "./globals.css";
 
@@ -113,7 +112,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               Skip to content
             </a>
             <Header />
-            <CustomCursor />
             <PageTransition />
             <main id="main-content" className="relative z-10 flex-1">{children}</main>
             <Footer />

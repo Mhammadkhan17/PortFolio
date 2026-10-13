@@ -4,6 +4,18 @@ import { useEffect } from "react";
 
 export function Scripts() {
   useEffect(() => {
+    // Suppress R3F v9's THREE.Clock deprecation warning (internal to @react-three/fiber)
+    const originalWarn = console.warn;
+    console.warn = (...args: unknown[]) => {
+      if (
+        typeof args[0] === "string" &&
+        args[0].includes("THREE.Clock: This module has been deprecated")
+      ) {
+        return;
+      }
+      originalWarn.apply(console, args);
+    };
+
     // Safari 100vh fix
     const setVH = () => {
       document.documentElement.style.setProperty(
@@ -31,6 +43,7 @@ export function Scripts() {
     updateOnlineStatus();
 
     return () => {
+      console.warn = originalWarn;
       window.removeEventListener("resize", setVH);
       window.removeEventListener("orientationchange", setVH);
       window.removeEventListener("online", updateOnlineStatus);

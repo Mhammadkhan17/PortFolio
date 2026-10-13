@@ -14,8 +14,8 @@ export function PageTransition() {
       const timer = setTimeout(() => {
         setDisplayPath(pathname)
         setTransitionStage("enter")
-        setTimeout(() => setTransitionStage("idle"), 500)
-      }, 300)
+        setTimeout(() => setTransitionStage("idle"), 200)
+      }, 150)
       return () => {
         cancelAnimationFrame(raf)
         clearTimeout(timer)
@@ -30,8 +30,8 @@ export function PageTransition() {
       className="pointer-events-none fixed inset-0 z-[90] bg-void"
       style={{
         animation: transitionStage === "exit"
-          ? "pageExit 0.3s ease-in forwards"
-          : "pageEnter 0.5s ease-out forwards",
+          ? "pageExit 0.15s ease-out forwards"
+          : "pageEnter 0.2s ease-out forwards",
       }}
     />
   )
