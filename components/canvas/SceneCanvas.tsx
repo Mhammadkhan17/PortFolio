@@ -51,27 +51,27 @@ function SceneContent() {
   if (isSmartwatch) return null
 
   return (
-    <PerformanceMonitor
-      onIncline={() => setDpr(isMobile ? 1 : isTablet ? 1.5 : [1, 2])}
-      onDecline={() => setDpr(1)}
+    <Canvas
+      dpr={dpr}
+      camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
+      frameloop={pageVisible ? "always" : "never"}
+      gl={{
+        powerPreference: perfTier === "low" ? "low-power" : "high-performance",
+        antialias: perfTier !== "low",
+        alpha: true,
+      }}
+      onCreated={({ gl }) => {
+        gl.domElement.addEventListener("webglcontextlost", (e) => {
+          e.preventDefault()
+        })
+      }}
     >
-      <Canvas
-        dpr={dpr}
-        camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
-        frameloop={pageVisible ? "always" : "never"}
-        gl={{
-          powerPreference: perfTier === "low" ? "low-power" : "high-performance",
-          antialias: perfTier !== "low",
-          alpha: true,
-        }}
-        onCreated={({ gl }) => {
-          gl.domElement.addEventListener("webglcontextlost", (e) => {
-            e.preventDefault()
-          })
-        }}
+      <color attach="background" args={["#0A0A0F"]} />
+      <fog attach="fog" args={["#0A0A0F", 8, 20]} />
+      <PerformanceMonitor
+        onIncline={() => setDpr(isMobile ? 1 : isTablet ? 1.5 : [1, 2])}
+        onDecline={() => setDpr(1)}
       >
-        <color attach="background" args={["#0A0A0F"]} />
-        <fog attach="fog" args={["#0A0A0F", 8, 20]} />
         <Suspense fallback={null}>
           <SectionLights />
           <AnchorGeometry />
@@ -87,8 +87,8 @@ function SceneContent() {
           <Effects />
           <CameraRig />
         </Suspense>
-      </Canvas>
-    </PerformanceMonitor>
+      </PerformanceMonitor>
+    </Canvas>
   )
 }
 
