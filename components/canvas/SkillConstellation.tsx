@@ -2,9 +2,10 @@
 
 import { useFrame, type ThreeEvent } from "@react-three/fiber"
 import { Html } from "@react-three/drei"
-import { useLayoutEffect, useEffect, useMemo, useRef, useState } from "react"
+import { useLayoutEffect, useMemo, useRef, useState } from "react"
 import * as THREE from "three"
 import { scrollState } from "@/lib/scroll"
+import { useMediaQuery } from "@/lib/hooks"
 
 type Skill = {
   name: string
@@ -47,26 +48,13 @@ const CATEGORY_COLORS: Record<Skill["category"], string> = {
   tools: "#A8A6A1",
 }
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
-  )
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)")
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
-  }, [])
-  return isMobile
-}
-
 export function SkillConstellation() {
   const groupRef = useRef<THREE.Group>(null)
   const meshRef = useRef<THREE.InstancedMesh>(null)
   const [hovered, setHovered] = useState<number | null>(null)
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null)
   const dummy = useMemo(() => new THREE.Object3D(), [])
-  const isMobile = useIsMobile()
+  const isMobile = useMediaQuery("(max-width: 767px)")
 
   const visibleSkills = useMemo(
     () => (isMobile ? SKILLS.filter((_, i) => i % 2 === 0) : SKILLS),

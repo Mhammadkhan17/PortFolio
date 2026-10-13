@@ -1,23 +1,21 @@
 "use client"
 
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing"
-import { useState } from "react"
 
-function checkDesktop(): boolean {
-  if (typeof window === "undefined") return false
-  return window.innerWidth >= 768
-}
+import { useMediaQuery, usePerformanceTier } from "@/lib/hooks"
 
 export function Effects() {
-  const [isDesktop] = useState(() => checkDesktop())
+  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const perfTier = usePerformanceTier()
+  const enabled = isDesktop && perfTier !== "low"
 
-  if (!isDesktop) return null
+  if (!enabled) return null
 
   return (
     <EffectComposer>
       <Bloom
-        luminanceThreshold={0.7}
-        intensity={0.6}
+        luminanceThreshold={perfTier === "high" ? 0.7 : 0.8}
+        intensity={perfTier === "high" ? 0.6 : 0.4}
         mipmapBlur
       />
       <Vignette offset={0.3} darkness={0.5} />

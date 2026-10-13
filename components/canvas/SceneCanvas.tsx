@@ -2,37 +2,14 @@
 
 import { Canvas } from "@react-three/fiber"
 import { Environment, Lightformer } from "@react-three/drei"
-import { Component, Suspense, useEffect, useState, type ReactNode } from "react"
+import { Component, Suspense, type ReactNode } from "react"
 import { CameraRig } from "./CameraRig"
 import { AnchorGeometry } from "./AnchorGeometry"
 import { ParticleField } from "./ParticleField"
 import { SectionLights } from "./SectionLights"
 import { Effects } from "./Effects"
 import { SkillConstellation } from "./SkillConstellation"
-
-
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
-  )
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)")
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
-  }, [])
-  return isMobile
-}
-
-function usePageVisible() {
-  const [visible, setVisible] = useState(() => document.visibilityState === "visible")
-  useEffect(() => {
-    const onVisibility = () => setVisible(document.visibilityState === "visible")
-    document.addEventListener("visibilitychange", onVisibility)
-    return () => document.removeEventListener("visibilitychange", onVisibility)
-  }, [])
-  return visible
-}
+import { useMediaQuery, usePageVisible, usePerformanceTier } from "@/lib/hooks"
 
 class CanvasErrorBoundary extends Component<
   { children: ReactNode; fallback: ReactNode },
@@ -56,18 +33,32 @@ class CanvasErrorBoundary extends Component<
 }
 
 function SceneContent() {
-  const isMobile = useIsMobile()
+  const isMobile = useMediaQuery("(max-width: 767px)")
+  const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1023px)")
+  const isSmartwatch = useMediaQuery("(max-width: 280px)")
   const pageVisible = usePageVisible()
+  const perfTier = usePerformanceTier()
+
+  const dpr: [number, number] | number = isSmartwatch ? 1 : isMobile ? 1 : isTablet ? 1.5 : perfTier === "high" ? [1, 2] : perfTier === "medium" ? [1, 1.75] : 1
+  const cameraFov = isMobile ? 55 : isTablet ? 50 : 45
+  const cameraZ = isMobile ? 7 : isTablet ? 6.5 : 6
+
+  if (isSmartwatch) return null
 
   return (
     <Canvas
-      dpr={isMobile ? 1 : [1, 1.75]}
-      camera={{ position: [0, 0, 6], fov: 45 }}
+      dpr={dpr}
+      camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
       frameloop={pageVisible ? "always" : "never"}
       gl={{
-        powerPreference: "high-performance",
-        antialias: true,
+        powerPreference: perfTier === "low" ? "low-power" : "high-performance",
+        antialias: perfTier !== "low",
         alpha: true,
+      }}
+      onCreated={({ gl }) => {
+        gl.domElement.addEventListener("webglcontextlost", (e) => {
+          e.preventDefault()
+        })
       }}
     >
       <color attach="background" args={["#0A0A0F"]} />
@@ -77,7 +68,7 @@ function SceneContent() {
         <AnchorGeometry />
         <ParticleField />
         <SkillConstellation />
-        <Environment resolution={256}>
+        <Environment resolution={perfTier === "low" ? 128 : 256}>
           <Lightformer intensity={2} position={[0, 0, -5]} scale={[10, 10, 1]} color="#00C2B2" />
           <Lightformer intensity={1.5} position={[4, 3, 2]} scale={[6, 6, 1]} color="#00C2B2" />
           <Lightformer intensity={1} position={[-3, -2, 3]} scale={[4, 4, 1]} color="#F5F3EF" />

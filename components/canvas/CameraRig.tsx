@@ -15,7 +15,7 @@ const CAMERA_TARGETS: Record<string, { pos: THREE.Vector3; look: THREE.Vector3 }
 }
 
 export function CameraRig() {
-  const { camera } = useThree()
+  const { camera, size } = useThree()
   const targetPos = useRef(new THREE.Vector3(0, 0, 6))
   const targetLook = useRef(new THREE.Vector3(0, 0, 0))
   const currentLook = useRef(new THREE.Vector3(0, 0, 0))
@@ -25,6 +25,10 @@ export function CameraRig() {
     const clampedDelta = Math.min(delta, 0.1)
     const section = scrollState.section
     const targets = CAMERA_TARGETS[section] ?? CAMERA_TARGETS.hero
+
+    const aspect = size.width / size.height
+    const isPortrait = aspect < 1
+    const distMultiplier = isPortrait ? 1.3 : 1
 
     const lerpSpeed = 3.5 * clampedDelta
     targetPos.current.lerp(targets.pos, lerpSpeed)
@@ -36,7 +40,7 @@ export function CameraRig() {
     desiredPos.current.set(
       targetPos.current.x + px,
       targetPos.current.y + py,
-      targetPos.current.z
+      targetPos.current.z * distMultiplier
     )
 
     camera.position.lerp(desiredPos.current, lerpSpeed)

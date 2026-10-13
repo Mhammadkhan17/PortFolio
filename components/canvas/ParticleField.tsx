@@ -1,12 +1,12 @@
 "use client"
 
 import { useFrame } from "@react-three/fiber"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import * as THREE from "three"
 import { scrollState } from "@/lib/scroll"
+import { useMediaQuery, usePerformanceTier } from "@/lib/hooks"
 
-const DESKTOP_COUNT = 2000
-const MOBILE_COUNT = 800
+const COUNTS = { low: 400, medium: 800, high: 2000 } as const
 
 function generateSectionPositions(count: number): Float32Array[] {
   const positions: Float32Array[] = []
@@ -80,24 +80,12 @@ function generateSectionPositions(count: number): Float32Array[] {
 
 const SECTION_ORDER = ["hero", "case-studies", "process", "pricing", "cta", "about"]
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
-  )
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)")
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
-  }, [])
-  return isMobile
-}
-
 export function ParticleField() {
   const pointsRef = useRef<THREE.Points>(null)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
-  const isMobile = useIsMobile()
-  const count = isMobile ? MOBILE_COUNT : DESKTOP_COUNT
+  const isMobile = useMediaQuery("(max-width: 767px)")
+  const perfTier = usePerformanceTier()
+  const count = isMobile ? COUNTS.medium : COUNTS[perfTier]
 
   const { geometry, dataTexture, sectionCount } = useMemo(() => {
     const positions = generateSectionPositions(count)

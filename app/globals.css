@@ -704,7 +704,8 @@ html {
   nav,
   .btn-primary,
   .btn-secondary,
-  .mobile-carousel {
+  .mobile-carousel,
+  .fixed.inset-0.z-0 {
     display: none !important;
   }
 
