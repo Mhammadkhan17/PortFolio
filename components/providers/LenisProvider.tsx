@@ -2,8 +2,6 @@
 
 import { ReactLenis, type LenisRef } from "lenis/react"
 import { useEffect, useRef, type ReactNode } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { setScrollProgress, setActiveSection, setSectionProgress, setPointer } from "@/lib/scroll"
 
 const SECTION_IDS = ["hero", "case-studies", "process", "pricing", "cta", "about"]
@@ -12,13 +10,13 @@ export function LenisProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<LenisRef>(null)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
+    let rafId = 0
 
     const update = (time: number) => {
       lenisRef.current?.lenis?.raf(time * 1000)
+      rafId = requestAnimationFrame(update)
     }
-    gsap.ticker.add(update)
-    gsap.ticker.lagSmoothing(0)
+    rafId = requestAnimationFrame(update)
 
     const lenis = lenisRef.current?.lenis
 
@@ -52,7 +50,7 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     window.addEventListener("pointermove", onPointerMove, { passive: true })
 
     return () => {
-      gsap.ticker.remove(update)
+      cancelAnimationFrame(rafId)
       if (lenis) {
         lenis.off("scroll", onScroll)
         lenis.destroy()
