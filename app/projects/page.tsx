@@ -1,18 +1,19 @@
 import Link from "next/link";
 import { getAllProjects } from "@/lib/projects";
 import { ogImage } from "@/lib/metadata";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Case studies and projects: MVPs, full-stack apps, and tools built with React, Next.js, Node.js, and PostgreSQL.",
-  alternates: { canonical: "https://dearidev.dev/projects" },
+    "Case studies and projects: MVPs, full-stack apps, and tools built with React, Next.js, Node.js, and PostgreSQL for real client and startup work.",
+  alternates: { canonical: `${siteUrl}/projects` },
   openGraph: {
     title: "Projects | DEAIDEV",
     description:
-      "Case studies and projects: MVPs, full-stack apps, and tools built with React, Next.js, Node.js, and PostgreSQL.",
-    url: "https://dearidev.dev/projects",
+      "Case studies and projects: MVPs, full-stack apps, and tools built with React, Next.js, Node.js, and PostgreSQL for real client and startup work.",
+    url: `${siteUrl}/projects`,
     siteName: "DEAIDEV Portfolio",
     images: [ogImage],
   },

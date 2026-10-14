@@ -4,6 +4,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPostBySlug, getAllPosts } from "@/lib/blog";
 import { mdxOptions } from "@/lib/mdx";
 import { ogImage } from "@/lib/metadata";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
 export async function generateStaticParams() {
@@ -23,13 +24,13 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.description,
-    alternates: { canonical: `https://dearidev.dev/blog/${post.slug}` },
+    alternates: { canonical: `${siteUrl}/blog/${post.slug}` },
     openGraph: {
       title: `${post.title} | DEAIDEV`,
       description: post.description,
       type: "article",
       publishedTime: post.date,
-      url: `https://dearidev.dev/blog/${post.slug}`,
+      url: `${siteUrl}/blog/${post.slug}`,
       siteName: "DEAIDEV Portfolio",
       images: [ogImage],
     },
@@ -53,12 +54,12 @@ export default async function BlogPostPage({
     "@type": "BlogPosting",
     headline: post.title,
     description: post.description,
-    url: `https://dearidev.dev/blog/${post.slug}`,
+    url: `${siteUrl}/blog/${post.slug}`,
     datePublished: post.date,
     author: {
       "@type": "Person",
       name: "DEAIDEV",
-      url: "https://dearidev.dev",
+      url: siteUrl,
     },
     publisher: {
       "@type": "Person",

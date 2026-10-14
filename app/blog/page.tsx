@@ -1,18 +1,19 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
 import { ogImage } from "@/lib/metadata";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Writing on development, building products, and lessons learned shipping real software.",
-  alternates: { canonical: "https://dearidev.dev/blog" },
+    "Writing on development, building products, AI integrations, and lessons learned shipping real software for early-stage startups and clients.",
+  alternates: { canonical: `${siteUrl}/blog` },
   openGraph: {
     title: "Blog | DEAIDEV",
     description:
-      "Writing on development, building products, and lessons learned shipping real software.",
-    url: "https://dearidev.dev/blog",
+      "Writing on development, building products, AI integrations, and lessons learned shipping real software for early-stage startups and clients.",
+    url: `${siteUrl}/blog`,
     siteName: "DEAIDEV Portfolio",
     images: [ogImage],
   },

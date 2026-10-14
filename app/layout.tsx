@@ -8,6 +8,7 @@ import { LenisProvider } from "@/components/providers/LenisProvider";
 import { SceneWrapper } from "@/components/dom/SceneWrapper";
 import { PageTransition } from "@/components/dom/PageTransition";
 import { ogImage } from "@/lib/metadata";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -24,13 +25,13 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dearidev.dev"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "DEAIDEV — Full-Stack Developer",
     template: "%s | DEAIDEV",
   },
   description:
-    "Full-stack developer specializing in MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL.",
+    "Full-stack developer building MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL, TypeScript, and AI integrations.",
   keywords: [
     "full-stack developer",
     "web developer",
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "DEAIDEV — Full-Stack Developer",
     description:
-      "Full-stack developer specializing in MVPs and production apps for early-stage startups.",
+      "Full-stack developer building MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL, TypeScript, and AI integrations.",
     type: "website",
     locale: "en_US",
     siteName: "DEAIDEV Portfolio",
@@ -67,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     "@type": "Person",
     name: "DEAIDEV",
     jobTitle: "Full-Stack Developer",
-    url: "https://dearidev.dev",
+    url: siteUrl,
     sameAs: ["https://github.com/dearidev", "https://linkedin.com/in/dearidev"],
     knowsAbout: [
       "React",

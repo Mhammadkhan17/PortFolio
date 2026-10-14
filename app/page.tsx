@@ -2,109 +2,20 @@ import Link from "next/link";
 import { Reveal } from "@/components/dom/Reveal";
 import { TiltCard } from "@/components/dom/TiltCard";
 import { MagneticButton } from "@/components/dom/MagneticButton";
+import { getAllProjects, type Project } from "@/lib/projects";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "https://dearidev.dev" },
+  alternates: { canonical: siteUrl },
 };
 
-const caseStudies: {
-  industry: string;
-  outcomeHeadline: string;
-  context: string;
-  approach: string[];
-  metric: string;
-  metricLabel: string;
-  techStack: string[];
-  slug: string;
-  status?: string;
-  clientQuote?: string;
-  clientName?: string;
-  clientRole?: string;
-}[] = [
-  {
-    industry: "Productivity",
-    outcomeHeadline:
-      "Built an AI-native task manager with RAG document chat and MCP integration",
-    context:
-      "Task managers store tasks but don't help you think about them. Tasks, documents, and AI assistants live in separate tools that don't talk to each other — you end up manually copying context between systems.",
-    approach: [
-      "RAG document chat with Qdrant vector store and ONNX embeddings",
-      "MCP server exposing tasks and documents to external AI agents",
-      "Chat interface with context on your actual task data",
-    ],
-    metric: "RAG + MCP",
-    metricLabel: "AI-native architecture",
-    techStack: ["FastAPI", "Next.js", "Qdrant", "ONNX"],
-    slug: "todoflow",
-  },
-  {
-    industry: "E-Commerce",
-    outcomeHeadline:
-      "Built a zero-fee B2C + B2B liquidation platform with atomic checkout",
-    context:
-      "Computer liquidators lose 10–15% to marketplace fees per transaction. They needed a platform that facilitates sales without skimming them — with lot-based inventory that serves both bulk business buyers and individual consumers without overselling.",
-    approach: [
-      "Atomic checkout with reservation-based inventory to prevent overselling",
-      "Dual B2C/B2B workflows sharing one product catalog",
-      "WhatsApp Business fulfillment with zero payment-processor fees",
-    ],
-    metric: "0%",
-    metricLabel: "platform transaction fees",
-    techStack: ["Next.js 15", "FastAPI", "Supabase", "PostgreSQL"],
-    slug: "computer-lot",
-  },
-  {
-    industry: "Operations",
-    outcomeHeadline:
-      "Real-time ERP for cloud kitchens — one kitchen, many brands, shared inventory",
-    context:
-      "Cloud kitchens run multiple restaurant brands from a single kitchen with orders arriving from delivery marketplaces and no dine-in service. Generic tooling breaks down — orders arrive from everywhere, ingredients are shared across brands, and every brand reports into the same P&L.",
-    approach: [
-      "Live Kanban KDS with Socket.IO real-time order feed",
-      "Recipe-linked inventory — every dish resolves to ingredient-level quantities",
-      "Brand performance analytics and customer order tracking pages",
-    ],
-    metric: "5",
-    metricLabel: "modules wired by real-time feed",
-    techStack: ["Vue 3", "TypeScript", "PrimeVue", "Socket.IO", "TanStack Query"],
-    slug: "cloud-kitchen-erp",
-    status: "In progress",
-  },
-  {
-    industry: "AI / Education",
-    outcomeHeadline:
-      "AI-native textbook with a selection-aware RAG tutor and streamed answers",
-    context:
-      "Physical AI and humanoid robotics is hard to learn from static text. Readers need to ask questions about what they're reading — not just skim and hope. The textbook needed a built-in tutor that answers from the book's own content, not generic LLM responses.",
-    approach: [
-      "Selection-aware RAG — highlight any passage, ask about it, get a chapter-scoped answer",
-      "Fully local retrieval with ONNX embeddings and Qdrant vector store",
-      "Streaming responses, personalization quiz, and Urdu translation",
-    ],
-    metric: "Live",
-    metricLabel: "deployed on Vercel",
-    techStack: ["Docusaurus", "React 19", "FastAPI", "Qdrant", "ONNX"],
-    slug: "physical-ai-textbook",
-    status: "Live",
-  },
-  {
-    industry: "Marketplace",
-    outcomeHeadline:
-      "Built a two-sided car rental marketplace with payments and identity verification",
-    context:
-      "P2P car rental requires trust between strangers — owners need to verify drivers, renters need secure payments, and both need a booking system that won't double-book. Existing solutions were either a Google Sheet or enterprise fleet software.",
-    approach: [
-      "Stripe Connect escrow — renter pays, owner gets paid after trip",
-      "Identity verification flow before booking",
-      "Database-level date-conflict prevention for availability",
-    ],
-    metric: "MVP",
-    metricLabel: "deployed to production on Vercel",
-    techStack: ["Next.js 14", "Prisma", "Stripe", "NextAuth"],
-    slug: "morent",
-  },
-];
+const caseStudies = getAllProjects()
+  .filter(
+    (p): p is Project & { industry: string; outcomeHeadline: string; context: string; approach: string[] } =>
+      Boolean(p.outcomeHeadline && p.industry && p.context && p.approach)
+  )
+  .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 
 const processSteps = [
   {
@@ -146,7 +57,7 @@ export default function Home() {
           <div className="max-w-3xl">
             <Reveal>
               <p className="mb-6 type-mono-eyebrow text-signal">
-                Full-Stack Developer
+                DEAIDEV · Full-Stack Developer
               </p>
             </Reveal>
 
@@ -255,7 +166,7 @@ export default function Home() {
                     )}
 
                     <div className="flex flex-wrap gap-2 mt-auto">
-                      {study.techStack.map((t) => (
+                      {study.tech.map((t) => (
                         <span key={t} className="tech-badge">
                           {t}
                         </span>

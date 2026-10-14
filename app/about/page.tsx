@@ -1,18 +1,19 @@
 import Link from "next/link";
 import { Reveal } from "@/components/dom/Reveal";
 import { ogImage } from "@/lib/metadata";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Full-stack developer building MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL.",
-  alternates: { canonical: "https://dearidev.dev/about" },
+    "Full-stack developer building MVPs and production apps for early-stage startups. I turn ideas into shipped products with React, Next.js, Node.js, and PostgreSQL.",
+  alternates: { canonical: `${siteUrl}/about` },
   openGraph: {
     title: "About | DEAIDEV",
     description:
-      "Full-stack developer building MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL.",
-    url: "https://dearidev.dev/about",
+      "Full-stack developer building MVPs and production apps for early-stage startups. I turn ideas into shipped products with React, Next.js, Node.js, and PostgreSQL.",
+    url: `${siteUrl}/about`,
     siteName: "DEAIDEV Portfolio",
     images: [ogImage],
   },

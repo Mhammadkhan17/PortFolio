@@ -1,38 +1,41 @@
 import type { MetadataRoute } from "next";
 import { getAllProjects } from "@/lib/projects";
 import { getAllPosts } from "@/lib/blog";
+import { siteUrl } from "@/lib/site";
+
+const LAST_UPDATED = new Date("2026-10-13");
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://dearidev.dev";
+  const baseUrl = siteUrl;
 
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: LAST_UPDATED,
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: LAST_UPDATED,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/projects`,
-      lastModified: new Date(),
+      lastModified: LAST_UPDATED,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: LAST_UPDATED,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: LAST_UPDATED,
       changeFrequency: "monthly",
       priority: 0.6,
     },
@@ -41,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const projectPages: MetadataRoute.Sitemap = getAllProjects().map(
     (project) => ({
       url: `${baseUrl}/projects/${project.slug}`,
-      lastModified: new Date(),
+      lastModified: LAST_UPDATED,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })

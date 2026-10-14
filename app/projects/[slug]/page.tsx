@@ -4,6 +4,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { getProjectBySlug, getAllProjects } from "@/lib/projects";
 import { mdxOptions } from "@/lib/mdx";
 import { ogImage } from "@/lib/metadata";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
 export async function generateStaticParams() {
@@ -20,16 +21,16 @@ export async function generateMetadata({
   const project = getProjectBySlug(slug);
   if (!project) return {};
 
-  const title = project.outcomeHeadline || project.title;
+  const title = project.seoTitle || project.title;
   return {
     title,
     description: project.description,
-    alternates: { canonical: `https://dearidev.dev/projects/${project.slug}` },
+    alternates: { canonical: `${siteUrl}/projects/${project.slug}` },
     openGraph: {
       title: `${title} | DEAIDEV`,
       description: project.description,
       type: "article",
-      url: `https://dearidev.dev/projects/${project.slug}`,
+      url: `${siteUrl}/projects/${project.slug}`,
       siteName: "DEAIDEV Portfolio",
       images: [ogImage],
     },
@@ -55,11 +56,11 @@ export default async function ProjectPage({
     "@type": "CreativeWork",
     name: project.outcomeHeadline || project.title,
     description: project.description,
-    url: `https://dearidev.dev/projects/${project.slug}`,
+    url: `${siteUrl}/projects/${project.slug}`,
     author: {
       "@type": "Person",
       name: "DEAIDEV",
-      url: "https://dearidev.dev",
+      url: siteUrl,
     },
     ...(project.date && { datePublished: project.date }),
     keywords: project.tech.join(", "),
@@ -72,7 +73,7 @@ export default async function ProjectPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Link
-        href="/#work"
+        href="/#case-studies"
         className="mb-8 inline-block type-body-sm text-ash transition-colors hover:text-on-primary"
       >
         ← Back to Work
