@@ -41,14 +41,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const projectPages: MetadataRoute.Sitemap = getAllProjects().map(
-    (project) => ({
+  const projectPages: MetadataRoute.Sitemap = getAllProjects()
+    .filter((project) => !project.draft && project.outcomeHeadline)
+    .map((project) => ({
       url: `${baseUrl}/projects/${project.slug}`,
       lastModified: LAST_UPDATED,
       changeFrequency: "monthly" as const,
       priority: 0.8,
-    })
-  );
+    }));
 
   const blogPages: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,

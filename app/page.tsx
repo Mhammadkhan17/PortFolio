@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const caseStudies = getAllProjects()
   .filter(
     (p): p is Project & { industry: string; outcomeHeadline: string; context: string; approach: string[] } =>
-      Boolean(p.outcomeHeadline && p.industry && p.context && p.approach)
+      Boolean(p.outcomeHeadline && p.industry && p.context && p.approach && !p.draft)
   )
   .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 

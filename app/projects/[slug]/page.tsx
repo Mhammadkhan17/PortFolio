@@ -22,13 +22,17 @@ export async function generateMetadata({
   if (!project) return {};
 
   const title = project.seoTitle || project.title;
+  const isThin = !project.outcomeHeadline;
+  const noindex = project.draft === true || project.noindex === true || isThin;
+
   return {
     title,
     description: project.description,
     alternates: { canonical: `${siteUrl}/projects/${project.slug}` },
+    ...(noindex && { robots: { index: false, follow: false } }),
     openGraph: {
       title: `${title} | DEAIDEV`,
-      description: project.description,
+      description: project.problem || project.description,
       type: "article",
       url: `${siteUrl}/projects/${project.slug}`,
       siteName: "DEAIDEV Portfolio",
@@ -51,11 +55,17 @@ export default async function ProjectPage({
 
   const isCaseStudy = !!project.outcomeHeadline;
 
+  const allProjects = getAllProjects();
+  const related = (project.related ?? [])
+    .map((s) => allProjects.find((p) => p.slug === s))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p && !p.draft))
+    .slice(0, 3);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
-    name: project.outcomeHeadline || project.title,
-    description: project.description,
+    name: project.title,
+    description: project.problem || project.description,
     url: `${siteUrl}/projects/${project.slug}`,
     author: {
       "@type": "Person",
@@ -66,29 +76,74 @@ export default async function ProjectPage({
     keywords: project.tech.join(", "),
   };
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "Projects", item: `${siteUrl}/projects` },
+      { "@type": "ListItem", position: 3, name: project.title, item: `${siteUrl}/projects/${project.slug}` },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-[65ch] px-6 py-32">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Link
-        href="/#case-studies"
-        className="mb-8 inline-block type-body-sm text-ash transition-colors hover:text-on-primary"
-      >
-        ← Back to Work
-      </Link>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+
+      <nav aria-label="Breadcrumb" className="mb-8">
+        <ol className="flex flex-wrap items-center gap-2 type-caption text-mute">
+          <li><Link href="/" className="transition-colors hover:text-on-primary">Home</Link></li>
+          <li aria-hidden="true">/</li>
+          <li><Link href="/projects" className="transition-colors hover:text-on-primary">Projects</Link></li>
+          <li aria-hidden="true">/</li>
+          <li className="text-ash" aria-current="page">{project.title}</li>
+        </ol>
+      </nav>
 
       <article>
         {isCaseStudy ? (
           <>
             <p className="mb-2 type-mono-eyebrow text-mute">{project.industry}</p>
             <h1 className="mb-4 type-display-sm text-on-primary">
-              {project.outcomeHeadline}
+              {project.title}
             </h1>
-            <p className="mb-8 type-body text-ash">{project.description}</p>
+            <p className="mb-8 type-body text-ash">{project.outcomeHeadline}</p>
 
-            <div className="mb-8 flex gap-2">
+            <dl className="mb-8 grid grid-cols-2 gap-4 border-y border-hairline-soft py-6 sm:grid-cols-4">
+              {project.role && (
+                <div>
+                  <dt className="type-mono-micro text-mute">Role</dt>
+                  <dd className="mt-1 type-caption text-ash">{project.role}</dd>
+                </div>
+              )}
+              {project.duration && (
+                <div>
+                  <dt className="type-mono-micro text-mute">Duration</dt>
+                  <dd className="mt-1 type-caption text-ash">{project.duration}</dd>
+                </div>
+              )}
+              {project.industry && (
+                <div>
+                  <dt className="type-mono-micro text-mute">Industry</dt>
+                  <dd className="mt-1 type-caption text-ash">{project.industry}</dd>
+                </div>
+              )}
+              {project.client && (
+                <div>
+                  <dt className="type-mono-micro text-mute">Client</dt>
+                  <dd className="mt-1 type-caption text-ash">{project.client}</dd>
+                </div>
+              )}
+            </dl>
+
+            <div className="mb-8 flex flex-wrap gap-2">
               {project.tech.map((t: string) => (
                 <span key={t} className="type-mono-micro text-mute">
                   {t}
@@ -96,10 +151,11 @@ export default async function ProjectPage({
               ))}
             </div>
 
-            {project.duration && (
-              <p className="mb-8 type-caption text-mute">
-                {project.duration}{project.date ? ` · ${project.date}` : ""}
-              </p>
+            {project.metric && (
+              <div className="mb-8 rounded-marketing border border-hairline-soft bg-canvas-soft p-lg text-center">
+                <p className="type-display-md text-brand">{project.metric}</p>
+                <p className="type-body-sm text-ash">{project.metricLabel}</p>
+              </div>
             )}
 
             <div className="prose prose-neutral dark:prose-invert max-w-none">
@@ -115,30 +171,20 @@ export default async function ProjectPage({
               </blockquote>
             )}
 
-            {project.metric && (
-              <div className="mt-8 rounded-marketing border border-hairline-soft bg-canvas-soft p-lg text-center">
-                <p className="type-display-md text-brand">{project.metric}</p>
-                <p className="type-body-sm text-ash">{project.metricLabel}</p>
-              </div>
-            )}
-
-            <div className="mt-8 flex gap-4">
+            <div className="mt-8 flex flex-wrap gap-4">
               {project.demo && project.demo !== "#" && (
-                <Link
-                  href={project.demo}
-                  className="btn-primary"
-                >
+                <Link href={project.demo} className="btn-secondary">
                   Live Demo
                 </Link>
               )}
               {project.github && project.github !== "#" && (
-                <Link
-                  href={project.github}
-                  className="btn-secondary"
-                >
+                <Link href={project.github} className="btn-secondary">
                   Source Code
                 </Link>
               )}
+              <Link href="/contact" className="btn-primary">
+                Book a Discovery Call
+              </Link>
             </div>
           </>
         ) : (
@@ -178,6 +224,32 @@ export default async function ProjectPage({
           </>
         )}
       </article>
+
+      {related.length > 0 && (
+        <section className="mt-16 border-t border-hairline-soft pt-12" aria-labelledby="related-heading">
+          <h2 id="related-heading" className="mb-6 type-heading-sm text-on-primary">
+            Similar work
+          </h2>
+          <ul className="space-y-4">
+            {related.map((r) => (
+              <li key={r.slug}>
+                <Link
+                  href={`/projects/${r.slug}`}
+                  className="group block rounded-marketing border border-hairline-soft bg-canvas-soft/60 p-lg transition-all hover:-translate-y-0.5 hover:border-brand/40"
+                >
+                  <p className="type-mono-micro text-mute">{r.industry}</p>
+                  <p className="mt-1 type-heading-sm text-on-primary group-hover:text-brand transition-colors">
+                    {r.title}
+                  </p>
+                  <p className="mt-1 type-body-sm text-ash line-clamp-2">
+                    {r.problem || r.description}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

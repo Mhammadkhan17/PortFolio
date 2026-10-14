@@ -28,7 +28,7 @@ export default async function ProjectsPage({
 }) {
   const params = await searchParams;
   const category = params.category || "all";
-  const allProjects = getAllProjects();
+  const allProjects = getAllProjects().filter((p) => !p.draft);
 
   const filtered =
     category === "all"
