@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Writing on development, building products, and lessons learned shipping real software.",
+  alternates: { canonical: "https://dearidev.dev/blog" },
+};
 
 export default function BlogPage() {
   const posts = getAllPosts();

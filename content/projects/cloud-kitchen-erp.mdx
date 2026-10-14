@@ -47,3 +47,17 @@ The client socket is a reference-counted singleton: `useSocket()` increments a c
 ## Scope & Constraints
 
 The system runs on a mock backend (JSON Server persisting to `db.json`) with no authentication — it's a complete working demonstration of the domain, not a production deployment. The documented production path: replace JSON Server with Express + PostgreSQL, make stock and status transitions atomic server-side, and add validation, pagination, and auth.
+
+## Decisions & Trade-offs
+
+**Socket.IO push over polling.** A kitchen display that polls every 3 seconds means up to 3 seconds of stale tickets during a rush. Socket.IO pushes updates the moment an order changes, and patching the TanStack Query cache in place (`setQueryData`) means the UI updates without a refetch round-trip. Trade-off: more client complexity (socket lifecycle, reconnection, cache-patch logic) and a stateful server, but the KDS needs to be current — stale tickets cost orders.
+
+**Recipe-linked inventory over separate stock counting.** The alternative was counting ingredients independently of sales. Linking every dish to ingredient-level quantities means selling a burger decrements bun, patty, and cheese automatically. Trade-off: recipes must be maintained accurately or inventory drifts, and a missing recipe silently breaks the link — I added an upsert flow and a searchable ingredient picker to lower that friction.
+
+**Mock backend over premature productionization.** JSON Server with a `router.render` override let me demonstrate the full real-time domain — broadcast, cache patching, reconnection — without spending weeks on auth and Postgres schema before the interaction model was proven. Trade-off: the demo isn't deployable as-is, but the architecture doc marks exactly what changes in production.
+
+## Reflection
+
+The trickiest piece was the reference-counted socket singleton. Early versions disconnected whenever any consumer unmounted — so navigating from KDS to Analytics killed the feed for the KDS still mounted underneath in the layout. Reference counting (`useSocket()` increments, disconnects only at zero) fixed a class of bugs that looked like flakiness but were lifecycle errors.
+
+If I extended it, I'd prioritize the production path: swap JSON Server for Postgres with atomic status transitions, add role auth (kitchen vs operator vs public), and batch socket patches during high order volume so the client doesn't re-render per message.

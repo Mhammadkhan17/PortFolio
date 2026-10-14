@@ -386,7 +386,11 @@ article a:hover {
 
 /* === Focus-visible === */
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
   outline: 2px solid var(--color-link-blue);
   outline-offset: 2px;
 }

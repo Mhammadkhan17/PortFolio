@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch about your project. I reply within 24 hours with honest feedback — even if I'm not the right fit.",
+  alternates: { canonical: "https://dearidev.dev/contact" },
+};
 
 export default function ContactPage() {
   return (

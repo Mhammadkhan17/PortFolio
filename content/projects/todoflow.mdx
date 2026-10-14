@@ -41,3 +41,25 @@ The core task management is solid — CRUD operations, projects, due dates, prio
 TodoFlow is a task manager that's genuinely AI-native, not just a task manager with a chatbot bolted on. The RAG pipeline gives you document-grounded answers, the MCP server makes your data accessible to external AI agents, and the chat interface lets you interact with your tasks conversationally.
 
 The architecture demonstrates how traditional CRUD applications can layer AI capabilities without rewriting the core — the task database stays a task database, and the AI layer reads from it.
+
+## Context
+
+TodoFlow started from a frustration: every tool I used for tasks, documents, and AI chat was a separate silo. I'd write a spec in one app, track tasks in another, and ask an AI about both by pasting context manually. The tools didn't talk to each other, and none of them understood my data.
+
+The goal was to prove that a traditional CRUD application could gain real AI capabilities as a layer — not by rewriting the core, but by adding retrieval, embedding, and an agent-facing protocol alongside the existing task database.
+
+I scoped it around three capabilities that compound: document-grounded chat (RAG), conversational task queries, and MCP exposure so external agents could operate on the same data. Each one is useful alone; together they make the task manager a hub rather than a silo.
+
+## Decisions & Trade-offs
+
+**FastAPI + Next.js over a single Next.js app.** I wanted the AI pipeline (embeddings, vector search, streaming) in Python where the ML ecosystem lives, and the UI in React. Trade-off: two services to run and a CORS boundary between them. In return, I got ONNX Runtime and Qdrant client support without fighting the JavaScript ecosystem.
+
+**Qdrant + local ONNX embeddings over a hosted vector DB.** Using OpenAI embeddings would have been faster to build but adds per-call cost and a network dependency in the answer path. Local MiniLM embeddings keep retrieval free and offline-capable. Trade-off: lower embedding quality than larger models, but for personal document chat it's sufficient.
+
+**MCP server over a custom agent API.** I could have built a proprietary REST API for agents. MCP gives me compatibility with Claude Desktop and any MCP-speaking client for free. Trade-off: learning a newer protocol, but the ecosystem payoff is immediate.
+
+## Reflection
+
+The surprising part was how much of the work was plumbing — chunking strategies, embedding pipelines, cache invalidation when documents change — versus the "AI part" itself. The retrieval-augmented generation chain is maybe 50 lines; making it reliable across uploads, edits, and deletions was the real work.
+
+If I extended it, I'd add streaming to the RAG responses (currently the chat streams but retrieval is blocking), hybrid search (BM25 + vector) for keyword-heavy queries, and a background re-indexing job instead of re-embedding on upload.

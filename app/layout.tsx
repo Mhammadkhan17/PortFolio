@@ -68,9 +68,6 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  alternates: {
-    canonical: "https://dearidev.dev",
-  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

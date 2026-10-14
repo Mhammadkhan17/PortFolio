@@ -1,6 +1,6 @@
 "use client"
 
-import { Canvas } from "@react-three/fiber"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Environment, Lightformer, PerformanceMonitor } from "@react-three/drei"
 import { Component, Suspense, useState, type ReactNode } from "react"
 import { CameraRig } from "./CameraRig"
@@ -12,6 +12,12 @@ import { SkillConstellation } from "./SkillConstellation"
 import { PerProjectGeometry } from "./PerProjectGeometry"
 import { AmbientGeometry } from "./AmbientGeometry"
 import { useMediaQuery, usePageVisible, usePerformanceTier } from "@/lib/hooks"
+
+function FrameInvalidator() {
+  const { invalidate } = useThree()
+  useFrame(() => invalidate())
+  return null
+}
 
 class CanvasErrorBoundary extends Component<
   { children: ReactNode; fallback: ReactNode },
@@ -54,7 +60,7 @@ function SceneContent() {
     <Canvas
       dpr={dpr}
       camera={{ position: [0, 0, cameraZ], fov: cameraFov }}
-      frameloop={pageVisible ? "always" : "never"}
+      frameloop={pageVisible ? "demand" : "never"}
       gl={{
         powerPreference: perfTier === "low" ? "low-power" : "high-performance",
         antialias: perfTier !== "low",
@@ -86,6 +92,7 @@ function SceneContent() {
           </Environment>
           <Effects />
           <CameraRig />
+          <FrameInvalidator />
         </Suspense>
       </PerformanceMonitor>
     </Canvas>

@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { getAllProjects } from "@/lib/projects";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Case studies and projects: MVPs, full-stack apps, and tools built with React, Next.js, Node.js, and PostgreSQL.",
+  alternates: { canonical: "https://dearidev.dev/projects" },
+};
 
 const categories = ["all", "frontend", "fullstack", "tool"];
 

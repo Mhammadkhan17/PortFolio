@@ -47,3 +47,17 @@ The answer path is a single deep module (`chain.py`): lazy process-wide singleto
 ## Testing
 
 Backend: pytest suite (7 tests) covering chain wiring, chapter-filter structure, missing-key guard, and the `/api/chat` error path. Frontend: vitest + jsdom suites for Ask-AI state transitions, capture rules, and the chatbot consumer. Both suites run without real credentials or a live Qdrant.
+
+## Decisions & Trade-offs
+
+**Chapter-scoped retrieval over global search.** A global vector search would let a question about ROS 2 pull answers from the Gazebo chapter — technically relevant, pedagogically confusing. Filtering retrieval by `chapter_id` keeps answers grounded in what the reader is actually studying. Trade-off: cross-chapter questions ("how does this relate to Nav2?") get weaker answers since the relevant material may live elsewhere. The selection-aware path partially compensates — the highlighted passage anchors the query even within the chapter scope.
+
+**Local ONNX embeddings over an embedding API.** Running MiniLM in-process means no per-embed API key, no rate limits, and offline ingestion. Trade-off: 384-dim local embeddings retrieve less precisely than larger hosted models on dense technical prose. For a 12-chapter book with clean MDX structure, chapter scoping does most of the heavy lifting, so the weaker embedder is acceptable.
+
+**Docusaurus + separate FastAPI over a custom Next.js app.** Docusaurus gave me MDX chapters, sidebar navigation, search, and a static build for free — everything a textbook needs that I'd otherwise rebuild. The cost is a two-process architecture requiring proxy config in dev and `vercel.json` routing in production. Trade-off: more deploy complexity, but the writing experience and content structure are far better than a hand-rolled equivalent.
+
+## Reflection
+
+The design insight was that selection-aware retrieval solves a real problem generic chatbots don't: the reader's highlighted text is an unambiguous signal of intent that a typed question alone can't match. "What does this mean?" is useless without context; the same question plus a highlighted URDF snippet is precise.
+
+If I extended it, I'd add cross-chapter retrieval as an explicit mode (ask "how does this relate to X?" beyond the current chapter), citation links that scroll to the retrieved source paragraph, and spaced-repetition flashcards generated from RAG retrievals of weak areas in the learner profile.

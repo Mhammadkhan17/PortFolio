@@ -3,10 +3,33 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getProjectBySlug, getAllProjects } from "@/lib/projects";
 import { mdxOptions } from "@/lib/mdx";
+import type { Metadata } from "next";
 
 export async function generateStaticParams() {
   const projects = getAllProjects();
   return projects.map((project) => ({ slug: project.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
+  if (!project) return {};
+
+  const title = project.outcomeHeadline || project.title;
+  return {
+    title,
+    description: project.description,
+    alternates: { canonical: `https://dearidev.dev/projects/${project.slug}` },
+    openGraph: {
+      title: `${title} | DEAIDEV`,
+      description: project.description,
+      type: "article",
+    },
+  };
 }
 
 export default async function ProjectPage({
@@ -23,8 +46,27 @@ export default async function ProjectPage({
 
   const isCaseStudy = !!project.outcomeHeadline;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.outcomeHeadline || project.title,
+    description: project.description,
+    url: `https://dearidev.dev/projects/${project.slug}`,
+    author: {
+      "@type": "Person",
+      name: "DEAIDEV",
+      url: "https://dearidev.dev",
+    },
+    ...(project.date && { datePublished: project.date }),
+    keywords: project.tech.join(", "),
+  };
+
   return (
     <div className="mx-auto max-w-[65ch] px-6 py-32">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Link
         href="/#work"
         className="mb-8 inline-block type-body-sm text-ash transition-colors hover:text-on-primary"

@@ -41,3 +41,25 @@ The project was built as part of CodeMigos cohort 6, deployed to Vercel with a l
 The MVP is deployed and functional: owners can list cars, renters can browse, verify identity, book with Stripe payments, and complete trips with escrow release. The booking engine handles date-conflict prevention at the database level.
 
 The full stack runs on Next.js 14, Prisma, PostgreSQL, Stripe Connect, and NextAuth — a production-grade stack for a marketplace that needs to handle real money and real trust.
+
+## Context
+
+MoRent was built as part of CodeMigos cohort 6, a six-week intensive where the goal was a working, deployed product rather than a prototype. The brief was deliberately open: pick a domain with real transactional complexity and ship it end to end.
+
+I chose a two-sided marketplace because it forces every hard backend problem into one project — authentication with multiple roles, payments with escrow semantics, relational data with real constraints, and a booking engine where correctness matters. A CRUD app wouldn't have exercised those muscles.
+
+The trust problem framed the whole design. In peer-to-peer rental, neither side knows the other. That means identity verification isn't a nice-to-have, payments can't be simple one-shot charges, and availability has to be enforced at the database level rather than trusted to the client.
+
+## Decisions & Trade-offs
+
+**Stripe Connect over manual payouts.** I considered collecting payments and paying owners manually via bank transfer. Stripe Connect's escrow model (charge on booking, release after trip confirmation) protects both parties automatically and removes me from the flow of money. Trade-off: more integration complexity and Stripe's fees, but the trust guarantees are worth it for a marketplace.
+
+**Database-level overlap checking over application-level locking.** Checking for date conflicts in application code and then writing the booking leaves a race window between check and write. I used overlapping-date queries that run atomically in the database, so two concurrent bookings can't both succeed. Trade-off: a slightly more complex query, but correctness under concurrency.
+
+**Document-upload verification over full KYC.** A real KYC provider (document scan + face match) was out of scope for six weeks. I built a license-upload flow with manual review status — it raises the trust floor without the integration overhead. Trade-off: not automated, not production-grade, but demonstrable and honest about what it is.
+
+## Reflection
+
+The hardest part wasn't any single integration — it was making the booking engine correct. Double-booking is the failure mode that kills a rental marketplace, and the naive implementation (check, then insert) is subtly wrong under concurrency. Testing that path with simulated concurrent requests was the moment the project felt solid.
+
+If I extended it, the next steps would be automated identity verification, a review system after trips, and inventory pricing rules (weekend vs weekday). The escrow model would also need a dispute flow — right now release is triggered by trip completion with no conflict path.
