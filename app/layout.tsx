@@ -7,6 +7,7 @@ import { Scripts } from "@/components/layout/Scripts";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { SceneWrapper } from "@/components/dom/SceneWrapper";
 import { PageTransition } from "@/components/dom/PageTransition";
+import { ogImage } from "@/lib/metadata";
 import "./globals.css";
 
 const inter = Inter({
@@ -49,20 +50,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "DEAIDEV Portfolio",
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: "DEAIDEV — Full-Stack Developer",
-      },
-    ],
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DEAIDEV — Full-Stack Developer",
-    description:
-      "Full-stack developer specializing in MVPs and production apps for early-stage startups.",
   },
   robots: {
     index: true,

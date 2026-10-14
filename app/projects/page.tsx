@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllProjects } from "@/lib/projects";
+import { ogImage } from "@/lib/metadata";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,6 +8,14 @@ export const metadata: Metadata = {
   description:
     "Case studies and projects: MVPs, full-stack apps, and tools built with React, Next.js, Node.js, and PostgreSQL.",
   alternates: { canonical: "https://dearidev.dev/projects" },
+  openGraph: {
+    title: "Projects | DEAIDEV",
+    description:
+      "Case studies and projects: MVPs, full-stack apps, and tools built with React, Next.js, Node.js, and PostgreSQL.",
+    url: "https://dearidev.dev/projects",
+    siteName: "DEAIDEV Portfolio",
+    images: [ogImage],
+  },
 };
 
 const categories = ["all", "frontend", "fullstack", "tool"];

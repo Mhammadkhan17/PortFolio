@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getProjectBySlug, getAllProjects } from "@/lib/projects";
 import { mdxOptions } from "@/lib/mdx";
+import { ogImage } from "@/lib/metadata";
 import type { Metadata } from "next";
 
 export async function generateStaticParams() {
@@ -28,6 +29,9 @@ export async function generateMetadata({
       title: `${title} | DEAIDEV`,
       description: project.description,
       type: "article",
+      url: `https://dearidev.dev/projects/${project.slug}`,
+      siteName: "DEAIDEV Portfolio",
+      images: [ogImage],
     },
   };
 }

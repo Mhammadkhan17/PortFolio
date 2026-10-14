@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
+import { ogImage } from "@/lib/metadata";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,6 +8,14 @@ export const metadata: Metadata = {
   description:
     "Writing on development, building products, and lessons learned shipping real software.",
   alternates: { canonical: "https://dearidev.dev/blog" },
+  openGraph: {
+    title: "Blog | DEAIDEV",
+    description:
+      "Writing on development, building products, and lessons learned shipping real software.",
+    url: "https://dearidev.dev/blog",
+    siteName: "DEAIDEV Portfolio",
+    images: [ogImage],
+  },
 };
 
 export default function BlogPage() {

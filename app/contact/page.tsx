@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import { ogImage } from "@/lib/metadata";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,6 +8,14 @@ export const metadata: Metadata = {
   description:
     "Get in touch about your project. I reply within 24 hours with honest feedback — even if I'm not the right fit.",
   alternates: { canonical: "https://dearidev.dev/contact" },
+  openGraph: {
+    title: "Contact | DEAIDEV",
+    description:
+      "Get in touch about your project. I reply within 24 hours with honest feedback — even if I'm not the right fit.",
+    url: "https://dearidev.dev/contact",
+    siteName: "DEAIDEV Portfolio",
+    images: [ogImage],
+  },
 };
 
 export default function ContactPage() {

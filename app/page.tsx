@@ -2,6 +2,11 @@ import Link from "next/link";
 import { Reveal } from "@/components/dom/Reveal";
 import { TiltCard } from "@/components/dom/TiltCard";
 import { MagneticButton } from "@/components/dom/MagneticButton";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://dearidev.dev" },
+};
 
 const caseStudies: {
   industry: string;

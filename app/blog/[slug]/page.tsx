@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPostBySlug, getAllPosts } from "@/lib/blog";
 import { mdxOptions } from "@/lib/mdx";
+import { ogImage } from "@/lib/metadata";
 import type { Metadata } from "next";
 
 export async function generateStaticParams() {
@@ -28,6 +29,9 @@ export async function generateMetadata({
       description: post.description,
       type: "article",
       publishedTime: post.date,
+      url: `https://dearidev.dev/blog/${post.slug}`,
+      siteName: "DEAIDEV Portfolio",
+      images: [ogImage],
     },
   };
 }
