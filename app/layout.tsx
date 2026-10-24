@@ -1,26 +1,23 @@
-import type { Metadata } from "next";
-import { Inter, IBM_Plex_Mono } from "next/font/google";
-import { ThemeProvider } from "next-themes";
+import type { Metadata, Viewport } from "next";
+import { Archivo, DM_Mono } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { Scripts } from "@/components/layout/Scripts";
-import { LenisProvider } from "@/components/providers/LenisProvider";
-import { SceneWrapper } from "@/components/dom/SceneWrapper";
-import { PageTransition } from "@/components/dom/PageTransition";
+import { OfflineBanner } from "@/components/layout/OfflineBanner";
 import { ogImage } from "@/lib/metadata";
-import { siteUrl } from "@/lib/site";
+import { githubUrl, linkedinUrl, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
   display: "swap",
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-ibm-plex-mono",
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -31,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s | DEAIDEV",
   },
   description:
-    "Full-stack developer building MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL, TypeScript, and AI integrations.",
+    "Solo full-stack developer building MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL, TypeScript, and AI integrations.",
   keywords: [
     "full-stack developer",
     "web developer",
@@ -47,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "DEAIDEV — Full-Stack Developer",
     description:
-      "Full-stack developer building MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL, TypeScript, and AI integrations.",
+      "Solo full-stack developer building MVPs and production apps for early-stage startups. React, Next.js, Node.js, PostgreSQL, TypeScript, and AI integrations.",
     type: "website",
     locale: "en_US",
     siteName: "DEAIDEV Portfolio",
@@ -62,14 +59,23 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#121314",
+  colorScheme: "dark",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "DEAIDEV",
+    name: "Hammad Khan",
+    alternateName: "DEAIDEV",
     jobTitle: "Full-Stack Developer",
     url: siteUrl,
-    sameAs: ["https://github.com/dearidev", "https://linkedin.com/in/dearidev"],
+    sameAs: [githubUrl, linkedinUrl],
     knowsAbout: [
       "React",
       "Next.js",
@@ -80,35 +86,30 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   };
 
   return (
-    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} h-full antialiased`} suppressHydrationWarning data-scroll-behavior="smooth">
+    <html
+      lang="en"
+      className={`${archivo.variable} ${dmMono.variable} h-full`}
+    >
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <Scripts />
-          <LenisProvider>
-            <SceneWrapper />
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-marketing focus:bg-brand focus:px-4 focus:py-2 focus:text-sm focus:text-on-primary focus:outline-none"
-            >
-              Skip to content
-            </a>
-            <Header />
-            <PageTransition />
-            <main id="main-content" className="relative z-10 flex-1">{children}</main>
-            <Footer />
-            <div id="offline-banner" className="offline-banner">
-              You are currently offline
-            </div>
-          </LenisProvider>
-        </ThemeProvider>
+      <body className="flex min-h-full flex-col bg-tar text-chalk">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:border-2 focus:border-ink focus:bg-yellow focus:px-4 focus:py-3 focus:text-sm focus:font-bold focus:text-ink"
+        >
+          Skip to content
+        </a>
+        <Header />
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
+        <Footer />
+        <OfflineBanner />
       </body>
     </html>
   );

@@ -1,49 +1,126 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { contactEmail } from "@/lib/site";
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+type Values = {
+  name: string;
+  email: string;
+  projectType: string;
+  budget: string;
+  timeline: string;
+  message: string;
+};
+
+type Errors = Partial<Record<keyof Values, string>>;
+
+const initialValues: Values = {
+  name: "",
+  email: "",
+  projectType: "MVP",
+  budget: "Not sure yet",
+  timeline: "Just exploring",
+  message: "",
+};
+
+function buildMailto(values: Values) {
+  const subject = encodeURIComponent(`Project inquiry from ${values.name}`);
+  const body = encodeURIComponent(
+    [
+      `Name: ${values.name}`,
+      `Email: ${values.email}`,
+      `Project type: ${values.projectType}`,
+      `Budget: ${values.budget}`,
+      `Timeline: ${values.timeline}`,
+      "",
+      values.message,
+    ].join("\n")
+  );
+
+  return `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+}
 
 export function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
+  const [values, setValues] = useState<Values>(initialValues);
+  const [errors, setErrors] = useState<Errors>({});
+  const [draft, setDraft] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(false);
+  const update =
+    (field: keyof Values) =>
+    (
+      event: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >
+    ) => {
+      const value = event.target.value;
+      setValues((current) => ({ ...current, [field]: value }));
+      setErrors((current) => ({ ...current, [field]: undefined }));
+    };
 
-    const form = e.currentTarget;
-    const data = new FormData(form);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    const name = data.get("name") as string;
-    const email = data.get("email") as string;
-    const projectType = data.get("projectType") as string;
-    const budget = data.get("budget") as string;
-    const timeline = data.get("timeline") as string;
-    const message = data.get("message") as string;
+    const nextErrors: Errors = {};
 
-    if (!name || !email || !message) {
-      setError(true);
+    if (!values.name.trim()) {
+      nextErrors.name = "Enter your name so I know who I am replying to.";
+    }
+
+    if (!values.email.trim()) {
+      nextErrors.email = "Enter an email address I can reply to.";
+    } else if (!EMAIL_PATTERN.test(values.email.trim())) {
+      nextErrors.email = "That email address does not look complete.";
+    }
+
+    if (!values.message.trim()) {
+      nextErrors.message = "Tell me what you are building or what is stuck.";
+    }
+
+    setErrors(nextErrors);
+
+    const firstError = Object.keys(nextErrors)[0];
+    if (firstError) {
+      document.getElementById(firstError)?.focus();
       return;
     }
 
-    const subject = encodeURIComponent(`Project Inquiry from ${name}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nProject Type: ${projectType}\nBudget: ${budget}\nTimeline: ${timeline}\n\n${message}`
-    );
-
-    window.open(
-      `mailto:hello@dearidev.dev?subject=${subject}&body=${body}`,
-      "_blank"
-    );
-    setSubmitted(true);
+    setDraft(buildMailto(values));
   };
 
-  if (submitted) {
+  if (draft) {
     return (
-      <div role="status" aria-live="polite" className="rounded-marketing border border-hairline-soft bg-canvas-soft p-xl text-center" style={{ padding: "var(--spacing-xl)" }}>
-        <div className="mb-4 text-4xl">✓</div>
-        <h3 className="mb-2 type-heading-sm text-on-primary">Message sent!</h3>
-        <p className="type-body text-ash">
-          I&apos;ll reply within 24 hours with honest feedback on your project.
+      <div
+        role="status"
+        aria-live="polite"
+        className="border-2 border-ink bg-chalk-2 p-5 text-ink md:p-6"
+      >
+        <h2 className="heading-sm text-ink">One more step</h2>
+        <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-ink-soft">
+          Nothing has been sent yet. Open the email draft, check the details,
+          and press send in your email app.
+        </p>
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <a href={draft} className="tag tag-dark">
+            Open email draft
+          </a>
+          <button
+            type="button"
+            onClick={() => setDraft(null)}
+            className="tag tag-ghost"
+          >
+            Back to the form
+          </button>
+        </div>
+        <p className="mt-6 text-sm text-ink-soft">
+          Prefer to write directly?{" "}
+          <a
+            href={`mailto:${contactEmail}`}
+            className="font-semibold text-orange-deep underline underline-offset-4"
+          >
+            {contactEmail}
+          </a>
         </p>
       </div>
     );
@@ -51,98 +128,152 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
-      {error && (
-        <div role="alert" aria-live="assertive" className="rounded-marketing border border-error/30 bg-error/10 p-md type-body-sm text-error" style={{ padding: "var(--spacing-md)" }}>
-          Please fill in all required fields.
+      {Object.keys(errors).length > 0 && (
+        <div
+          role="alert"
+          className="border-2 border-danger bg-[#fdf0ee] p-4 text-sm font-semibold text-danger"
+        >
+          Check the highlighted fields below.
         </div>
       )}
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-2 block type-caption-tight text-ash">
-            Name <span className="text-brand">*</span>
+          <label htmlFor="name" className="field-label text-ink">
+            Name <span className="text-orange-deep">*</span>
           </label>
           <input
-            type="text"
             id="name"
             name="name"
-            required
-            aria-describedby="name-hint"
-            className="text-input w-full"
+            type="text"
+            autoComplete="name"
+            value={values.name}
+            onChange={update("name")}
+            aria-invalid={Boolean(errors.name)}
+            aria-describedby={errors.name ? "name-error" : undefined}
+            className="field-input"
           />
-          <p id="name-hint" className="sr-only">Required. Your full name.</p>
+          {errors.name && (
+            <p id="name-error" className="field-error">
+              {errors.name}
+            </p>
+          )}
         </div>
+
         <div>
-          <label htmlFor="email" className="mb-2 block type-caption-tight text-ash">
-            Email <span className="text-brand">*</span>
+          <label htmlFor="email" className="field-label text-ink">
+            Email <span className="text-orange-deep">*</span>
           </label>
           <input
-            type="email"
             id="email"
             name="email"
-            required
-            aria-describedby="email-hint"
-            className="text-input w-full"
+            type="email"
+            autoComplete="email"
+            value={values.email}
+            onChange={update("email")}
+            aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            className="field-input"
           />
-          <p id="email-hint" className="sr-only">Required. We&apos;ll use this to reply.</p>
+          {errors.email && (
+            <p id="email-error" className="field-error">
+              {errors.email}
+            </p>
+          )}
         </div>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-3">
         <div>
-          <label htmlFor="projectType" className="mb-2 block type-caption-tight text-ash">
-            Project Type
+          <label htmlFor="projectType" className="field-label text-ink">
+            Project type
           </label>
-          <select id="projectType" name="projectType" className="text-input w-full">
+          <select
+            id="projectType"
+            name="projectType"
+            value={values.projectType}
+            onChange={update("projectType")}
+            className="field-input"
+          >
             <option value="MVP">MVP</option>
             <option value="Full-stack app">Full-stack app</option>
             <option value="Feature build">Feature build</option>
+            <option value="AI integration">AI integration</option>
             <option value="Other">Other</option>
           </select>
         </div>
+
         <div>
-          <label htmlFor="budget" className="mb-2 block type-caption-tight text-ash">
-            Budget Range
+          <label htmlFor="budget" className="field-label text-ink">
+            Budget range
           </label>
-          <select id="budget" name="budget" className="text-input w-full">
+          <select
+            id="budget"
+            name="budget"
+            value={values.budget}
+            onChange={update("budget")}
+            className="field-input"
+          >
+            <option value="Not sure yet">Not sure yet</option>
             <option value="Under $5K">Under $5K</option>
             <option value="$5K–$15K">$5K–$15K</option>
             <option value="$15K–$30K">$15K–$30K</option>
             <option value="$30K+">$30K+</option>
           </select>
         </div>
+
         <div>
-          <label htmlFor="timeline" className="mb-2 block type-caption-tight text-ash">
+          <label htmlFor="timeline" className="field-label text-ink">
             Timeline
           </label>
-          <select id="timeline" name="timeline" className="text-input w-full">
+          <select
+            id="timeline"
+            name="timeline"
+            value={values.timeline}
+            onChange={update("timeline")}
+            className="field-input"
+          >
+            <option value="Just exploring">Just exploring</option>
             <option value="ASAP">ASAP</option>
             <option value="1–2 months">1–2 months</option>
             <option value="3–6 months">3–6 months</option>
-            <option value="Just exploring">Just exploring</option>
           </select>
         </div>
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-2 block type-caption-tight text-ash">
-          Tell me about your project <span className="text-brand">*</span>
+        <label htmlFor="message" className="field-label text-ink">
+          What are you building? <span className="text-orange-deep">*</span>
         </label>
         <textarea
           id="message"
           name="message"
-          required
-          rows={5}
-          aria-describedby="message-hint"
-          className="text-input w-full resize-none"
-          placeholder="What are you building? What's the biggest challenge?"
+          rows={6}
+          value={values.message}
+          onChange={update("message")}
+          aria-invalid={Boolean(errors.message)}
+          aria-describedby={errors.message ? "message-error" : "message-hint"}
+          className="field-input resize-y"
+          placeholder="What is the product, what is stuck, and what does done look like?"
         />
-        <p id="message-hint" className="sr-only">Required. Describe your project, timeline, and any specific requirements.</p>
+        {errors.message ? (
+          <p id="message-error" className="field-error">
+            {errors.message}
+          </p>
+        ) : (
+          <p id="message-hint" className="mt-2 text-sm text-ink-soft">
+            A few sentences is enough. No formal brief required.
+          </p>
+        )}
       </div>
 
-      <button type="submit" className="btn-primary min-h-[48px] w-full sm:w-auto">
-        Send Message
+      <button type="submit" className="tag tag-dark w-full sm:w-auto">
+        Create email draft
       </button>
+      <p className="text-sm text-ink-soft">
+        This form opens a draft in your email app. Nothing is sent until you
+        send it yourself.
+      </p>
     </form>
   );
 }

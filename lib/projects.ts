@@ -32,6 +32,8 @@ export interface Project {
   draft?: boolean;
   noindex?: boolean;
   related?: string[];
+  cover?: string;
+  coverAlt?: string;
 }
 
 function mapProject(data: Record<string, unknown>) {
@@ -62,6 +64,8 @@ function mapProject(data: Record<string, unknown>) {
     draft: data.draft as boolean | undefined,
     noindex: data.noindex as boolean | undefined,
     related: data.related as string[] | undefined,
+    cover: data.cover as string | undefined,
+    coverAlt: data.coverAlt as string | undefined,
   };
 }
 

@@ -1,91 +1,163 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
 import { ogImage } from "@/lib/metadata";
-import { siteUrl } from "@/lib/site";
+import { contactEmail, githubUrl, linkedinUrl, siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch about your project. I reply within 24 hours with honest feedback on fit and approach — even if I'm not the right person for the job.",
+    "Tell me about your project. I read every message myself and reply with honest feedback on fit and approach, even if I'm not the right person for the job.",
   alternates: { canonical: `${siteUrl}/contact` },
   openGraph: {
     title: "Contact | DEAIDEV",
     description:
-      "Get in touch about your project. I reply within 24 hours with honest feedback on fit and approach — even if I'm not the right person for the job.",
+      "Tell me about your project. I read every message myself and reply with honest feedback on fit and approach, even if I'm not the right person for the job.",
     url: `${siteUrl}/contact`,
     siteName: "DEAIDEV Portfolio",
     images: [ogImage],
   },
 };
 
+const includeItems = [
+  "What the product is",
+  "What is stuck",
+  "Timeline",
+  "Budget range",
+];
+
+const nextSteps = [
+  "I read your message and look at whether the project fits.",
+  "I reply with questions or honest feedback on the approach.",
+  "If it makes sense, we book a 30-minute discovery call.",
+  "You get a one-page proposal with scope, timeline, and cost.",
+];
+
 export default function ContactPage() {
   return (
-    <div className="bg-canvas text-on-primary">
-      <section
-        className="px-6"
-        style={{ paddingTop: "clamp(4rem, 8vw, 8rem)", paddingBottom: "clamp(4rem, 8vw, 8rem)" }}
-      >
-        <div className="mx-auto max-w-2xl">
-          <p className="mb-2 type-mono-eyebrow text-ash">Contact</p>
-          <h1 className="mb-4 type-display-sm text-on-primary">
-            Let&apos;s talk about your project
-          </h1>
-          <p className="mb-10 type-body text-ash">
-            Send me a message and I&apos;ll reply within 24 hours with honest
-            feedback — even if I&apos;m not the right fit.
-          </p>
+    <div className="bg-tar text-chalk">
+      <section className="border-b-2 border-line-dark py-12 md:py-16">
+        <div className="shell">
+          <nav aria-label="Breadcrumb" className="data text-steel">
+            <Link href="/" className="hover:text-yellow">
+              HOME
+            </Link>
+            <span className="mx-2 text-orange">/</span>
+            <span className="text-chalk">CONTACT</span>
+          </nav>
 
-          <ContactForm />
+          <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-10">
+            <div className="lg:col-span-7">
+              <h1 className="display-lg max-w-[14ch] text-chalk">
+                Let&apos;s talk about your project
+              </h1>
+              <p className="mt-5 max-w-[56ch] body-copy text-steel">
+                Tell me what you are building and where it is stuck. I read
+                every message myself and reply with honest feedback — even if I
+                am not the right fit.
+              </p>
 
-          <div className="mt-12 border-t border-hairline-soft pt-8">
-            <p className="mb-4 type-mono-eyebrow text-mute">What happens next</p>
-            <ol className="space-y-3 type-body-sm text-ash">
-              <li className="flex items-start gap-3">
-                <span className="text-brand font-medium">1.</span>
-                I read your message within 24 hours
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-brand font-medium">2.</span>
-                I reply with honest feedback on fit and approach
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-brand font-medium">3.</span>
-                If it makes sense, we book a 30-minute call
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-brand font-medium">4.</span>
-                No pressure, no pitch — just clarity
-              </li>
-            </ol>
+              <div className="mt-8 flex flex-wrap gap-2">
+                <span className="border-2 border-line-dark px-3 py-2 data text-[10px] text-steel">
+                  EMAIL DRAFT
+                </span>
+                <span className="border-2 border-line-dark px-3 py-2 data text-[10px] text-steel">
+                  NOTHING SENT UNTIL YOU SEND
+                </span>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="border-2 border-line-dark p-5">
+                <h2 className="label text-yellow">What to include</h2>
+                <ul className="mt-4">
+                  {includeItems.map((item) => (
+                    <li
+                      key={item}
+                      className="grid grid-cols-[1.25rem_1fr] gap-2 border-t border-line-dark py-3 text-[15px] font-medium text-chalk"
+                    >
+                      <span className="data text-orange" aria-hidden="true">
+                        +
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="paper py-14 text-ink md:py-20">
+        <div className="shell grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7">
+            <div className="border-2 border-ink bg-white p-5 md:p-8">
+              <div className="flex items-center justify-between border-b-2 border-ink pb-3">
+                <h2 className="heading-sm text-ink">Work order</h2>
+                <span className="data text-ink">FORM / 01</span>
+              </div>
+              <div className="mt-6">
+                <ContactForm />
+              </div>
+            </div>
           </div>
 
-          <div className="mt-8 border-t border-hairline-soft pt-8">
-            <p className="mb-4 type-mono-eyebrow text-mute">Elsewhere</p>
-            <div className="flex gap-6">
-              <Link
-                href="https://github.com/dearidev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="type-body-sm text-ash transition-colors hover:text-on-primary"
-              >
-                GitHub
-              </Link>
-              <Link
-                href="https://linkedin.com/in/dearidev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="type-body-sm text-ash transition-colors hover:text-on-primary"
-              >
-                LinkedIn
-              </Link>
-              <Link
-                href="mailto:hello@dearidev.dev"
-                className="type-body-sm text-ash transition-colors hover:text-on-primary"
-              >
-                Email
-              </Link>
+          <div className="lg:col-span-5">
+            <div className="border-2 border-ink bg-tar p-5 text-chalk md:p-6">
+              <div className="flex items-center justify-between border-b border-line-dark pb-3">
+                <h2 className="heading-sm text-chalk">What happens next</h2>
+                <span className="data text-steel">01—04</span>
+              </div>
+              <ol className="mt-2">
+                {nextSteps.map((step, index) => (
+                  <li
+                    key={step}
+                    className="grid grid-cols-[1.75rem_1fr] gap-3 border-b border-line-dark py-3 last:border-0 last:pb-0"
+                  >
+                    <span className="data text-orange">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-sm leading-relaxed text-steel">
+                      {step}
+                    </span>
+                  </li>
+                ))}
+              </ol>
             </div>
+
+            <div className="mt-6 border-t-2 border-ink pt-5">
+              <h2 className="label text-ink-soft">Elsewhere</h2>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <a
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tag tag-ghost tag-sm"
+                >
+                  GitHub <span aria-hidden="true">↗</span>
+                </a>
+                <a
+                  href={linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tag tag-ghost tag-sm"
+                >
+                  LinkedIn <span aria-hidden="true">↗</span>
+                </a>
+                <a
+                  href={`mailto:${contactEmail}`}
+                  className="tag tag-ghost tag-sm"
+                >
+                  Email
+                </a>
+              </div>
+            </div>
+
+            <p className="mt-6 border-t-2 border-orange-deep pt-3 text-sm leading-relaxed text-ink-soft">
+              I read every message myself. If I am not the right fit, I will say
+              so and point you somewhere better.
+            </p>
           </div>
         </div>
       </section>

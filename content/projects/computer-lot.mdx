@@ -8,7 +8,7 @@ demo: "https://computer-lot.vercel.app"
 github: "https://github.com/Mhammadkhan17/Computer-Lot"
 outcomeHeadline: "Built a zero-fee B2C + B2B liquidation platform with atomic checkout"
 industry: "E-Commerce"
-context: "Computer liquidators lose 10–15% to marketplace fees per transaction. They needed a platform that facilitates sales without skimming them — with lot-based inventory that serves both bulk business buyers and individual consumers without overselling."
+context: "Computer liquidators lose 10–15% to marketplace fees per transaction. They needed a platform that facilitates sales without skimming them, with lot-based inventory that serves both bulk business buyers and individual consumers without overselling."
 approach:
   - "Atomic checkout with reservation-based inventory to prevent overselling"
   - "Dual B2C/B2B workflows sharing one product catalog"
@@ -17,7 +17,7 @@ metric: "0%"
 metricLabel: "platform transaction fees"
 problem: "Computer liquidators lose 10–15% to marketplace fees per transaction and had no platform that handled lot-based inventory for both bulk and single-unit buyers."
 role: "Full-stack developer"
-client: "Confidential — liquidation startup"
+client: "Confidential: liquidation startup"
 related: ["morent", "todoflow"]
 draft: false
 order: 2
@@ -27,46 +27,46 @@ duration: "8 weeks"
 
 ## The Problem
 
-Computer liquidation is a high-volume, low-margin business. Lots of returned, refurbished, or end-of-life hardware need to move quickly — sometimes to a business buying 50 units, sometimes to a consumer buying one.
+Computer liquidation is a high-volume, low-margin business. Lots of returned, refurbished, or end-of-life hardware need to move quickly: sometimes to a business buying 50 units, sometimes to a consumer buying one.
 
 Existing platforms like eBay or Amazon take 10–15% per transaction. On a $2,000 lot, that's $200 gone. For liquidators operating on thin margins, that's the difference between profit and loss. They needed a platform that facilitated the transaction without skimming it.
 
-The operational challenge: inventory is sold in lots, but those lots need to be splittable. A lot of 10 units might sell as one bulk order to a business or as individual units to 10 consumers — and the system needs to prevent overselling across both channels simultaneously.
+The operational challenge: inventory is sold in lots, but those lots need to be splittable. A lot of 10 units might sell as one bulk order to a business or as individual units to 10 consumers, and the system needs to prevent overselling across both channels simultaneously.
 
 ## The Approach
 
-I built the platform on Next.js 15 for the frontend and FastAPI for the backend, with Supabase handling auth and real-time data. The core challenge was atomic checkout — ensuring that when multiple buyers hit "purchase" at the same time, inventory is reserved correctly without overselling.
+I built the platform on Next.js 15 for the frontend and FastAPI for the backend, with Supabase handling auth and real-time data. The core challenge was atomic checkout: ensuring that when multiple buyers hit "purchase" at the same time, inventory is reserved correctly without overselling.
 
 I implemented a reservation-based checkout flow: when a buyer enters checkout, inventory is soft-reserved with a timeout. The reservation is atomic at the database level, so concurrent checkouts can't collide. If the reservation expires (buyer abandoned checkout), inventory is released back.
 
-For B2B vs B2C, both flows share the same product catalog but diverge at checkout: B2B buyers get bulk pricing tiers and purchase-order options, while B2B consumers get standard single-unit checkout. The catalog doesn't duplicate — only the pricing logic branches.
+For B2B vs B2C, both flows share the same product catalog but diverge at checkout: B2B buyers get bulk pricing tiers and purchase-order options, while B2B consumers get standard single-unit checkout. The catalog doesn't duplicate; only the pricing logic branches.
 
 For fulfillment, I integrated WhatsApp Business API. Instead of paying Stripe or PayPal's fees, orders are confirmed and tracked through WhatsApp threads. The seller sends a payment link (bank transfer or alternative), and the conversation becomes the order record.
 
 ## The Result
 
-The platform operates at 0% transaction fees — the entire value proposition. Atomic checkout handles concurrent purchases without overselling, and the dual B2C/B2B flow means one catalog serves both markets.
+The platform operates at 0% transaction fees. That is the entire value proposition. Atomic checkout handles concurrent purchases without overselling, and the dual B2C/B2B flow means one catalog serves both markets.
 
 The architecture is documented with ADRs (Architecture Decision Records) covering the checkout atomicity model, the dual-channel pricing strategy, and the WhatsApp fulfillment integration.
 
 ## Context
 
-Computer-Lot came from a conversation with a liquidator who was paying thousands per month in marketplace fees. On thin margins, 10–15% per transaction isn't a cost — it's the business. They didn't need a better marketplace; they needed their own channel that facilitated transactions without skimming them.
+Computer-Lot came from a conversation with a liquidator who was paying thousands per month in marketplace fees. On thin margins, 10–15% per transaction isn't a cost; it's the business. They didn't need a better marketplace; they needed their own channel that facilitated transactions without skimming them.
 
 The operational reality shaped the design more than the fee model. Inventory arrives in lots (a pallet of 20 returned laptops), but sells both ways: a business might buy all 20, or 20 consumers might buy one each. The system had to treat a lot as splittable inventory without ever overselling it across both channels at once.
 
-WhatsApp as the fulfillment channel was a direct consequence of the zero-fee goal. If the platform doesn't process payments, it doesn't need Stripe's 2.9% — it just needs to coordinate the order and let the parties settle directly. The conversation becomes the order record.
+WhatsApp as the fulfillment channel was a direct consequence of the zero-fee goal. If the platform doesn't process payments, it doesn't need Stripe's 2.9%. It just needs to coordinate the order and let the parties settle directly. The conversation becomes the order record.
 
 ## Decisions & Trade-offs
 
-**Reservation-based checkout over cart-locks.** I considered locking inventory when added to cart, but carts get abandoned and would starve inventory. Instead, inventory is soft-reserved only at checkout entry with a timeout — abandoned checkouts release stock automatically. Trade-off: a buyer can lose an item mid-checkout if their reservation expires, but inventory is never held hostage by idle carts.
+**Reservation-based checkout over cart-locks.** I considered locking inventory when added to cart, but carts get abandoned and would starve inventory. Instead, inventory is soft-reserved only at checkout entry with a timeout. Abandoned checkouts release stock automatically. Trade-off: a buyer can lose an item mid-checkout if their reservation expires, but inventory is never held hostage by idle carts.
 
-**One catalog, branching pricing over two separate catalogs.** Duplicating the catalog for B2B and B2C would drift — two sources of truth for the same product. I kept one catalog and branched only the pricing logic at checkout: bulk tiers for B2B, single-unit for B2C. Trade-off: pricing code is slightly more complex, but product data stays unified.
+**One catalog, branching pricing over two separate catalogs.** Duplicating the catalog for B2B and B2C would drift: two sources of truth for the same product. I kept one catalog and branched only the pricing logic at checkout, with bulk tiers for B2B and single-unit pricing for B2C. Trade-off: pricing code is slightly more complex, but product data stays unified.
 
 **WhatsApp coordination over integrated payments.** Skipping a payment processor removes fees and settlement delays, but it also removes escrow and buyer protection. Trade-off: trust shifts to the parties' direct conversation, which works for a liquidator with existing relationships but wouldn't work for anonymous buyers. The ADR documents this as a deliberate constraint of the zero-fee model.
 
 ## Reflection
 
-The atomic checkout was the interesting engineering problem. The naive implementation — check stock, then decrement — oversells under concurrency. Moving the reservation into a single atomic database operation (check-and-reserve in one statement with a timeout column) made it correct without needing distributed locks.
+The atomic checkout was the interesting engineering problem. The naive implementation (check stock, then decrement) oversells under concurrency. Moving the reservation into a single atomic database operation (check-and-reserve in one statement with a timeout column) made it correct without needing distributed locks.
 
 If I extended it, I'd add optional Stripe integration for buyers who want buyer protection (fee passed through as an opt-in), lot photography and grading tiers, and a simple credit system for repeat B2B buyers instead of purchase orders.
