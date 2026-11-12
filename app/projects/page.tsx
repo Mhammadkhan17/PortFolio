@@ -45,9 +45,7 @@ export default function ProjectsPage() {
             <div className="md:col-span-7">
               <h1 className="display-lg text-chalk">Projects</h1>
               <p className="mt-5 max-w-[56ch] body-copy text-steel">
-                Five documented builds. Each one states whether it is personal,
-                team, or client work, and links only to live demos and source
-                that exist.
+                What I built, how I built it, and what it delivered.
               </p>
             </div>
             <div className="md:col-span-5">
@@ -57,9 +55,6 @@ export default function ProjectsPage() {
                 </span>
                 <span className="border-2 border-line-dark px-3 py-2 data text-[11px] text-steel">
                   PERSONAL / TEAM / CLIENT
-                </span>
-                <span className="border-2 border-orange px-3 py-2 data text-[11px] text-yellow">
-                  PROVENANCE STATED
                 </span>
               </div>
             </div>
@@ -148,6 +143,7 @@ export default function ProjectsPage() {
                       </p>
                     </div>
                     <p className="mt-3 data text-[11px] text-steel">
+                      {project.role ? `${project.role.toUpperCase()} · ` : ""}
                       {project.status?.toUpperCase() ?? "SHIPPED"}
                     </p>
                   </div>

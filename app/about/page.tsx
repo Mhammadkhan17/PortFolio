@@ -139,14 +139,6 @@ export default function About() {
                     </div>
                   </dl>
                 </div>
-
-                <div className="flex items-center justify-between border-t border-line-dark px-4 py-2">
-                  <span className="data text-steel">NO INVENTED METRICS</span>
-                  <span
-                    className="h-2 w-2 rounded-full bg-yellow"
-                    aria-hidden="true"
-                  />
-                </div>
               </div>
             </div>
           </div>

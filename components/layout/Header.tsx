@@ -153,7 +153,7 @@ export function Header() {
         ref={menuRef}
         id="mobile-menu"
         hidden={!menuOpen}
-        className="border-t-2 border-line-dark bg-tar md:hidden"
+        className="menu-in border-t-2 border-line-dark bg-tar md:hidden"
       >
         <nav aria-label="Mobile" className="shell py-4">
           {navLinks.map((link) => {

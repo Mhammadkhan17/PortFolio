@@ -77,9 +77,6 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b-2 border-ink/70 py-3">
             <p className="data text-ink">RIGGING PLAN / 2026</p>
             <p className="data text-ink">DEAIDEV / FULL-STACK</p>
-            <p className="data hidden text-ink sm:block">
-              PROVENANCE STATED
-            </p>
           </div>
 
           <div className="grid gap-12 py-10 md:py-14 lg:grid-cols-12 lg:gap-10">
@@ -192,10 +189,8 @@ export default function Home() {
           <div className="shell flex flex-col gap-3 py-4 md:flex-row md:items-center md:gap-8">
             <p className="label shrink-0 text-yellow">Inspection note</p>
             <p className="max-w-[86ch] text-sm leading-relaxed text-steel">
-              Five documented projects: personal tools, a team-built
-              marketplace, and confidential client systems. Each case study
-              states its provenance, the problem, the decisions, and the
-              tradeoffs. No invented metrics.
+              Five case studies: personal tools, a team-built marketplace, and
+              confidential client systems.
             </p>
           </div>
         </div>
@@ -208,8 +203,7 @@ export default function Home() {
               Selected work
             </h2>
             <p className="max-w-[44ch] body-copy text-steel">
-              Real projects, documented with the problem they solve and the
-              technical decisions behind them. Provenance is stated plainly.
+              What I built, how I built it, and what it delivered.
             </p>
           </div>
 
@@ -300,6 +294,7 @@ export default function Home() {
                         </p>
                       </div>
                       <p className="mt-3 data text-[11px] text-steel">
+                        {study.role ? `${study.role.toUpperCase()} · ` : ""}
                         {provenanceOf(study)}
                       </p>
                     </div>

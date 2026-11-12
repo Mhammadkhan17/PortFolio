@@ -26,11 +26,6 @@ export function Footer() {
               Solo full-stack development for founders who need a working
               product, not another planning document.
             </p>
-            <p className="mt-6 max-w-[34ch] border-t-2 border-orange pt-3 data text-steel">
-              PROVENANCE STATED
-              <br />
-              NO INVENTED METRICS
-            </p>
           </div>
 
           <div className="md:col-span-3">

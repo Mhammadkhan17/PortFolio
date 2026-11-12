@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-11-12
+
+### Logo redesign — stamped-plate monogram across all surfaces
+
+- Redesigned `Logo.tsx`: new `StampMark` (Load Orange plate, chalk border, ink geometric "D" with circular shackle-eye counter) + Archivo 800 wordmark + "RIG / 01" DM Mono line (lg+ only)
+- Rebuilt `public/icon.svg` and `public/og.svg` with the monogram mark
+- Regenerated binary assets with headless Chromium: `public/og.png` (1200x630), `public/apple-touch-icon.png` (180x180), `app/favicon.ico` (16/32/48/256 RGBA entries)
+- Updated `DESIGN.md` Logo section and `.impeccable/design.json` Logo Lockup component entry
+- Verified header, footer, mobile menu open/close, hover/focus states, and full-page coherence
+- Typecheck and lint pass
+
 ## 2026-09-15 (Design-01 Branch)
 
 ### Design System Implementation — applied DESIGN.md across entire project

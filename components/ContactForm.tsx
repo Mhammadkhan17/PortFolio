@@ -91,11 +91,11 @@ export function ContactForm() {
 
   if (draft) {
     return (
-      <div
-        role="status"
-        aria-live="polite"
-        className="border-2 border-ink bg-chalk-2 p-5 text-ink md:p-6"
-      >
+        <div
+          role="status"
+          aria-live="polite"
+          className="settle-in border-2 border-ink bg-chalk-2 p-5 text-ink md:p-6"
+        >
         <h2 className="heading-sm text-ink">One more step</h2>
         <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-ink-soft">
           Nothing has been sent yet. Open the email draft, check the details,
@@ -131,7 +131,7 @@ export function ContactForm() {
       {Object.keys(errors).length > 0 && (
         <div
           role="alert"
-          className="border-2 border-danger bg-[#fdf0ee] p-4 text-sm font-semibold text-danger"
+          className="settle-fast border-2 border-danger bg-[#fdf0ee] p-4 text-sm font-semibold text-danger"
         >
           Check the highlighted fields below.
         </div>
