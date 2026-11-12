@@ -1,6 +1,6 @@
 # DEAIDEV portfolio
 
-The portfolio for Hammad Khan (DEAIDEV), a solo full-stack developer. Built with Next.js App Router, local MDX, Tailwind CSS, Inter, and IBM Plex Mono.
+The portfolio for Hammad Khan (DEAIDEV), a solo full-stack developer. Built with Next.js App Router, local MDX, Tailwind CSS, Archivo, and DM Mono.
 
 ## Development
 
@@ -23,8 +23,12 @@ Frontmatter drives SEO, project metadata, and card copy. Links set to `#` are tr
 
 ```bash
 npm run lint
+npm run typecheck
+npm run check:links
 npm run build
 ```
+
+`npm run build` runs `check:links` first (via `prebuild`) and fails if any external link in the MDX content or the site-wide social URLs does not return 200.
 
 ## Deploy
 

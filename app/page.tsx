@@ -133,6 +133,7 @@ export default function Home() {
                 </div>
 
                 <ol className="hero-register relative">
+                  {/* Intentional 9–10px exception: hero register only (see DESIGN.md 11px floor rule). */}
                   <span
                     className="absolute bottom-0 left-[1.4rem] top-0 w-0.5 bg-steel/40"
                     aria-hidden="true"
@@ -234,15 +235,17 @@ export default function Home() {
                     </div>
 
                     <div className="md:col-span-6">
+                      {/* PLACEHOLDER (item 4 — case-study artifacts): add one real, owner-supplied
+                          thumbnail or recording per project here. Do not invent media. */}
                       <h3
                         className={`max-w-[28ch] text-chalk transition-colors group-hover:text-yellow ${
                           index === 0 ? "display-sm" : "heading-md"
                         }`}
                       >
-                        {study.outcomeHeadline}
+                        {study.title}
                       </h3>
                       <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-steel">
-                        {study.context}
+                        {study.outcomeHeadline}
                       </p>
 
                       <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
@@ -259,12 +262,14 @@ export default function Home() {
                         ))}
                       </ul>
 
-                      <p className="mt-5 data text-[10px] text-steel">
+                      <p className="mt-5 data text-[11px] text-steel">
                         TECH / {study.tech.slice(0, 4).join(" · ")}
                       </p>
                     </div>
 
                     <div className="md:col-span-3">
+                      {/* PLACEHOLDER (item 2 — outcome plates): replace status/feature values
+                          with verified business, user, or engineering outcomes. Do not invent. */}
                       <div
                         className={`border-2 p-4 ${
                           index === 0
@@ -294,7 +299,7 @@ export default function Home() {
                           {outcome.label}
                         </p>
                       </div>
-                      <p className="mt-3 data text-[10px] text-steel">
+                      <p className="mt-3 data text-[11px] text-steel">
                         {provenanceOf(study)}
                       </p>
                     </div>
@@ -355,7 +360,7 @@ export default function Home() {
             {handoverItems.map((item) => (
               <li
                 key={item}
-                className="border-2 border-ink px-3 py-2 label text-[10px] text-ink"
+                className="border-2 border-ink px-3 py-2 label text-[11px] text-ink"
               >
                 {item}
               </li>

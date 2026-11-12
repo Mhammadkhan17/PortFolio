@@ -10,6 +10,9 @@ export function provenanceOf(project: Project): string {
   return client.toUpperCase() || project.status?.toUpperCase() || "PROVENANCE STATED";
 }
 
+// PLACEHOLDER (item 2 — outcome plates): these values are statuses or feature counts,
+// not verified business/user outcomes. Replace them with sourced metrics before
+// presenting them as proof. Do not invent numbers.
 export function outcomeOf(project: Project): { value: string; label: string } {
   if (project.metric) {
     return {

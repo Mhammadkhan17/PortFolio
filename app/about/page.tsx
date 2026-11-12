@@ -62,7 +62,10 @@ export default function About() {
       <section className="border-b-2 border-line-dark py-12 md:py-16">
         <div className="shell">
           <nav aria-label="Breadcrumb" className="data text-steel">
-            <Link href="/" className="hover:text-yellow">
+            <Link
+              href="/"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-yellow"
+            >
               HOME
             </Link>
             <span className="mx-2 text-orange">/</span>

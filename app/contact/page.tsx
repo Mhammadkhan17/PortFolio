@@ -39,7 +39,10 @@ export default function ContactPage() {
       <section className="border-b-2 border-line-dark py-12 md:py-16">
         <div className="shell">
           <nav aria-label="Breadcrumb" className="data text-steel">
-            <Link href="/" className="hover:text-yellow">
+            <Link
+              href="/"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-yellow"
+            >
               HOME
             </Link>
             <span className="mx-2 text-orange">/</span>
@@ -58,10 +61,10 @@ export default function ContactPage() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-2">
-                <span className="border-2 border-line-dark px-3 py-2 data text-[10px] text-steel">
+                <span className="border-2 border-line-dark px-3 py-2 data text-[11px] text-steel">
                   EMAIL DRAFT
                 </span>
-                <span className="border-2 border-line-dark px-3 py-2 data text-[10px] text-steel">
+                <span className="border-2 border-line-dark px-3 py-2 data text-[11px] text-steel">
                   NOTHING SENT UNTIL YOU SEND
                 </span>
               </div>

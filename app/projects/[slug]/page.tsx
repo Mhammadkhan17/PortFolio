@@ -156,7 +156,10 @@ export default async function ProjectPage({
           <nav aria-label="Breadcrumb" className="data text-steel">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
-                <Link href="/" className="hover:text-yellow">
+                <Link
+                  href="/"
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-yellow"
+                >
                   HOME
                 </Link>
               </li>
@@ -164,7 +167,10 @@ export default async function ProjectPage({
                 /
               </li>
               <li>
-                <Link href="/projects" className="hover:text-yellow">
+                <Link
+                  href="/projects"
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-yellow"
+                >
                   PROJECTS
                 </Link>
               </li>
@@ -183,7 +189,7 @@ export default async function ProjectPage({
                 <span className="tag tag-ghost tag-sm">
                   {provenanceOf(project)}
                 </span>
-                <span className="border-2 border-line-dark px-3 py-2 data text-[10px] text-steel">
+                <span className="border-2 border-line-dark px-3 py-2 data text-[11px] text-steel">
                   FILE {fileNumber}
                 </span>
               </div>
@@ -232,6 +238,8 @@ export default async function ProjectPage({
             </div>
 
             <div className="lg:col-span-4">
+              {/* PLACEHOLDER (item 2 — outcome plates): replace status/feature values
+                  with verified business, user, or engineering outcomes. Do not invent. */}
               <div className="border-2 border-ink bg-orange p-5 text-ink">
                 <div className="flex items-center justify-between border-b-2 border-ink/40 pb-2">
                   <span className="label">Outcome</span>
@@ -245,7 +253,7 @@ export default async function ProjectPage({
                 <p className="mt-2 max-w-[28ch] text-sm font-medium leading-snug">
                   {outcome.label}
                 </p>
-                <p className="mt-5 border-t-2 border-ink/40 pt-3 data text-[10px]">
+                <p className="mt-5 border-t-2 border-ink/40 pt-3 data text-[11px]">
                   {provenanceOf(project)}
                 </p>
               </div>
@@ -269,6 +277,9 @@ export default async function ProjectPage({
         </div>
       </section>
 
+      {/* PLACEHOLDER (item 4 — case-study artifacts): no project defines real media yet.
+          Add owner-supplied screenshots, recordings, or diagrams via `cover`/`coverAlt`
+          in content frontmatter. Do not invent media. */}
       {project.cover && (
         <section className="paper">
           <div className="shell pb-10 pt-8">
@@ -284,7 +295,7 @@ export default async function ProjectPage({
                   className="aspect-[16/9] w-full object-cover"
                 />
               </div>
-              <figcaption className="mt-2 data text-[10px] text-ink-soft">
+              <figcaption className="mt-2 data text-[11px] text-ink-soft">
                 FIG. 01 / {(project.coverAlt || project.title).toUpperCase()}
               </figcaption>
             </figure>
@@ -294,7 +305,7 @@ export default async function ProjectPage({
 
       <section className="paper py-12 text-ink md:py-16">
         <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-12">
-          <aside className="lg:col-span-4">
+          <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-28">
               {project.approach && project.approach.length > 0 && (
                 <section aria-labelledby="approach-heading">
@@ -323,7 +334,7 @@ export default async function ProjectPage({
                   {project.tech.map((tech) => (
                     <li
                       key={tech}
-                      className="border border-ink px-2 py-1 data text-[10px] text-ink"
+                      className="border border-ink px-2 py-1 data text-[11px] text-ink"
                     >
                       {tech}
                     </li>
@@ -334,13 +345,13 @@ export default async function ProjectPage({
               <div className="mt-8 border-t-2 border-ink pt-4">
                 <Link
                   href="/projects"
-                  className="label border-b-2 border-transparent text-ink-soft transition-colors hover:border-orange-deep hover:text-ink"
+                  className="label inline-flex min-h-11 items-center border-b-2 border-transparent text-ink-soft transition-colors hover:border-orange-deep hover:text-ink"
                 >
                   &larr; All projects
                 </Link>
               </div>
             </div>
-          </aside>
+          </div>
 
           <div className="lg:col-span-8">
             <div className="prose-rig">
@@ -391,7 +402,7 @@ export default async function ProjectPage({
               </h2>
               <Link
                 href="/projects"
-                className="label border-b-2 border-transparent pb-1 text-steel transition-colors hover:border-orange hover:text-yellow"
+                className="label inline-flex min-h-11 items-center border-b-2 border-transparent pb-1 text-steel transition-colors hover:border-orange hover:text-yellow"
               >
                 All projects &rarr;
               </Link>

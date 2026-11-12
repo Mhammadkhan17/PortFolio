@@ -31,7 +31,10 @@ export default function ProjectsPage() {
       <section className="border-b-2 border-line-dark py-12 md:py-16">
         <div className="shell">
           <nav aria-label="Breadcrumb" className="data text-steel">
-            <Link href="/" className="hover:text-yellow">
+            <Link
+              href="/"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-yellow"
+            >
               HOME
             </Link>
             <span className="mx-2 text-orange">/</span>
@@ -49,13 +52,13 @@ export default function ProjectsPage() {
             </div>
             <div className="md:col-span-5">
               <div className="flex flex-wrap gap-2 md:justify-end">
-                <span className="border-2 border-line-dark px-3 py-2 data text-[10px] text-steel">
+                <span className="border-2 border-line-dark px-3 py-2 data text-[11px] text-steel">
                   05 FILES
                 </span>
-                <span className="border-2 border-line-dark px-3 py-2 data text-[10px] text-steel">
+                <span className="border-2 border-line-dark px-3 py-2 data text-[11px] text-steel">
                   PERSONAL / TEAM / CLIENT
                 </span>
-                <span className="border-2 border-orange px-3 py-2 data text-[10px] text-yellow">
+                <span className="border-2 border-orange px-3 py-2 data text-[11px] text-yellow">
                   PROVENANCE STATED
                 </span>
               </div>
@@ -84,11 +87,13 @@ export default function ProjectsPage() {
                   </div>
 
                   <div className="md:col-span-6">
+                    {/* PLACEHOLDER (item 4 — case-study artifacts): add one real,
+                        owner-supplied thumbnail or recording per project. Do not invent media. */}
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                       <h2 className="heading-md max-w-[28ch]">
                         <Link
                           href={`/projects/${project.slug}`}
-                          className="text-chalk transition-colors hover:text-yellow"
+                          className="inline-flex min-h-11 items-center text-chalk transition-colors hover:text-yellow"
                         >
                           {project.title}
                         </Link>
@@ -102,7 +107,7 @@ export default function ProjectsPage() {
                       {project.outcomeHeadline ?? project.description}
                     </p>
 
-                    <p className="mt-4 data text-[10px] text-steel">
+                    <p className="mt-4 data text-[11px] text-steel">
                       TECH / {project.tech.slice(0, 5).join(" · ")}
                     </p>
 
@@ -112,7 +117,7 @@ export default function ProjectsPage() {
                           href={project.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="label border-b-2 border-transparent text-steel transition-colors hover:border-orange hover:text-yellow"
+                          className="label inline-flex min-h-11 items-center border-b-2 border-transparent text-steel transition-colors hover:border-orange hover:text-yellow"
                         >
                           Live demo <span aria-hidden="true">↗</span>
                         </a>
@@ -122,7 +127,7 @@ export default function ProjectsPage() {
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="label border-b-2 border-transparent text-steel transition-colors hover:border-orange hover:text-yellow"
+                          className="label inline-flex min-h-11 items-center border-b-2 border-transparent text-steel transition-colors hover:border-orange hover:text-yellow"
                         >
                           Source <span aria-hidden="true">↗</span>
                         </a>
@@ -131,6 +136,8 @@ export default function ProjectsPage() {
                   </div>
 
                   <div className="md:col-span-3">
+                    {/* PLACEHOLDER (item 2 — outcome plates): replace status/feature values
+                        with verified business, user, or engineering outcomes. Do not invent. */}
                     <div className="border-2 border-line-dark p-4">
                       <span className="label text-steel">Outcome</span>
                       <p className="mt-2 text-3xl font-extrabold leading-none text-orange">
@@ -140,7 +147,7 @@ export default function ProjectsPage() {
                         {outcome.label}
                       </p>
                     </div>
-                    <p className="mt-3 data text-[10px] text-steel">
+                    <p className="mt-3 data text-[11px] text-steel">
                       {project.status?.toUpperCase() ?? "SHIPPED"}
                     </p>
                   </div>

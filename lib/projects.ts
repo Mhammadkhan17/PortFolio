@@ -32,6 +32,8 @@ export interface Project {
   draft?: boolean;
   noindex?: boolean;
   related?: string[];
+  // PLACEHOLDER (item 4 — case-study artifacts): `cover`/`coverAlt` are the media slot
+  // for real, owner-supplied screenshots, recordings, or diagrams. Do not invent media.
   cover?: string;
   coverAlt?: string;
 }

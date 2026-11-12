@@ -1,72 +1,72 @@
 ---
 title: "MoRent"
 seoTitle: "MoRent — Car Rental Marketplace"
-description: "Two-sided car rental marketplace with Stripe Connect payments, identity verification, and conflict-free real-time booking for peer-to-peer rentals."
-tech: ["Next.js 14", "Prisma", "Stripe", "NextAuth", "PostgreSQL"]
+description: "Two-sided car rental marketplace with Stripe Checkout payments, realtime notifications, and conflict-free booking for peer-to-peer rentals."
+tech: ["Next.js 16", "FastAPI", "Stripe", "Better Auth", "Neon Postgres"]
 category: "fullstack"
-demo: "https://morent-codemigos.vercel.app"
-github: "https://github.com/CODEMIGOS-6/morent"
-outcomeHeadline: "Built a two-sided car rental marketplace with payments and identity verification"
+demo: "https://morent-mu-two.vercel.app"
+github: "https://github.com/Mhammadkhan17/Morent"
+outcomeHeadline: "Built a two-sided car rental marketplace with payments and conflict-free booking"
 industry: "Marketplace"
-context: "P2P car rental requires trust between strangers: owners need to verify drivers, renters need secure payments, and both need a booking system that won't double-book. Existing solutions were either a Google Sheet or enterprise fleet software."
+context: "P2P car rental requires trust between strangers: owners need to know who's driving, renters need secure payments, and both need a booking system that won't double-book. Existing solutions were either a Google Sheet or enterprise fleet software."
 approach:
-  - "Stripe Connect escrow: renter pays, owner gets paid after trip"
-  - "Identity verification flow before booking"
+  - "Stripe Checkout with signature-verified, idempotent webhook fulfillment"
+  - "Self-hosted Better Auth with JWKS verification across services"
   - "Database-level date-conflict prevention for availability"
 metric: "MVP"
 metricLabel: "deployed to production on Vercel"
-problem: "P2P car rental requires trust between strangers: identity verification, secure payments, and a booking system that won't double-book."
+problem: "P2P car rental requires trust between strangers: secure payments, authenticated roles, and a booking system that won't double-book."
 role: "Full-stack developer"
 client: "Team project (CODEMIGOS-6)"
 related: ["computer-lot", "cloud-kitchen-erp"]
 draft: false
 order: 5
 date: "2026"
-duration: "6 weeks"
+duration: "6 weeks + rebuild"
 ---
 
 ## The Problem
 
 Peer-to-peer car rental sounds simple — list your car, someone rents it — but the trust and logistics problems are significant. The owner needs to know who's driving their car. The renter needs to know their payment is protected. And both sides need a booking system that won't double-book the same car on overlapping dates.
 
-Existing solutions are either too simple (a Google Sheet and bank transfer) or too complex (enterprise fleet management software). There was no middle ground for a small marketplace that needed real payments, real verification, and real availability management.
+Existing solutions are either too simple (a Google Sheet and bank transfer) or too complex (enterprise fleet management software). There was no middle ground for a small marketplace that needed real payments, real authentication, and real availability management.
 
 ## The Approach
 
-I built MoRent as a full-stack Next.js 14 application with Prisma and PostgreSQL. The core is a two-sided marketplace: owners list vehicles, renters browse and book, and a shared booking engine manages availability.
+I built MoRent as a full-stack application: a Next.js 16 frontend over a FastAPI backend with SQLModel and Alembic migrations on Neon Postgres. It began as the CodeMigos cohort 6 build on Next.js 14, Prisma, and NextAuth; after the cohort I rebuilt the stack around FastAPI and self-hosted Better Auth while keeping the same core — a two-sided marketplace where owners list vehicles, renters browse and book, and a shared booking engine manages availability.
 
-For payments, I used Stripe Connect. The renter's payment is held in escrow — charged at booking, released to the owner after the trip is confirmed complete. This protects both sides: the renter isn't charged until the booking is confirmed, and the owner doesn't release the car without payment secured.
+For payments, I used Stripe Checkout with the Payment Element. Fulfillment is driven by signature-verified webhooks with durable idempotency — a `webhook_events` table claims each event id before any business work, so Stripe's retries and duplicate deliveries can't double-confirm or drop a booking.
 
-For identity verification, I built a document-upload flow where renters verify their license before booking. Owners see verified status on renter profiles. It's not a full KYC system, but it raises the trust floor significantly compared to an anonymous booking.
+For authentication, I run Better Auth self-hosted in the frontend while FastAPI verifies JWTs via JWKS. The same account carries distinct customer and owner roles through the whole flow.
 
-Availability checking is done at the database level with overlapping-date queries — the booking engine checks for date conflicts atomically, so two renters can't book the same car for overlapping periods.
+Availability checking is done at the database level with overlapping-date queries — the booking engine checks date conflicts atomically, and each listing carries a fleet quantity, so a multi-unit car only rejects bookings once every unit is held.
 
 The project was built as part of CodeMigos cohort 6, deployed to Vercel with a live database.
 
 ## The Result
 
-The MVP is deployed and functional: owners can list cars, renters can browse, verify identity, book with Stripe payments, and complete trips with escrow release. The booking engine handles date-conflict prevention at the database level.
+The app is deployed and functional: owners list vehicles, renters browse, book, and pay through Stripe Checkout, and bookings confirm through webhook fulfillment. The booking engine handles date-conflict prevention at the database level.
 
-The full stack runs on Next.js 14, Prisma, PostgreSQL, Stripe Connect, and NextAuth — a production-grade stack for a marketplace that needs to handle real money and real trust.
+The full stack runs on Next.js 16, FastAPI, SQLModel with Alembic migrations, Neon Postgres, Better Auth, and Stripe — a production-grade stack for a marketplace where booking correctness under concurrency matters.
 
 ## Context
 
 MoRent was built as part of CodeMigos cohort 6, a six-week intensive where the goal was a working, deployed product rather than a prototype. The brief was deliberately open: pick a domain with real transactional complexity and ship it end to end.
 
-I chose a two-sided marketplace because it forces every hard backend problem into one project — authentication with multiple roles, payments with escrow semantics, relational data with real constraints, and a booking engine where correctness matters. A CRUD app wouldn't have exercised those muscles.
+I chose a two-sided marketplace because it forces every hard backend problem into one project — authentication with multiple roles, payments with durable fulfillment, relational data with real constraints, and a booking engine where correctness matters. A CRUD app wouldn't have exercised those muscles.
 
-The trust problem framed the whole design. In peer-to-peer rental, neither side knows the other. That means identity verification isn't a nice-to-have, payments can't be simple one-shot charges, and availability has to be enforced at the database level rather than trusted to the client.
+The trust problem framed the whole design. In peer-to-peer rental, neither side knows the other. That means authentication has to carry roles end to end, payments can't be simple fire-and-forget charges, and availability has to be enforced at the database level rather than trusted to the client.
 
 ## Decisions & Trade-offs
 
-**Stripe Connect over manual payouts.** I considered collecting payments and paying owners manually via bank transfer. Stripe Connect's escrow model (charge on booking, release after trip confirmation) protects both parties automatically and removes me from the flow of money. Trade-off: more integration complexity and Stripe's fees, but the trust guarantees are worth it for a marketplace.
+**Stripe Checkout with durable webhook fulfillment over manual payouts.** I considered collecting payments and paying owners manually via bank transfer. Stripe Checkout keeps card data out of my infrastructure, and signature-verified webhooks with an idempotency claim on every event id make fulfillment safe to retry — duplicate deliveries are no-ops, and a crash mid-work lets Stripe's retry re-enter. Trade-off: webhook complexity and Stripe's fees, but the payment path is auditable end to end.
 
 **Database-level overlap checking over application-level locking.** Checking for date conflicts in application code and then writing the booking leaves a race window between check and write. I used overlapping-date queries that run atomically in the database, so two concurrent bookings can't both succeed. Trade-off: a slightly more complex query, but correctness under concurrency.
 
-**Document-upload verification over full KYC.** A real KYC provider (document scan + face match) was out of scope for six weeks. I built a license-upload flow with manual review status — it raises the trust floor without the integration overhead. Trade-off: not automated, not production-grade, but demonstrable and honest about what it is.
+**Server-side pricing over client-side quotes.** A quote assembled in the browser can drift from what the server charges. I price every booking server-side in integer cents — promo math included — and webhook fulfillment writes the stored totals. Trade-off: a round trip per quote, but the number the renter sees is the number they're charged.
 
 ## Reflection
 
 The hardest part wasn't any single integration — it was making the booking engine correct. Double-booking is the failure mode that kills a rental marketplace, and the naive implementation (check, then insert) is subtly wrong under concurrency. Testing that path with simulated concurrent requests was the moment the project felt solid.
 
-If I extended it, the next steps would be automated identity verification, a review system after trips, and inventory pricing rules (weekend vs weekday). The escrow model would also need a dispute flow — right now release is triggered by trip completion with no conflict path.
+If I extended it, the next steps would be a review system after trips, inventory pricing rules (weekend vs weekday), and a refund path for contested bookings — payment is captured at checkout with idempotent webhook fulfillment, but a dispute flow would need its own handling.

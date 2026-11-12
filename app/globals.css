@@ -293,7 +293,7 @@ button {
 .tag-sm {
   min-height: 36px;
   padding: 0.45rem 0.75rem;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
 }
 
 .tag-sm::before {

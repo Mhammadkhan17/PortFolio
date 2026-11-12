@@ -27,7 +27,10 @@ export default function BlogPage() {
       <section className="border-b-2 border-line-dark py-12 md:py-16">
         <div className="shell">
           <nav aria-label="Breadcrumb" className="data text-steel">
-            <Link href="/" className="hover:text-yellow">
+            <Link
+              href="/"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-yellow"
+            >
               HOME
             </Link>
             <span className="mx-2 text-orange">/</span>
@@ -44,10 +47,10 @@ export default function BlogPage() {
             </div>
             <div className="md:col-span-5">
               <div className="flex flex-wrap gap-2 md:justify-end">
-                <span className="border-2 border-line-dark px-3 py-2 data text-[10px] text-steel">
+                <span className="border-2 border-line-dark px-3 py-2 data text-[11px] text-steel">
                   {String(posts.length).padStart(2, "0")} ENTRIES
                 </span>
-                <span className="border-2 border-orange px-3 py-2 data text-[10px] text-yellow">
+                <span className="border-2 border-orange px-3 py-2 data text-[11px] text-yellow">
                   LOGBOOK
                 </span>
               </div>
@@ -93,7 +96,7 @@ export default function BlogPage() {
                           })
                           .toUpperCase()}
                       </time>
-                      <p className="mt-1 data text-[10px] text-steel">
+                      <p className="mt-1 data text-[11px] text-steel">
                         {post.readingTime.toUpperCase()}
                       </p>
                     </div>
@@ -109,7 +112,7 @@ export default function BlogPage() {
                         {post.tags.map((tag) => (
                           <li
                             key={tag}
-                            className="border border-line-dark px-2 py-1 data text-[10px] text-steel"
+                            className="border border-line-dark px-2 py-1 data text-[11px] text-steel"
                           >
                             {tag.toUpperCase()}
                           </li>

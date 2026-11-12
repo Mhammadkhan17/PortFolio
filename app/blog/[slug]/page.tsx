@@ -80,7 +80,10 @@ export default async function BlogPostPage({
           <nav aria-label="Breadcrumb" className="data text-steel">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
-                <Link href="/" className="hover:text-yellow">
+                <Link
+                  href="/"
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-yellow"
+                >
                   HOME
                 </Link>
               </li>
@@ -88,7 +91,10 @@ export default async function BlogPostPage({
                 /
               </li>
               <li>
-                <Link href="/blog" className="hover:text-yellow">
+                <Link
+                  href="/blog"
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-yellow"
+                >
                   BLOG
                 </Link>
               </li>
@@ -131,7 +137,7 @@ export default async function BlogPostPage({
               {post.tags.map((tag: string) => (
                 <li
                   key={tag}
-                  className="border border-line-dark px-2 py-1 data text-[10px] text-steel"
+                  className="border border-line-dark px-2 py-1 data text-[11px] text-steel"
                 >
                   {tag.toUpperCase()}
                 </li>
@@ -143,12 +149,12 @@ export default async function BlogPostPage({
 
       <section className="paper py-12 text-ink md:py-16">
         <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-12">
-          <aside className="lg:col-span-3">
+          <div className="lg:col-span-3">
             <div className="lg:sticky lg:top-28">
               <h2 className="label text-ink-soft">Log entry</h2>
               <dl className="mt-4 border-t-2 border-ink">
                 <div className="border-b border-ink/15 py-3">
-                  <dt className="data text-[10px] text-ink-soft">Date</dt>
+                  <dt className="data text-[11px] text-ink-soft">Date</dt>
                   <dd className="mt-1 text-[13px] font-semibold text-ink">
                     {new Date(post.date).toLocaleDateString("en-US", {
                       month: "short",
@@ -158,13 +164,13 @@ export default async function BlogPostPage({
                   </dd>
                 </div>
                 <div className="border-b border-ink/15 py-3">
-                  <dt className="data text-[10px] text-ink-soft">Reading time</dt>
+                  <dt className="data text-[11px] text-ink-soft">Reading time</dt>
                   <dd className="mt-1 text-[13px] font-semibold text-ink">
                     {post.readingTime}
                   </dd>
                 </div>
                 <div className="border-b border-ink/15 py-3">
-                  <dt className="data text-[10px] text-ink-soft">Filed under</dt>
+                  <dt className="data text-[11px] text-ink-soft">Filed under</dt>
                   <dd className="mt-1 text-[13px] font-semibold text-ink">
                     {post.tags.join(" / ")}
                   </dd>
@@ -173,12 +179,12 @@ export default async function BlogPostPage({
 
               <Link
                 href="/blog"
-                className="mt-6 inline-flex label border-b-2 border-transparent text-ink-soft transition-colors hover:border-orange-deep hover:text-ink"
+                className="mt-6 inline-flex min-h-11 items-center label border-b-2 border-transparent text-ink-soft transition-colors hover:border-orange-deep hover:text-ink"
               >
                 &larr; All entries
               </Link>
             </div>
-          </aside>
+          </div>
 
           <article className="lg:col-span-9">
             <div className="prose-rig">

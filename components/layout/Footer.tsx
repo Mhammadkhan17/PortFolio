@@ -3,11 +3,10 @@ import { Logo } from "./Logo";
 import { contactEmail, githubUrl, linkedinUrl } from "@/lib/site";
 
 const navLinks = [
-  { href: "/#case-studies", label: "Work", index: "01" },
-  { href: "/projects", label: "Projects", index: "02" },
-  { href: "/about", label: "About", index: "03" },
-  { href: "/blog", label: "Blog", index: "04" },
-  { href: "/contact", label: "Contact", index: "05" },
+  { href: "/projects", label: "Projects", index: "01" },
+  { href: "/about", label: "About", index: "02" },
+  { href: "/blog", label: "Blog", index: "03" },
+  { href: "/contact", label: "Contact", index: "04" },
 ];
 
 const socialLinks = [
@@ -43,7 +42,7 @@ export function Footer() {
                     href={link.href}
                     className="group flex min-h-11 items-center gap-3 border-b border-line-dark text-chalk transition-colors hover:text-yellow"
                   >
-                    <span className="data text-[10px] text-steel">
+                    <span className="data text-[11px] text-steel">
                       {link.index}
                     </span>
                     <span className="label text-[12px]">{link.label}</span>
@@ -71,7 +70,7 @@ export function Footer() {
                     className="group flex min-h-11 items-center justify-between gap-4 border-b border-line-dark text-chalk transition-colors hover:text-yellow"
                   >
                     <span className="label text-[12px]">{social.label}</span>
-                    <span className="data text-[10px] text-steel group-hover:text-yellow">
+                    <span className="data text-[11px] text-steel group-hover:text-yellow">
                       {social.href.startsWith("mailto") ? "MAIL" : "EXT"}
                     </span>
                   </a>
